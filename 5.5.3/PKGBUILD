@@ -40,13 +40,13 @@ package() {
         INSTALLDIR=$pkgdir/opt/FDS/FDS$pkgver
         mkdir -p $INSTALLDIR
         tar -xzvf FDS_5.5.3-SMV_5.6_linux_64.tar.gz --directory $INSTALLDIR
-        mv ${INSTALLDIR}/bin/fds ${INSTALLDIR}/bin/fds-exec
-        echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
-        echo "export LD_LIBRARY_PATH=${INSTALLDIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
-        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
-        echo "source ${INSTALLDIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
-        echo "${INSTALLDIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds
-        chmod 755 ${INSTALLDIR}/setup.sh
-        chmod 755 ${INSTALLDIR}/bin/fds
+        mv ${INSTALLDIR}/FDS/FDS5/bin/fds5_linux_64 ${INSTALLDIR}/FDS/FDS5/bin/fds-exec
+        echo "#!/bin/sh" > ${INSTALLDIR}/FDS/FDS5/setup.sh
+        echo "export LD_LIBRARY_PATH=${INSTALLDIR}/FDS/FDS5/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/FDS/FDS5/setup.sh
+        echo "#!/bin/sh" > ${INSTALLDIR}/FDS/FDS5/bin/fds
+        echo "source ${INSTALLDIR}/FDS/FDS5/setup.sh" >> ${INSTALLDIR}/FDS/FDS5/bin/fds
+        echo "${INSTALLDIR}/FDS/FDS5/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/FDS/FDS5/bin/fds
+        chmod 755 ${INSTALLDIR}/FDS/FDS5/setup.sh
+        chmod 755 ${INSTALLDIR}/FDS/FDS5/bin/fds
         chown root:root $pkgdir -R
 }
