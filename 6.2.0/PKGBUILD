@@ -21,7 +21,6 @@ install=
 changelog=
 source=("https://bintray.com/artifact/download/nist-fire-research/releases/FDS_6.2.0-SMV_6.2.2_linux64.sh")
 noextract=()
-sha1sums=('f90053b629aa620025e7d629002bc9854aa4bf7a')
 validpgpkeys=()
 
 prepare() {

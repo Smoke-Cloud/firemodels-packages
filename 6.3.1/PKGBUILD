@@ -21,7 +21,6 @@ install=
 changelog=
 source=("https://github.com/firemodels/fds/releases/download/Git-r4/FDS_6.3.1-SMV_6.3.2_linux64.sh")
 noextract=()
-sha1sums=('f90053b629aa620025e7d629002bc9854aa4bf7a')
 validpgpkeys=()
 
 prepare() {
