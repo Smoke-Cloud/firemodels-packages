@@ -21,6 +21,7 @@ install=
 changelog=
 source=("https://bintray.com/artifact/download/nist-fire-research/releases/FDS_5.5.3-SMV_5.6_linux_64.tar.gz")
 noextract=()
+sha1sums=('SKIP')
 validpgpkeys=()
 
 prepare() {
