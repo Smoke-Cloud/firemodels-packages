@@ -1,0 +1,54 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=fds-6.4.0
+pkgver=6.4.0
+pkgrel=1
+epoch=
+pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
+arch=('x86_64')
+url="https://pages.nist.gov/fds-smv/"
+license=('PublicDomain')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=("https://github.com/firemodels/fds/releases/download/Git-r10/FDS_6.4.0-SMV_6.3.6_linux64.sh")
+noextract=()
+sha1sums=('f90053b629aa620025e7d629002bc9854aa4bf7a')
+validpgpkeys=()
+
+prepare() {
+        chmod 755 "$srcdir/FDS_6.4.0-SMV_6.3.6_linux64.sh"
+        rm -f "$srcdir/FDS_6.4.0-SMV_6.3.6_linux64.tar.gz"
+        echo "extract" | "$srcdir/FDS_6.4.0-SMV_6.3.6_linux64.sh"
+}
+
+build() {
+        echo "done"
+}
+
+check() {
+        echo "done"
+}
+
+package() {
+        INSTALLDIR=$pkgdir/opt/FDS/FDS$pkgver
+        mkdir -p $INSTALLDIR
+        tar -xzvf FDS_6.4.0-SMV_6.3.6_linux64.tar.gz --directory $INSTALLDIR
+        mv ${INSTALLDIR}/bin/fds ${INSTALLDIR}/bin/fds-exec
+        echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
+        echo "export LD_LIBRARY_PATH=${INSTALLDIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
+        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        echo "source ${INSTALLDIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
+        echo "${INSTALLDIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds
+        chmod 755 ${INSTALLDIR}/setup.sh
+        chmod 755 ${INSTALLDIR}/bin/fds
+        chown root:root $pkgdir -R
+}
