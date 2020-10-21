@@ -15,7 +15,8 @@ default: fds-5.5.3-5.5.3-1-x86_64.pkg.tar.zst \
 	fds-6.7.0-6.7.0-1-x86_64.pkg.tar.zst \
 	fds-6.7.1-6.7.1-1-x86_64.pkg.tar.zst \
 	fds-6.7.3-6.7.3-1-x86_64.pkg.tar.zst \
-	fds-6.7.4-6.7.4-1-x86_64.pkg.tar.zst 
+	fds-6.7.4-6.7.4-1-x86_64.pkg.tar.zst \
+	fds-6.7.5-6.7.5-1-x86_64.pkg.tar.zst 
 
 install: default
 	pacman -U fds-5.5.3-5.5.3-1-x86_64.pkg.tar.zst --noconfirm
@@ -33,6 +34,7 @@ install: default
 	pacman -U fds-6.7.1-6.7.1-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.3-6.7.3-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.4-6.7.4-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.5-6.7.5-1-x86_64.pkg.tar.zst --noconfirm
 
 
 
@@ -68,3 +70,5 @@ fds-6.7.3-6.7.3-1-x86_64.pkg.tar.zst:
 	cd 6.7.3 && makepkg -f && cp $@ .. && cd ..
 fds-6.7.4-6.7.4-1-x86_64.pkg.tar.zst:
 	cd 6.7.4 && makepkg -f && cp $@ .. && cd ..
+fds-6.7.5-6.7.5-1-x86_64.pkg.tar.zst:
+	cd 6.7.5 && makepkg -f && cp $@ .. && cd ..
