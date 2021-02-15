@@ -58,7 +58,7 @@ package() {
         echo "export PATH=\$impihome/mpi/intel64/libfabric/bin:\$PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
-        echo "${FINAL_INSTALL_DIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds
+        echo "exec ${FINAL_INSTALL_DIR}/bin/INTEL/mpi/intel64/bin/mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
         chmod 755 ${INSTALLDIR}/setup.sh
         chmod 755 ${INSTALLDIR}/bin/fds
         chown root:root $pkgdir -R

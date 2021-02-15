@@ -1,0 +1,59 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=fds-6.7.4+smokecloud.gnu
+pkgver=6.7.4
+pkgrel=1
+epoch=
+pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
+arch=('x86_64')
+url="https://pages.nist.gov/fds-smv/"
+license=('PublicDomain')
+groups=()
+depends=('openmpi')
+makedepends=('gcc-fortran')
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=(!strip)
+install=
+changelog=
+source=("https://github.com/firemodels/fds/archive/FDS$pkgver.tar.gz")
+noextract=()
+sha1sums=('33fafc6bd1198fcd18dc0f650b0f2c117ceda28e')
+validpgpkeys=()
+
+prepare() {
+        echo "done"
+}
+
+build() {
+        cd fds-FDS$pkgver/Build/mpi_gnu_linux_64
+        ./make_fds.sh
+}
+
+check() {
+        echo "done"
+}
+
+package() {
+        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.gnu
+        cd fds-FDS$pkgver/Build/mpi_gnu_linux_64
+        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
+        mkdir -p $INSTALLDIR/bin
+        mv fds_mpi_gnu_linux_64 $INSTALLDIR/bin/fds-exec
+        # echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
+        # echo "impihome=${FINAL_INSTALL_DIR}/bin/INTEL" >> ${INSTALLDIR}/setup.sh
+        # echo "export FI_PROVIDER_PATH=\$impihome/prov" >> ${INSTALLDIR}/setup.sh
+        # echo "export I_MPI_ROOT=\$impihome/mpi" >> ${INSTALLDIR}/setup.sh
+        # echo "export LD_LIBRARY_PATH=\$impihome/lib:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
+        # echo "export MKLROOT=\$impihome/mkl" >> ${INSTALLDIR}/setup.sh
+        # echo "export PATH=\$impihome/bin:\$PATH" >> ${INSTALLDIR}/setup.sh
+        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        # echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
+        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\$2\"" >> ${INSTALLDIR}/bin/fds
+        # chmod 755 ${INSTALLDIR}/setup.sh
+        # chmod 755 ${INSTALLDIR}/bin/fds
+        # chown root:root $pkgdir -R
+}

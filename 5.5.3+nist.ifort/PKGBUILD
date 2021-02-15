@@ -8,7 +8,7 @@ arch=('x86_64')
 url="https://pages.nist.gov/fds-smv/"
 license=('PublicDomain')
 groups=()
-depends=()
+depends=('fds-6.2.0+nist.ifort')
 makedepends=()
 checkdepends=()
 optdepends=()
@@ -46,7 +46,7 @@ package() {
         echo "export LD_LIBRARY_PATH=${FINAL_INSTALL_DIR}/FDS/FDS5/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/FDS/FDS5/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/FDS/FDS5/bin/fds
         echo "source ${FINAL_INSTALL_DIR}/FDS/FDS5/setup.sh" >> ${INSTALLDIR}/FDS/FDS5/bin/fds
-        echo "${FINAL_INSTALL_DIR}/FDS/FDS5/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/FDS/FDS5/bin/fds
+        echo "exec /opt/FDS/6.7.5+nist.ifort/bin/INTEL/bin/mpiexec -np \$1 ${FINAL_INSTALL_DIR}/FDS/FDS5/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/FDS/FDS5/bin/fds
         chmod 755 ${INSTALLDIR}/FDS/FDS5/setup.sh
         chmod 755 ${INSTALLDIR}/FDS/FDS5/bin/fds
         chown root:root $pkgdir -R
