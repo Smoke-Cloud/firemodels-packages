@@ -17,11 +17,13 @@ default: fds-5.5.3+nist.ifort-5.5.3-1-x86_64.pkg.tar.zst \
 	fds-6.7.1+nist.ifort-6.7.1-1-x86_64.pkg.tar.zst \
 	fds-6.7.3+nist.ifort-6.7.3-1-x86_64.pkg.tar.zst \
 	fds-6.7.4+nist.ifort-6.7.4-1-x86_64.pkg.tar.zst \
+	fds-6.7.4+smokecloud.gnu-6.7.4-1-x86_64.pkg.tar.zst \
 	fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst 
 
 install: default
 	pacman -U fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.4+nist.ifort-6.7.4-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.4+smokecloud.gnu-6.7.4-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.3+nist.ifort-6.7.3-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.1+nist.ifort-6.7.1-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.0+nist.ifort-6.7.0-1-x86_64.pkg.tar.zst --noconfirm
@@ -74,5 +76,7 @@ fds-6.7.3+nist.ifort-6.7.3-1-x86_64.pkg.tar.zst: 6.7.3+nist.ifort/PKGBUILD
 	cd 6.7.3+nist.ifort && makepkg -f && cp $@ .. && cd ..
 fds-6.7.4+nist.ifort-6.7.4-1-x86_64.pkg.tar.zst: 6.7.4+nist.ifort/PKGBUILD
 	cd 6.7.4+nist.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.4+smokecloud.gnu-6.7.4-1-x86_64.pkg.tar.zst: 6.7.4+smokecloud.gnu/PKGBUILD
+	cd 6.7.4+smokecloud.gnu && makepkg -f && cp $@ .. && cd ..
 fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst: 6.7.5+nist.ifort/PKGBUILD
 	cd 6.7.5+nist.ifort && makepkg -f && cp $@ .. && cd ..
