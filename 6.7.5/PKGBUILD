@@ -1,6 +1,6 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.2.0
-pkgver=6.2.0
+pkgname=fds-6.7.5
+pkgver=6.7.5
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
@@ -19,15 +19,15 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("https://bintray.com/artifact/download/nist-fire-research/releases/FDS_6.2.0-SMV_6.2.2_linux64.sh")
+source=("https://github.com/firemodels/fds/releases/download/FDS6.7.5/FDS6.7.5_SMV6.7.15_lnx.sh")
 noextract=()
-sha1sums=('SKIP')
+sha1sums=('97a0eb11a92191abad320b62020528af3d224fc6')
 validpgpkeys=()
 
 prepare() {
-        chmod 755 "$srcdir/FDS_6.2.0-SMV_6.2.2_linux64.sh"
-        rm -f "$srcdir/FDS_6.2.0-SMV_6.2.2_linux64.tar.gz"
-        echo "extract" | "$srcdir/FDS_6.2.0-SMV_6.2.2_linux64.sh"
+        chmod 755 "$srcdir/FDS6.7.5_SMV6.7.15_lnx.sh"
+        rm -f "$srcdir/FDS6.7.5_SMV6.7.15_lnx.tar.gz"
+        echo "extract" | "$srcdir/FDS6.7.5_SMV6.7.15_lnx.sh"
 }
 
 build() {
@@ -39,13 +39,18 @@ check() {
 }
 
 package() {
-        FINAL_INSTALL_DIR=/opt/FDS/FDS$pkgver
+	FINAL_INSTALL_DIR=/opt/FDS/$pkgver+nist.ifort
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
-        tar -xzvf FDS_6.2.0-SMV_6.2.2_linux64.tar.gz --directory $INSTALLDIR
+        tar -xzvf FDS6.7.5_SMV6.7.15_lnx.tar.gz --directory $INSTALLDIR
         mv ${INSTALLDIR}/bin/fds ${INSTALLDIR}/bin/fds-exec
         echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
-        echo "export LD_LIBRARY_PATH=${FINAL_INSTALL_DIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
+        echo "impihome=${FINAL_INSTALL_DIR}/bin/INTEL" >> ${INSTALLDIR}/setup.sh
+        echo "export FI_PROVIDER_PATH=\$impihome/prov" >> ${INSTALLDIR}/setup.sh
+        echo "export I_MPI_ROOT=\$impihome/mpi" >> ${INSTALLDIR}/setup.sh
+        echo "export LD_LIBRARY_PATH=\$impihome/lib:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
+        echo "export MKLROOT=\$impihome/mkl" >> ${INSTALLDIR}/setup.sh
+        echo "export PATH=\$impihome/bin:\$PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
         echo "${FINAL_INSTALL_DIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds

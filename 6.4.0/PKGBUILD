@@ -39,15 +39,16 @@ check() {
 }
 
 package() {
-        INSTALLDIR=$pkgdir/opt/FDS/FDS$pkgver
+        FINAL_INSTALL_DIR=/opt/FDS/FDS$pkgver
+        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
         tar -xzvf FDS_6.4.0-SMV_6.3.6_linux64.tar.gz --directory $INSTALLDIR
         mv ${INSTALLDIR}/bin/fds ${INSTALLDIR}/bin/fds-exec
         echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
-        echo "export LD_LIBRARY_PATH=${INSTALLDIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
+        echo "export LD_LIBRARY_PATH=${FINAL_INSTALL_DIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
-        echo "source ${INSTALLDIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
-        echo "${INSTALLDIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds
+        echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
+        echo "${FINAL_INSTALL_DIR}/bin/fds-exec \"\$@\"" >> ${INSTALLDIR}/bin/fds
         chmod 755 ${INSTALLDIR}/setup.sh
         chmod 755 ${INSTALLDIR}/bin/fds
         chown root:root $pkgdir -R
