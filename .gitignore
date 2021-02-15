@@ -1,6 +1,6 @@
 *.pkg.tar.zst
 /*/pkg
 /*/src
-/*/.sh
-/*/.part
-/*/.tar.gz
+/*/*.sh
+/*/*.part
+/*/*.tar.gz
