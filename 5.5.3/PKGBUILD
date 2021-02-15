@@ -37,7 +37,7 @@ check() {
 }
 
 package() {
-        FINAL_INSTALL_DIR=/opt/FDS/FDS$pkgver
+        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+nist.ifort
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
         tar -xzvf FDS_5.5.3-SMV_5.6_linux_64.tar.gz --directory $INSTALLDIR
