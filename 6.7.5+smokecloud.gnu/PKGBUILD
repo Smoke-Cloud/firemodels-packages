@@ -1,6 +1,6 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.7.4+smokecloud.gnu
-pkgver=6.7.4
+pkgname=fds-6.7.5+smokecloud.gnu
+pkgver=6.7.5
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
@@ -43,17 +43,7 @@ package() {
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
         mv fds_mpi_gnu_linux_64 $INSTALLDIR/bin/fds-exec
-        # echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
-        # echo "impihome=${FINAL_INSTALL_DIR}/bin/INTEL" >> ${INSTALLDIR}/setup.sh
-        # echo "export FI_PROVIDER_PATH=\$impihome/prov" >> ${INSTALLDIR}/setup.sh
-        # echo "export I_MPI_ROOT=\$impihome/mpi" >> ${INSTALLDIR}/setup.sh
-        # echo "export LD_LIBRARY_PATH=\$impihome/lib:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
-        # echo "export MKLROOT=\$impihome/mkl" >> ${INSTALLDIR}/setup.sh
-        # echo "export PATH=\$impihome/bin:\$PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
-        # echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
         echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
-        # chmod u+x ${INSTALLDIR}/setup.sh
         chmod 755 ${INSTALLDIR}/bin/fds
-        # chown root:root $pkgdir -R
 }
