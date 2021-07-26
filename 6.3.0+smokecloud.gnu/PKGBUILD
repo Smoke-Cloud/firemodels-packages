@@ -30,7 +30,7 @@ prepare() {
 
 build() {
         cd fds/FDS_Compilation/mpi_gnu_linux
-        ./make_fds.csh
+        ./make_fds.sh
 }
 
 check() {
