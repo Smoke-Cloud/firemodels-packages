@@ -1,0 +1,52 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=fds-6.3.0+smokecloud.gnu
+pkgver=6.3.0
+pkgrel=1
+epoch=
+pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
+arch=('x86_64')
+url="https://pages.nist.gov/fds-smv/"
+license=('PublicDomain')
+groups=()
+depends=('openmpi')
+makedepends=('gcc-fortran')
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=(!strip)
+install=
+changelog=
+source=("git+https://github.com/firemodels/fds#tag=Git-r1")
+noextract=()
+sha1sums=('SKIP')
+validpgpkeys=()
+
+prepare() {
+        echo "done"
+}
+
+build() {
+        cd fds/Build/mpi_gnu_linux_64
+        ./make_fds.sh
+}
+
+check() {
+        echo "done"
+}
+
+package() {
+        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.gnu
+        cd fds/Build/mpi_gnu_linux_64
+        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
+        mkdir -p $INSTALLDIR/bin
+        mv fds_mpi_gnu_linux_64 $INSTALLDIR/bin/fds-exec
+        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
+        chmod 755 ${INSTALLDIR}/bin/fds
+}
