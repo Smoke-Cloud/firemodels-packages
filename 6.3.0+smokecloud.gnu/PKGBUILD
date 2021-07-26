@@ -29,8 +29,8 @@ prepare() {
 }
 
 build() {
-        cd fds/Build/mpi_gnu_linux_64
-        ./make_fds.sh
+        cd fds/FDS_Compilation/mpi_gnu_linux_64
+        ./make_fds.csh
 }
 
 check() {
