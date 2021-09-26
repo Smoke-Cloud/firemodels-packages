@@ -1,6 +1,6 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.7.0+smokecloud.ifort
-pkgver=6.7.0
+pkgname=fds-6.6.0+smokecloud.ifort
+pkgver=6.6.0
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
