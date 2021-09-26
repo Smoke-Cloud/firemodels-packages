@@ -72,6 +72,14 @@ install: default
 	pacman -U fds-6.2.0+nist.ifort-6.2.0-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.1.2+nist.ifort-6.1.2-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-5.5.3+nist.ifort-5.5.3-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.6+smokecloud.ifort-6.7.6-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.5+smokecloud.ifort-6.7.5-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.4+smokecloud.ifort-6.7.4-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.3+smokecloud.ifort-6.7.3-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.1+smokecloud.ifort-6.7.1-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.7.0+smokecloud.ifort-6.7.0-1-x86_64.pkg.tar.zst --noconfirm
+	pacman -U fds-6.6.0+smokecloud.ifort-6.6.0-1-x86_64.pkg.tar.zst --noconfirm
+
 
 
 
