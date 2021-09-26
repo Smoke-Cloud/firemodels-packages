@@ -1,0 +1,55 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=fds-6.7.1+smokecloud.ifort
+pkgver=6.7.1
+pkgrel=1
+epoch=
+pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
+arch=('x86_64')
+url="https://pages.nist.gov/fds-smv/"
+license=('PublicDomain')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=(!strip)
+install=
+changelog=
+source=("git+https://github.com/firemodels/fds#tag=FDS$pkgver")
+noextract=()
+sha1sums=('SKIP')
+validpgpkeys=()
+
+prepare() {
+        echo "done"
+}
+
+build() {
+        source /opt/intel/oneapi/setvars.sh
+        cd fds/Build/impi_intel_linux_64
+        ./make_fds.sh
+}
+
+check() {
+        echo "done"
+}
+
+package() {
+        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
+        cd fds/Build/impi_intel_linux_64
+        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
+        mkdir -p $INSTALLDIR/bin
+        mv fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+
+        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
+        chmod 755 ${INSTALLDIR}/bin/fds
+}

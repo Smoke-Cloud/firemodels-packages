@@ -19,6 +19,12 @@ default: fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst \
 	fds-6.7.3+nist.ifort-6.7.3-1-x86_64.pkg.tar.zst \
 	fds-6.7.4+nist.ifort-6.7.4-1-x86_64.pkg.tar.zst \
 	fds-6.7.6+nist.ifort-6.7.6-1-x86_64.pkg.tar.zst \
+	fds-6.6.0+smokecloud.ifort-6.6.0-1-x86_64.pkg.tar.zst \
+	fds-6.7.0+smokecloud.ifort-6.7.0-1-x86_64.pkg.tar.zst \
+	fds-6.7.1+smokecloud.ifort-6.7.1-1-x86_64.pkg.tar.zst \
+	fds-6.7.3+smokecloud.ifort-6.7.3-1-x86_64.pkg.tar.zst \
+	fds-6.7.4+smokecloud.ifort-6.7.4-1-x86_64.pkg.tar.zst \
+	fds-6.7.5+smokecloud.ifort-6.7.5-1-x86_64.pkg.tar.zst \
 	fds-6.7.6+smokecloud.ifort-6.7.6-1-x86_64.pkg.tar.zst
 
 # fds-6.3.0+smokecloud.gnu-6.3.0-1-x86_64.pkg.tar.zst \
@@ -149,3 +155,20 @@ fds-6.7.5+smokecloud.gnu-6.7.5-1-x86_64.pkg.tar.zst: 6.7.5+smokecloud.gnu/PKGBUI
 	cd 6.7.5+smokecloud.gnu && makepkg -f && cp $@ .. && cd ..
 fds-6.7.6+smokecloud.gnu-6.7.6-1-x86_64.pkg.tar.zst: 6.7.6+smokecloud.gnu/PKGBUILD
 	cd 6.7.6+smokecloud.gnu && makepkg -f && cp $@ .. && cd ..
+
+
+fds-6.6.0+smokecloud.ifort-6.6.0-1-x86_64.pkg.tar.zst: 6.6.0+smokecloud.ifort/PKGBUILD
+	cd 6.6.0+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.0+smokecloud.ifort-6.7.0-1-x86_64.pkg.tar.zst: 6.7.0+smokecloud.ifort/PKGBUILD
+	cd 6.7.0+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.1+smokecloud.ifort-6.7.1-1-x86_64.pkg.tar.zst: 6.7.1+smokecloud.ifort/PKGBUILD
+	cd 6.7.1+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.3+smokecloud.ifort-6.7.3-1-x86_64.pkg.tar.zst: 6.7.3+smokecloud.ifort/PKGBUILD
+	cd 6.7.3+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.4+smokecloud.ifort-6.7.4-1-x86_64.pkg.tar.zst: 6.7.4+smokecloud.ifort/PKGBUILD
+	cd 6.7.4+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.5+smokecloud.ifort-6.7.5-1-x86_64.pkg.tar.zst: 6.7.5+smokecloud.ifort/PKGBUILD
+	cd 6.7.5+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+fds-6.7.6+smokecloud.ifort-6.7.6-1-x86_64.pkg.tar.zst: 6.7.6+smokecloud.ifort/PKGBUILD
+	cd 6.7.6+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
+
