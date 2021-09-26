@@ -18,7 +18,8 @@ default: fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst \
 	fds-6.7.1+nist.ifort-6.7.1-1-x86_64.pkg.tar.zst \
 	fds-6.7.3+nist.ifort-6.7.3-1-x86_64.pkg.tar.zst \
 	fds-6.7.4+nist.ifort-6.7.4-1-x86_64.pkg.tar.zst \
-	fds-6.7.6+nist.ifort-6.7.6-1-x86_64.pkg.tar.zst
+	fds-6.7.6+nist.ifort-6.7.6-1-x86_64.pkg.tar.zst \
+	fds-6.7.6+smokecloud.ifort-6.7.6-1-x86_64.pkg.tar.zst
 
 # fds-6.3.0+smokecloud.gnu-6.3.0-1-x86_64.pkg.tar.zst \
 # fds-6.3.1+smokecloud.gnu-6.3.1-1-x86_64.pkg.tar.zst \
@@ -34,7 +35,6 @@ default: fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst \
 # fds-6.7.3+smokecloud.gnu-6.7.3-1-x86_64.pkg.tar.zst \
 # fds-6.7.4+smokecloud.gnu-6.7.4-1-x86_64.pkg.tar.zst \
 # fds-6.7.5+smokecloud.gnu-6.7.5-1-x86_64.pkg.tar.zst \
-# fds-6.7.6+smokecloud.gnu-6.7.6-1-x86_64.pkg.tar.zst
 
 # fds-5.5.3+smokecloud.gnu-5.5.3-1-x86_64.pkg.tar.zst \
 # fds-6.1.2+smokecloud.gnu-6.1.2-1-x86_64.pkg.tar.zst \
