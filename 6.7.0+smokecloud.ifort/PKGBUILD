@@ -1,6 +1,6 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.3.0+smokecloud.gnu
-pkgver=6.3.0
+pkgname=fds-6.7.0+smokecloud.ifort
+pkgver=6.7.0
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
@@ -8,8 +8,8 @@ arch=('x86_64')
 url="https://pages.nist.gov/fds-smv/"
 license=('PublicDomain')
 groups=()
-depends=('openmpi')
-makedepends=('gcc-fortran' 'tcsh')
+depends=()
+makedepends=()
 checkdepends=()
 optdepends=()
 provides=()
@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=Git-r1")
+source=("git+https://github.com/firemodels/fds#tag=FDS$pkgver")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
@@ -29,8 +29,9 @@ prepare() {
 }
 
 build() {
-        cd fds/FDS_Compilation/mpi_gnu_linux
-        ./make_fds.csh
+        source /opt/intel/oneapi/setvars.sh
+        cd fds/Build/impi_intel_linux_64
+        ./make_fds.sh
 }
 
 check() {
@@ -38,12 +39,14 @@ check() {
 }
 
 package() {
-        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.gnu
-        cd fds/Build/mpi_gnu_linux_64
+        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
+        cd fds/Build/impi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
-        mv fds_mpi_gnu_linux_64 $INSTALLDIR/bin/fds-exec
+        mv fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
         echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
         echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
         echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
