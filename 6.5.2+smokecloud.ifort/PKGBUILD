@@ -30,7 +30,7 @@ prepare() {
 
 build() {
         source /opt/intel/oneapi/setvars.sh
-        cd fds/Build/impi_intel_linux_64
+        cd fds/FDS_Compilation/mpi_intel_linux_64
         ./make_fds.sh
 }
 
@@ -40,10 +40,10 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
-        cd fds/Build/impi_intel_linux_64
+        cd fds/FDS_Compilation/mpi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
-        mv fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+        mv fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec
 
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
