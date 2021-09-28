@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=FDS$pkgver")
+source=("git+https://github.com/firemodels/fds#commit=acc6eb2ef0a8fe45c35afa8931265bda1e5b9208")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
@@ -40,10 +40,10 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
-        cd fds/Build/impi_intel_linux_64
+        cd fds/FDS_Compilation/mpi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
-        mv fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+        mv fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec
 
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
