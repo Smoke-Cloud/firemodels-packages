@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=FDS$pkgver")
+source=("git+https://github.com/firemodels/fds#tag=Git-r1")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
@@ -30,7 +30,7 @@ prepare() {
 
 build() {
         source /opt/intel/oneapi/setvars.sh
-        cd fds/Build/impi_intel_linux_64
+        cd fds/FDS_Compilation/mpi_intel_linux_64
         ./make_fds.sh
 }
 
