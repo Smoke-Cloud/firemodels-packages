@@ -1,6 +1,6 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.5.0+smokecloud.ifort
-pkgver=6.5.0
+pkgname=fds-6.5.2+smokecloud.ifort
+pkgver=6.5.2
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=Git-r14")
+source=("git+https://github.com/firemodels/fds#tag=Git-r21")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
