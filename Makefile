@@ -2,9 +2,6 @@
 .PHONY: default
 
 default: fds-6.7.5+nist.ifort-6.7.5-1-x86_64.pkg.tar.zst \
-	fds-5.5.3+nist.ifort-5.5.3-1-x86_64.pkg.tar.zst \
-	fds-6.1.2+nist.ifort-6.1.2-1-x86_64.pkg.tar.zst \
-	fds-6.2.0+nist.ifort-6.2.0-1-x86_64.pkg.tar.zst \
 	fds-6.3.0+nist.ifort-6.3.0-1-x86_64.pkg.tar.zst \
 	fds-6.3.1+nist.ifort-6.3.1-1-x86_64.pkg.tar.zst \
 	fds-6.3.2+nist.ifort-6.3.2-1-x86_64.pkg.tar.zst \
@@ -80,9 +77,6 @@ install: default
 	pacman -U fds-6.3.2+nist.ifort-6.3.2-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.3.1+nist.ifort-6.3.1-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.3.0+nist.ifort-6.3.0-1-x86_64.pkg.tar.zst --noconfirm
-	pacman -U fds-6.2.0+nist.ifort-6.2.0-1-x86_64.pkg.tar.zst --noconfirm
-	pacman -U fds-6.1.2+nist.ifort-6.1.2-1-x86_64.pkg.tar.zst --noconfirm
-	pacman -U fds-5.5.3+nist.ifort-5.5.3-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.6+smokecloud.ifort-6.7.6-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.5+smokecloud.ifort-6.7.5-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-6.7.4+smokecloud.ifort-6.7.4-1-x86_64.pkg.tar.zst --noconfirm
@@ -102,17 +96,8 @@ install: default
 	pacman -U fds-6.1.2+smokecloud.ifort-6.1.2-1-x86_64.pkg.tar.zst --noconfirm
 	pacman -U fds-5.5.3+smokecloud.ifort-5.5.3-1-x86_64.pkg.tar.zst --noconfirm
 
-
-
-
 #%.o: %.c $(DEPS)
 #		$(CC) -c -o $@ $< $(CFLAGS)
-fds-5.5.3+nist.ifort-5.5.3-1-x86_64.pkg.tar.zst: 5.5.3+nist.ifort/PKGBUILD
-	cd 5.5.3+nist.ifort && makepkg -f && cp $@ .. && cd ..
-fds-6.1.2+nist.ifort-6.1.2-1-x86_64.pkg.tar.zst: 6.1.2+nist.ifort/PKGBUILD
-	cd 6.1.2+nist.ifort && makepkg -f && cp $@ .. && cd ..
-fds-6.2.0+nist.ifort-6.2.0-1-x86_64.pkg.tar.zst: 6.2.0+nist.ifort/PKGBUILD
-	cd 6.2.0+nist.ifort && makepkg -f && cp $@ .. && cd ..
 fds-6.3.0+nist.ifort-6.3.0-1-x86_64.pkg.tar.zst: 6.3.0+nist.ifort/PKGBUILD
 	cd 6.3.0+nist.ifort && makepkg -f && cp $@ .. && cd ..
 fds-6.3.1+nist.ifort-6.3.1-1-x86_64.pkg.tar.zst: 6.3.1+nist.ifort/PKGBUILD
