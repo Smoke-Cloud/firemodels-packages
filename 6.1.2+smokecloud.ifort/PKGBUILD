@@ -30,6 +30,8 @@ prepare() {
 
 build() {
         source /opt/intel/oneapi/setvars.sh
+        # Fix issue with code
+        sed -i '2182 s/$/ \&/' fds-smv_deprecated/FDS_Source/part.f90
         cd fds-smv_deprecated/FDS_Compilation/impi_intel_linux_64
         platform=intel64
         dir=`pwd`
