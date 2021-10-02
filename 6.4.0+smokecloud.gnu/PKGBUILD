@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=Git-r10")
+source=("git+https://github.com/firemodels/fds-smv_deprecated#commit=59962898c0dbd5926605eed69ed2690c720ca001")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()

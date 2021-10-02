@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#tag=FDS$pkgver")
+source=("git+https://github.com/firemodels/fds#commit=14cc738f98632e4e7945d7e325f193180b021b8e")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
