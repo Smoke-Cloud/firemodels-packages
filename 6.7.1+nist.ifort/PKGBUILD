@@ -61,6 +61,7 @@ package() {
         echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
         echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
         echo "exec ${FINAL_INSTALL_DIR}/bin/INTEL/mpi/intel64/bin/mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
+        chmod +rx ${INSTALLDIR}/bin/INTEL/mpi/intel64/bin/mpiexec
         chmod 755 ${INSTALLDIR}/setup.sh
         chmod 755 ${INSTALLDIR}/bin/fds
         chown root:root $pkgdir -R
