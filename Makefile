@@ -181,7 +181,7 @@ fds-5.5.3+smokecloud.ifort-5.5.3-1-x86_64.pkg.tar.zst: 5.5.3+smokecloud.ifort/PK
 	cd 5.5.3+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
 fds-6.1.2+smokecloud.ifort-6.1.2-1-x86_64.pkg.tar.zst: 6.1.2+smokecloud.ifort/PKGBUILD
 	cd 6.1.2+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
-fds-6.2.0+smokecloud.ifort-6.3.0-1-x86_64.pkg.tar.zst: 6.2.0+smokecloud.ifort/PKGBUILD
+fds-6.2.0+smokecloud.ifort-6.2.0-1-x86_64.pkg.tar.zst: 6.2.0+smokecloud.ifort/PKGBUILD
 	cd 6.2.0+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
 fds-6.3.0+smokecloud.ifort-6.3.0-1-x86_64.pkg.tar.zst: 6.3.0+smokecloud.ifort/PKGBUILD
 	cd 6.3.0+smokecloud.ifort && makepkg -f && cp $@ .. && cd ..
