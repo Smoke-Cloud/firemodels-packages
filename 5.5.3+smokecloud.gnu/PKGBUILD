@@ -30,7 +30,10 @@ prepare() {
 
 build() {
         cd fds/Build/mpi_gnu_linux_64
-        ./make_fds.sh
+        platform=intel64
+        dir=`pwd`
+        target=${dir##*/}
+        make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile $target
 }
 
 check() {

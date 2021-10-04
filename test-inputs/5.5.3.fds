@@ -6,7 +6,7 @@ All material properties are completely fabricated.
 &MESH IJK=52,54,10, XB=0.0,5.2,-0.8,4.6,0.0,1.0 / 
 &MESH IJK=52,54,14, XB=0.0,5.2,-0.8,4.6,1.0,2.4 / 
 
-&TIME T_END=5.0 / 
+&TIME T_END=1.0 / 
 
 &MISC SURF_DEFAULT='WALL' / 
 
