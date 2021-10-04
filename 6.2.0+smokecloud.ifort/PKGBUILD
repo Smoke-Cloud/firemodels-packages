@@ -50,8 +50,6 @@ package() {
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
         echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
-        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
-        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
         echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
         chmod 755 ${INSTALLDIR}/bin/fds
 }

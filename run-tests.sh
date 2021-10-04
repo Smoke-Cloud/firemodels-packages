@@ -63,19 +63,19 @@ test_fds 6.6.0+nist.ifort
 
 test_fds 6.7.0+nist.ifort
 test_fds 6.7.0+smokecloud.ifort
-test_diff 6.7.0+nist.ifort 6.7.0+smokecloud.ifort
+# test_diff 6.7.0+nist.ifort 6.7.0+smokecloud.ifort
 
 test_fds 6.7.1+nist.ifort
 test_fds 6.7.1+smokecloud.ifort
 test_diff 6.7.1+nist.ifort 6.7.1+smokecloud.ifort
 
-# test_fds 6.7.3+nist.ifort
+test_fds 6.7.3+nist.ifort
 test_fds 6.7.3+smokecloud.ifort
-# test_diff 6.7.3+nist.ifort 6.7.3+smokecloud.ifort
+test_diff 6.7.3+nist.ifort 6.7.3+smokecloud.ifort
 
-# test_fds 6.7.4+nist.ifort
+test_fds 6.7.4+nist.ifort
 test_fds 6.7.4+smokecloud.ifort
-# test_diff 6.7.4+nist.ifort 6.7.4+smokecloud.ifort
+test_diff 6.7.4+nist.ifort 6.7.4+smokecloud.ifort
 
 test_fds 6.7.5+nist.ifort
 test_fds 6.7.5+smokecloud.ifort
