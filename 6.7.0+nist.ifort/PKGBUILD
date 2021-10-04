@@ -45,7 +45,7 @@ package() {
         tar -xzvf FDS6.7.0-SMV6.7.1_linux64.tar.gz --directory $INSTALLDIR
         mv ${INSTALLDIR}/bin/fds ${INSTALLDIR}/bin/fds-exec
         echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
-        echo "#!/bin/sh" > ${INSTALLDIR}/setup.sh
+        echo "export I_MPI_SHM_LMT=shm" >> ${INSTALLDIR}/setup.sh
         echo "export LD_LIBRARY_PATH=${FINAL_INSTALL_DIR}/bin/LIB64:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
         echo "export LD_LIBRARY_PATH=${FINAL_INSTALL_DIR}/bin/INTELLIBS16:\$LD_LIBRARY_PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
