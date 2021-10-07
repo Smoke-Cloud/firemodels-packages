@@ -19,13 +19,14 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#commit=bf0a6a88f318803adb96edef5c547746fc77e4a5")
+source=("git+https://github.com/firemodels/fds#commit=bf0a6a88f318803adb96edef5c547746fc77e4a5" "backports.patch")
 noextract=()
-sha1sums=('SKIP')
+sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7')
 validpgpkeys=()
 
 prepare() {
-        echo "done"
+        patch --forward --strip=2 --input="${srcdir}/backports.patch" fds/FDS_Source
+        echo "prepare done"
 }
 
 build() {
@@ -50,7 +51,7 @@ package() {
 
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
-        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
         echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
         chmod 755 ${INSTALLDIR}/bin/fds
 }

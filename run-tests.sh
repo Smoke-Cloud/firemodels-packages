@@ -21,49 +21,49 @@ test_diff() {
 
 # test_fds 5.5.3+smokecloud.ifort
 
-# test_fds 6.1.2+smokecloud.ifort
+test_fds 6.1.2+smokecloud.ifort
 
-# test_fds 6.2.0+smokecloud.ifort
+test_fds 6.2.0+smokecloud.ifort
 
 test_fds 6.3.0+nist.ifort
-# test_fds 6.3.0+smokecloud.ifort
-# test_diff 6.3.0+nist.ifort 6.3.0+smokecloud.ifort
+test_fds 6.3.0+smokecloud.ifort
+test_diff 6.3.0+nist.ifort 6.3.0+smokecloud.ifort
 
 test_fds 6.3.1+nist.ifort
-# test_fds 6.3.1+smokecloud.ifort
-# test_diff 6.3.1+nist.ifort 6.3.1+smokecloud.ifort
+test_fds 6.3.1+smokecloud.ifort
+test_diff 6.3.1+nist.ifort 6.3.1+smokecloud.ifort
 
 test_fds 6.3.2+nist.ifort
-# test_fds 6.3.2+smokecloud.ifort
-# test_diff 6.3.2+nist.ifort 6.3.2+smokecloud.ifort
+test_fds 6.3.2+smokecloud.ifort
+test_diff 6.3.2+nist.ifort 6.3.2+smokecloud.ifort
 
 test_fds 6.4.0+nist.ifort
-# test_fds 6.4.0+smokecloud.ifort
-# test_diff 6.4.0+nist.ifort 6.4.0+smokecloud.ifort
+test_fds 6.4.0+smokecloud.ifort
+test_diff 6.4.0+nist.ifort 6.4.0+smokecloud.ifort
 
 test_fds 6.5.0+nist.ifort
-# test_fds 6.5.0+smokecloud.ifort
-# test_diff 6.5.0+nist.ifort 6.5.0+smokecloud.ifort
+test_fds 6.5.0+smokecloud.ifort
+test_diff 6.5.0+nist.ifort 6.5.0+smokecloud.ifort
 
 test_fds 6.5.1+nist.ifort
-# test_fds 6.5.1+smokecloud.ifort
-# test_diff 6.5.1+nist.ifort 6.5.1+smokecloud.ifort
+test_fds 6.5.1+smokecloud.ifort
+test_diff 6.5.1+nist.ifort 6.5.1+smokecloud.ifort
 
 test_fds 6.5.2+nist.ifort
-# test_fds 6.5.2+smokecloud.ifort
-# test_diff 6.5.2+nist.ifort 6.5.2+smokecloud.ifort
+test_fds 6.5.2+smokecloud.ifort
+test_diff 6.5.2+nist.ifort 6.5.2+smokecloud.ifort
 
 test_fds 6.5.3+nist.ifort
-# test_fds 6.5.3+smokecloud.ifort
-# test_diff 6.5.3+nist.ifort 6.5.3+smokecloud.ifort
+test_fds 6.5.3+smokecloud.ifort
+test_diff 6.5.3+nist.ifort 6.5.3+smokecloud.ifort
 
 test_fds 6.6.0+nist.ifort
-# test_fds 6.6.0+smokecloud.ifort
-# test_diff 6.6.0+nist.ifort 6.6.0+smokecloud.ifort
+test_fds 6.6.0+smokecloud.ifort
+test_diff 6.6.0+nist.ifort 6.6.0+smokecloud.ifort
 
 test_fds 6.7.0+nist.ifort
-# test_fds 6.7.0+smokecloud.ifort
-# test_diff 6.7.0+nist.ifort 6.7.0+smokecloud.ifort
+test_fds 6.7.0+smokecloud.ifort
+test_diff 6.7.0+nist.ifort 6.7.0+smokecloud.ifort
 
 test_fds 6.7.1+nist.ifort
 test_fds 6.7.1+smokecloud.ifort

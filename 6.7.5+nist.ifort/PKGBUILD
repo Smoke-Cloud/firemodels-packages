@@ -53,7 +53,7 @@ package() {
         echo "export PATH=\$impihome/bin:\$PATH" >> ${INSTALLDIR}/setup.sh
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
         echo "source ${FINAL_INSTALL_DIR}/setup.sh" >> ${INSTALLDIR}/bin/fds
-        echo "ulimit -s" >> ${INSTALLDIR}/bin/fds
+        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
         echo "exec ${FINAL_INSTALL_DIR}/bin/INTEL/bin/mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
         chmod 755 ${INSTALLDIR}/setup.sh
         chmod 755 ${INSTALLDIR}/bin/fds
