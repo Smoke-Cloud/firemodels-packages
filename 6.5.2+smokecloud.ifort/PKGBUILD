@@ -25,7 +25,8 @@ sha1sums=('SKIP' '7c75a76ec455e31fae9f74869fdcb5bc95fcddc7')
 validpgpkeys=()
 
 prepare() {
-        echo "done"
+        patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory fds-smv_deprecated/FDS_Source --strip 2
+        echo "prepare done"
 }
 
 build() {
