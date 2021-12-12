@@ -11,6 +11,7 @@ trap 'err_report $LINENO' ERR
 install_fds() {
     pushd "$1"
     bash install-fedora.sh
+    popd
 }
 
 install_fds 6.1.2+smokecloud.ifort
