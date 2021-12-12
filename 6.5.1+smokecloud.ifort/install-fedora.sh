@@ -13,7 +13,7 @@ cd $repo_name
 git checkout $commit
 
 
-patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2
+patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2 || true
 cd FDS_Compilation/mpi_intel_linux_64
 platform=intel64
 dir=`pwd`

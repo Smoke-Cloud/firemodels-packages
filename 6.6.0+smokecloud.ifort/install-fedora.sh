@@ -13,7 +13,7 @@ cd $repo_name
 git checkout $commit
 
 
-patch --forward --strip=1 --input="${srcdir}/mpi_finalize.patch" Source/main.f90
+patch --forward --strip=1 --input="${srcdir}/mpi_finalize.patch" Source/main.f90 || true
 cd Build/impi_intel_linux_64
 # patch -u fds/Source/main.f90 --input="${srcdir}/mpi_finalize.patch"
 ./make_fds.sh

@@ -12,7 +12,7 @@ fi
 cd $repo_name
 git checkout $commit
 
-patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2
+patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2 || true
 platform=intel64
 dir=`pwd`
 target=${dir##*/}
