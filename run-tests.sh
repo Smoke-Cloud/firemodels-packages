@@ -32,5 +32,6 @@ test_fds 6.7.3+smokecloud.ifort
 test_fds 6.7.4+smokecloud.ifort
 test_fds 6.7.5+smokecloud.ifort
 test_fds 6.7.6+smokecloud.ifort
+test_fds 6.7.7+smokecloud.ifort
 
 echo "tests run successfully"
