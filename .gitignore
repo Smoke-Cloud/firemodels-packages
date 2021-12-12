@@ -1,7 +1,6 @@
 *.pkg.tar.zst
 /*/pkg
 /*/src
-/*/*.sh
 /*/*.part
 /*/*.tar.gz
 /*/fds

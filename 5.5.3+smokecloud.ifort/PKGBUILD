@@ -35,7 +35,7 @@ build() {
         platform=intel64
         dir=`pwd`
         target=${dir##*/}
-        make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile $target
+        make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile "$target"
 }
 
 check() {

@@ -18,7 +18,7 @@ cd Build/mpi_intel_linux_64
 platform=intel64
 dir=$(pwd)
 target=${dir##*/}
-make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile $target
+make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
 
 FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
 INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR

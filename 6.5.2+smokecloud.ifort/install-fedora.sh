@@ -14,10 +14,11 @@ pushd $repo_name
 git checkout $commit
 
 patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2 || true
+cd FDS_Compilation/mpi_intel_linux_64
 platform=intel64
 dir=$(pwd)
 target=${dir##*/}
-make -j4 FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile $target
+make -j4 FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
 
 FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
 INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR

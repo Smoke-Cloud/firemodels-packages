@@ -20,7 +20,7 @@ cd FDS_Compilation/impi_intel_linux_64
 platform=intel64
 dir=$(pwd)
 target=${dir##*/}
-make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile $target
+make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile "$target"
 
 FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
 INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
