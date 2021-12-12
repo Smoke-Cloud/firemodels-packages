@@ -23,7 +23,7 @@ make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile $target
 FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
 INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
 mkdir -p $INSTALLDIR/bin
-mv fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+mv fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec
 
 echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
 echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
