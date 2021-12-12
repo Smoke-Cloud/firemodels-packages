@@ -1,3 +1,4 @@
+source /opt/intel/oneapi/setvars.sh
 set -euxo pipefail
 pkgdir=
 pkgver=6.3.2
@@ -12,7 +13,6 @@ cd $repo_name
 git checkout $commit
 
 patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory FDS_Source --strip 2
-source /opt/intel/oneapi/setvars.sh
 cd FDS_Compilation/mpi_intel_linux_64
 platform=intel64
 dir=`pwd`

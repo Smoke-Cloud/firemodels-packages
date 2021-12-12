@@ -1,3 +1,4 @@
+source /opt/intel/oneapi/setvars.sh
 set -euxo pipefail
 pkgdir=
 pkgver=6.6.0
@@ -13,7 +14,6 @@ git checkout $commit
 
 
 patch --forward --strip=1 --input="${srcdir}/mpi_finalize.patch" Source/main.f90
-source /opt/intel/oneapi/setvars.sh
 cd Build/impi_intel_linux_64
 # patch -u fds/Source/main.f90 --input="${srcdir}/mpi_finalize.patch"
 ./make_fds.sh

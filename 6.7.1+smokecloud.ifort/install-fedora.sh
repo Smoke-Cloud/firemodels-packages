@@ -1,3 +1,4 @@
+source /opt/intel/oneapi/setvars.sh
 set -euxo pipefail
 pkgdir=
 pkgver=6.7.1
@@ -11,7 +12,6 @@ fi
 cd $repo_name
 git checkout $commit
 
-source /opt/intel/oneapi/setvars.sh
 cd Build/impi_intel_linux_64
 ./make_fds.sh
 
