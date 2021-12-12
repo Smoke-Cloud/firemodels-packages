@@ -1,12 +1,14 @@
+#!/bin/bash
 set -euxo pipefail
 pkgdir=
 pkgver=6.7.5
 commit=71f02560677bb87dace8c81f2e5b817d24e70c46
+repo_name=fds
 
-if [ ! -d "fds" ]; then
-    git clone https://github.com/firemodels/fds
+if [ ! -d "$repo_name" ]; then
+    git clone https://github.com/firemodels/$repo_name
 fi
-cd fds
+pushd $repo_name
 git checkout $commit
 
 source /opt/intel/oneapi/setvars.sh
@@ -24,3 +26,4 @@ echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
 echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
 echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
 chmod 755 ${INSTALLDIR}/bin/fds
+popd

@@ -1,3 +1,4 @@
+#!/bin/bash
 set -eEuxo pipefail
 
 err_report() {
@@ -9,10 +10,10 @@ trap 'err_report $LINENO' ERR
 export OMP_NUM_THREADS=1
 
 test_fds() {
-    readarray -d + -t strarr <<< $1
+    readarray -d + -t strarr <<< "$1"
     VERSION=${strarr[0]}
     echo $VERSION
-    mkdir -p test/$1 && cp test-inputs/$VERSION.fds test/$1/input.fds && pushd test/$1 && /opt/FDS/$1/bin/fds 2 input.fds && popd
+    mkdir -p "test/$1" && cp "test-inputs/$VERSION.fds" "test/$1/input.fds" && pushd "test/$1" && "/opt/FDS/$1/bin/fds" 2 input.fds && popd
 }
 
 test_fds 6.1.2+smokecloud.ifort

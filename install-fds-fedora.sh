@@ -1,3 +1,4 @@
+#!/bin/bash
 set -eEuxo pipefail
 
 err_report() {
@@ -8,7 +9,7 @@ trap 'err_report $LINENO' ERR
 
 
 install_fds() {
-    pushd $1
+    pushd "$1"
     bash install-fedora.sh
 }
 

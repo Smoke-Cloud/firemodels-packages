@@ -1,3 +1,4 @@
+#!/bin/bash
 tee > /tmp/oneAPI.repo << EOF
 [oneAPI]
 name=Intel® oneAPI repository

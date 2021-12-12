@@ -1,3 +1,4 @@
+#!/bin/bash
 pacman -R fds-6.7.6+nist.ifort 
 pacman -R fds-6.7.4+nist.ifort 
 pacman -R fds-6.7.3+nist.ifort 
