@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#commit=f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc")
+source=("git+https://github.com/firemodels/fds-smv_deprecated#commit=f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc")
 noextract=()
 sha1sums=('SKIP')
 validpgpkeys=()
@@ -39,7 +39,7 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.gnu
-        cd fds/Build/mpi_gnu_linux_64
+        cd fds-smv_deprecated/Build/mpi_gnu_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
         mv fds_mpi_gnu_linux_64 $INSTALLDIR/bin/fds-exec

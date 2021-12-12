@@ -5,7 +5,7 @@ pkgdir=
 pkgver=6.3.2
 commit=f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc
 srcdir=$(pwd)
-repo_name=fds
+repo_name=fds-smv_deprecated
 
 if [ ! -d "$repo_name" ]; then
     git clone https://github.com/firemodels/$repo_name

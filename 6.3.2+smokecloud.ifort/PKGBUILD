@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#commit=f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc" "backports.patch")
+source=("git+https://github.com/firemodels/fds-smv_deprecated#commit=f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc" "backports.patch")
 noextract=()
 sha1sums=('SKIP' '7c75a76ec455e31fae9f74869fdcb5bc95fcddc7')
 validpgpkeys=()
@@ -31,7 +31,7 @@ prepare() {
 
 build() {
         source /opt/intel/oneapi/setvars.sh
-        cd fds/FDS_Compilation/mpi_intel_linux_64
+        cd fds-smv_deprecated/FDS_Compilation/mpi_intel_linux_64
         platform=intel64
         dir=`pwd`
         target=${dir##*/}
@@ -44,7 +44,7 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
-        cd fds/FDS_Compilation/mpi_intel_linux_64
+        cd fds-smv_deprecated/FDS_Compilation/mpi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR/bin
         mv fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec
