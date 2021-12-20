@@ -14,7 +14,7 @@ Requires:       bash, intel-oneapi-runtime-libs, intel-oneapi-mpi
 FDS
 
 %prep
-%setup -c
+%setup -qc
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
