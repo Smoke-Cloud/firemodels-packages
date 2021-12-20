@@ -4,7 +4,7 @@ Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
-Source0:        https://github.com/firemodels/fds/archive/refs/tags/FDS%{version}.tar.gz
+Source0:        https://github.com/firemodels/fds-smv_deprecated/archive/refs/tags/FDS%{version}.tar.gz
 Patch0:         backports.patch
 Url:            https://pages.nist.gov/fds-smv
 
