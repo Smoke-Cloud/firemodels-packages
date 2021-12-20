@@ -7,8 +7,11 @@ License:        PublicDomain
 Source0:        https://github.com/firemodels/fds/archive/refs/tags/FDS%{version}.tar.gz
 Url:            https://pages.nist.gov/fds-smv
 
-BuildRequires:  intel-hpckit, intel-basekit
-Requires:       bash, intel-oneapi-runtime-libs, intel-oneapi-mpi
+BuildRequires:  intel-hpckit
+BuildRequires:  intel-basekit
+Requires:       bash
+Requires:       intel-oneapi-runtime-libs
+Requires:       intel-oneapi-mpi
 
 %description
 FDS
@@ -40,8 +43,8 @@ install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}/fds-%{version}
 
 %files
-%{_bindir}/fds
-%{_bindir}/fds-exec
+%{_bindir}/fds-%{version}
+%{_bindir}/fds-exec-%{version}
 
 %changelog
 * Sat Dec 18 2021 admin
