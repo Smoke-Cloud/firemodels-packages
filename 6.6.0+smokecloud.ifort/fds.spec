@@ -25,7 +25,9 @@ echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
-cd fds-FDS%{version}/Build/impi_intel_linux_64
+cd fds-FDS%{version}
+patch --forward --strip=1 --input="${srcdir}/mpi_finalize.patch" Source/main.f90 || true
+cd Build/impi_intel_linux_64
 ./make_fds.sh
 
 %install
