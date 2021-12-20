@@ -31,8 +31,8 @@ cd fds-FDS%{version}/Build/impi_intel_linux_64
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec
-install fds $RPM_BUILD_ROOT/%{_bindir}
+install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files
 %{_bindir}/fds

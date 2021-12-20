@@ -25,14 +25,19 @@ echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
-cd fds-FDS%{version}/Build/impi_intel_linux_64
-./make_fds.sh
+
+cd fds-FDS%{version}
+patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory Source --strip 2 || true
+cd Build/impi_intel_linux_64
+dir=$(pwd)
+target=${dir##*/}
+make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec
-install fds $RPM_BUILD_ROOT/%{_bindir}
+install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}/fds-%{version}
 
 %files
 %{_bindir}/fds
