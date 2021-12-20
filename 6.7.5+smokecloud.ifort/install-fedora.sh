@@ -3,7 +3,7 @@ source /opt/intel/oneapi/setvars.sh
 set -euxo pipefail
 pkgdir=
 pkgver=6.7.5
-commit=fe0d4ef38f955b2a298ac9124ea3d8f085704edd
+commit=71f02560677bb87dace8c81f2e5b817d24e70c46
 srcdir=$(pwd)
 repo_name=fds
 
