@@ -5,6 +5,7 @@ Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
 Source0:        https://github.com/firemodels/fds/archive/refs/tags/FDS%{version}.tar.gz
+Patch0:         mpi_finalize.patch
 Url:            https://pages.nist.gov/fds-smv
 
 BuildRequires:  intel-hpckit
@@ -18,6 +19,8 @@ FDS
 
 %prep
 %setup -qc
+cd fds-FDS%{version}
+%patch0 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
