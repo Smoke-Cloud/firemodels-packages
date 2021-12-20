@@ -1,5 +1,5 @@
-Name:           fds-6.7.7
-Version:        6.7.7
+Name:           fds-6.6.0
+Version:        6.6.0
 Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
 
