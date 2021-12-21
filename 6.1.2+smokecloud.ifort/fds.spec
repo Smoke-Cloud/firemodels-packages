@@ -36,7 +36,7 @@ source /opt/intel/oneapi/setvars.sh
 
 # Fix issue with code
 sed -i '2182 s/$/ \&/' FDS_Source/part.f90
-cd fds-FDS%{version}/FDS_Compilation/impi_intel_linux_64
+cd fds-%{commit}/FDS_Compilation/impi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
 make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"

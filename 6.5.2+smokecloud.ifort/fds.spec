@@ -33,7 +33,7 @@ echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
-cd fds-FDS%{version}/FDS_Compilation/mpi_intel_linux_64
+cd fds-%{commit}/FDS_Compilation/mpi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
 make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
