@@ -43,12 +43,12 @@ make MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install %{repo}-%{commit}/Build/mpi_intel_linux_64/fds_mpi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}-%{version}
+install %{repo}-%{commit}/Build/mpi_intel_linux_64/fds_mpi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files
 %{_bindir}/fds-%{version}
-%{_bindir}/fds-exec-%{version}-%{version}
+%{_bindir}/fds-exec-%{version}
 
 %changelog
 * Sat Dec 18 2021 admin
