@@ -44,29 +44,29 @@ install: default
 	dnf install fds-6.1.2-6.1.2-1.fc35.x86_64.rpm -y
 	# dnf install fds-5.5.3-5.5.3-1.fc35.x86_64.rpm -y
 
-fds-5.5.3-5.5.3-1.fc35.x86_64.rpm: 5.5.3+smokecloud.ifort/fds.spec backports.patch
+fds-5.5.3-5.5.3-1.fc35.x86_64.rpm: 5.5.3+smokecloud.ifort/fds.spec
 	cd 5.5.3+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.1.2-6.1.2-1.fc35.x86_64.rpm: 6.1.2+smokecloud.ifort/fds.spec backports.patch
+fds-6.1.2-6.1.2-1.fc35.x86_64.rpm: 6.1.2+smokecloud.ifort/fds.spec
 	cd 6.1.2+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.2.0-6.2.0-1.fc35.x86_64.rpm: 6.2.0+smokecloud.ifort/fds.spec backports.patch
+fds-6.2.0-6.2.0-1.fc35.x86_64.rpm: 6.2.0+smokecloud.ifort/fds.spec
 	cd 6.2.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.0-6.3.0-1.fc35.x86_64.rpm: 6.3.0+smokecloud.ifort/fds.spec backports.patch
+fds-6.3.0-6.3.0-1.fc35.x86_64.rpm: 6.3.0+smokecloud.ifort/fds.spec
 	cd 6.3.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.1-6.3.1-1.fc35.x86_64.rpm: 6.3.1+smokecloud.ifort/fds.spec backports.patch
+fds-6.3.1-6.3.1-1.fc35.x86_64.rpm: 6.3.1+smokecloud.ifort/fds.spec
 	cd 6.3.1+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.2-6.3.2-1.fc35.x86_64.rpm: 6.3.2+smokecloud.ifort/fds.spec backports.patch
+fds-6.3.2-6.3.2-1.fc35.x86_64.rpm: 6.3.2+smokecloud.ifort/fds.spec
 	cd 6.3.2+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.4.0-6.4.0-1.fc35.x86_64.rpm: 6.4.0+smokecloud.ifort/fds.spec backports.patch
+fds-6.4.0-6.4.0-1.fc35.x86_64.rpm: 6.4.0+smokecloud.ifort/fds.spec
 	cd 6.4.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.0-6.5.0-1.fc35.x86_64.rpm: 6.5.0+smokecloud.ifort/fds.spec backports.patch
+fds-6.5.0-6.5.0-1.fc35.x86_64.rpm: 6.5.0+smokecloud.ifort/fds.spec
 	cd 6.5.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.1-6.5.1-1.fc35.x86_64.rpm: 6.5.1+smokecloud.ifort/fds.spec backports.patch
+fds-6.5.1-6.5.1-1.fc35.x86_64.rpm: 6.5.1+smokecloud.ifort/fds.spec
 	cd 6.5.1+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.2-6.5.2-1.fc35.x86_64.rpm: 6.5.2+smokecloud.ifort/fds.spec backports.patch
+fds-6.5.2-6.5.2-1.fc35.x86_64.rpm: 6.5.2+smokecloud.ifort/fds.spec
 	cd 6.5.2+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.3-6.5.3-1.fc35.x86_64.rpm: 6.5.3+smokecloud.ifort/fds.spec backports.patch
+fds-6.5.3-6.5.3-1.fc35.x86_64.rpm: 6.5.3+smokecloud.ifort/fds.spec
 	cd 6.5.3+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.6.0-6.6.0-1.fc35.x86_64.rpm: 6.6.0+smokecloud.ifort/fds.spec mpi_finalize.patch
+fds-6.6.0-6.6.0-1.fc35.x86_64.rpm: 6.6.0+smokecloud.ifort/fds.spec
 	cd 6.6.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && cp mpi_finalize.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
 fds-6.7.0-6.7.0-1.fc35.x86_64.rpm: 6.7.0+smokecloud.ifort/fds.spec
 	cd 6.7.0+smokecloud.ifort && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
