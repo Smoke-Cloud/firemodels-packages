@@ -30,7 +30,7 @@ cd %{repo}-%{commit}
 echo "#!/bin/sh" > fds
 echo "source /opt/intel/oneapi/setvars.sh" >> fds
 echo "ulimit -s unlimited" >> fds
-echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
+echo "exec mpiexec -np \$1 %{_bindir}/fds-exec-%{version} \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
 cd %{repo}-%{commit}
@@ -41,12 +41,12 @@ cd Build/impi_intel_linux_64
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install %{repo}-%{commit}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install %{repo}-%{commit}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files
 %{_bindir}/fds-%{version}
-%{_bindir}/fds-exec-%{version}
+%{_bindir}/fds-exec-%{version}-%{version}
 
 %changelog
 * Sat Dec 18 2021 admin
