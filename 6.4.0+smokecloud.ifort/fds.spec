@@ -34,7 +34,7 @@ source /opt/intel/oneapi/setvars.sh
 cd fds-FDS%{version}/FDS_Compilation/mpi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
-make -j4 FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
+make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
 
 
 %install

@@ -37,7 +37,7 @@ sed -i '2182 s/$/ \&/' FDS_Source/part.f90
 cd fds-FDS%{version}/FDS_Compilation/impi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
-make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile "$target"
+make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
 
 %install
 rm -rf $RPM_BUILD_ROOT
