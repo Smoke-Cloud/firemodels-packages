@@ -4,7 +4,9 @@ Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
-Source0:        https://github.com/firemodels/fds-smv_deprecated/archive/refs/tags/FDS%{version}.tar.gz
+%global commit  689afcd4c59504cc031b860fd081d935a2a3351f
+%global repo    fds-smv_deprecated
+Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Patch0:         backports.patch
 Url:            https://pages.nist.gov/fds-smv
 
@@ -19,7 +21,7 @@ FDS
 
 %prep
 %setup -qc
-cd fds-FDS%{version}
+cd fds-%{commit}
 %patch0 -p1
 
 %global __brp_check_rpaths %{nil}
@@ -42,7 +44,7 @@ make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-FDS6.7.7/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds-%{commit}/FDS_Compilation/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files

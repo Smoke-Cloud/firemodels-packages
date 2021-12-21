@@ -4,7 +4,9 @@ Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
-Source0:        https://github.com/firemodels/fds/archive/4e9103f2e61e60eb23eed8ad3397e8ac66e16216.zip
+%global commit  4e9103f2e61e60eb23eed8ad3397e8ac66e16216
+%global repo    fds-smv_deprecated
+Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Patch0:         backports.patch
 Url:            https://pages.nist.gov/fds-smv
 
@@ -18,8 +20,8 @@ Requires:       intel-oneapi-mpi
 FDS
 
 %prep
-%setup -qcn fds-4e9103f2e61e60eb23eed8ad3397e8ac66e16216
-cd fds-4e9103f2e61e60eb23eed8ad3397e8ac66e16216
+%setup -qc
+cd fds-%{commit}
 %patch0 -p1
 
 %global __brp_check_rpaths %{nil}
@@ -40,7 +42,7 @@ make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH=
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-4e9103f2e61e60eb23eed8ad3397e8ac66e16216/FDS_Compilation/mpi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds-%{commit}/FDS_Compilation/mpi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files

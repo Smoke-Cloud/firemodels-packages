@@ -4,7 +4,9 @@ Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
-Source0:        https://github.com/firemodels/fds/archive/refs/tags/FDS%{version}.tar.gz
+%global commit  fe0d4ef38f955b2a298ac9124ea3d8f085704edd
+%global repo    fds
+Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Url:            https://pages.nist.gov/fds-smv
 
 BuildRequires:  intel-hpckit
@@ -28,13 +30,13 @@ echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
-cd fds-FDS6.7.7/Build/impi_intel_linux_64
+cd fds-%{commit}/Build/impi_intel_linux_64
 ./make_fds.sh
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-FDS%{version}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds-%{commit}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files

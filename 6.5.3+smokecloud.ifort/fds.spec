@@ -20,7 +20,7 @@ Requires:       intel-oneapi-mpi
 FDS
 
 %prep
-%setup -qc -n fds-%{commit}
+%setup -qc
 cd fds-%{commit}
 %patch0 -p1
 
