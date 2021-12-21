@@ -34,8 +34,6 @@ echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
 
-# Fix issue with code
-sed -i '2182 s/$/ \&/' FDS_Source/part.f90
 cd %{repo}-%{commit}/FDS_Compilation/impi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
