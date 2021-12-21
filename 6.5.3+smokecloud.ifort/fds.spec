@@ -31,7 +31,6 @@ echo "#!/bin/sh" > fds
 echo "source /opt/intel/oneapi/setvars.sh" >> fds
 echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec-%{version} \"\${@:2}\"" >> fds
-ls
 source /opt/intel/oneapi/setvars.sh
 
 cd %{repo}-%{commit}
