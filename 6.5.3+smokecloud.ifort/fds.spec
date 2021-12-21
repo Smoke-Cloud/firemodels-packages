@@ -33,8 +33,7 @@ ls
 source /opt/intel/oneapi/setvars.sh
 
 cd fds-FDS%{version}
-patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory Source --strip 2 || true
-cd Build/impi_intel_linux_64
+cd Build/mpi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
 make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
