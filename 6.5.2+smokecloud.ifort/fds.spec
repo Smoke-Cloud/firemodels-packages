@@ -21,7 +21,7 @@ FDS
 
 %prep
 %setup -qc
-cd fds-%{commit}
+cd %{repo}-%{commit}
 %patch0 -p1
 
 %global __brp_check_rpaths %{nil}
@@ -33,7 +33,7 @@ echo "ulimit -s unlimited" >> fds
 echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
 ls
 source /opt/intel/oneapi/setvars.sh
-cd fds-%{commit}/FDS_Compilation/mpi_intel_linux_64
+cd %{repo}-%{commit}/FDS_Compilation/mpi_intel_linux_64
 dir=$(pwd)
 target=${dir##*/}
 make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
@@ -42,7 +42,7 @@ make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH=
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-%{commit}/FDS_Compilation/mpi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install %{repo}-%{commit}/FDS_Compilation/mpi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
 install fds $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files
