@@ -42,41 +42,41 @@ install: default
 	dnf install fds-6.1.2-6.1.2-1.fc35.x86_64.rpm -y
 	dnf install fds-5.5.3-5.5.3-1.fc35.x86_64.rpm -y
 
-fds-5.5.3-5.5.3-1.fc35.x86_64.rpm: 5.5.3/fds.spec 5.5.3/backports.patch
-	cd 5.5.3 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.1.2-6.1.2-1.fc35.x86_64.rpm: 6.1.2/fds.spec 6.1.2/backports.patch
-	cd 6.1.2 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.2.0-6.2.0-1.fc35.x86_64.rpm: 6.2.0/fds.spec 6.2.0/backports.patch
-	cd 6.2.0 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.0-6.3.0-1.fc35.x86_64.rpm: 6.3.0/fds.spec 6.3.0/backports.patch
-	cd 6.3.0 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.1-6.3.1-1.fc35.x86_64.rpm: 6.3.1/fds.spec 6.3.1/backports.patch
-	cd 6.3.1 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.3.2-6.3.2-1.fc35.x86_64.rpm: 6.3.2/fds.spec 6.3.2/backports.patch
-	cd 6.3.2 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.4.0-6.4.0-1.fc35.x86_64.rpm: 6.4.0/fds.spec 6.4.0/backports.patch
-	cd 6.4.0 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.0-6.5.0-1.fc35.x86_64.rpm: 6.5.0/fds.spec 6.5.0/backports.patch
-	cd 6.5.0 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.1-6.5.1-1.fc35.x86_64.rpm: 6.5.1/fds.spec 6.5.1/backports.patch
-	cd 6.5.1 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.2-6.5.2-1.fc35.x86_64.rpm: 6.5.2/fds.spec 6.5.2/backports.patch
-	cd 6.5.2 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.5.3-6.5.3-1.fc35.x86_64.rpm: 6.5.3/fds.spec 6.5.3/backports.patch
-	cd 6.5.3 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.6.0-6.6.0-1.fc35.x86_64.rpm: 6.6.0/fds.spec 6.6.0/backports.patch
-	cd 6.6.0 && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.0-6.7.0-1.fc35.x86_64.rpm: 6.7.0/fds.spec
-	cd 6.7.0 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.1-6.7.1-1.fc35.x86_64.rpm: 6.7.1/fds.spec
-	cd 6.7.1 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.3-6.7.3-1.fc35.x86_64.rpm: 6.7.3/fds.spec
-	cd 6.7.3 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.4-6.7.4-1.fc35.x86_64.rpm: 6.7.4/fds.spec
-	cd 6.7.4 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.5-6.7.5-1.fc35.x86_64.rpm: 6.7.5/fds.spec
-	cd 6.7.5 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.6-6.7.6-1.fc35.x86_64.rpm: 6.7.6/fds.spec
-	cd 6.7.6 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-6.7.7-6.7.7-1.fc35.x86_64.rpm: 6.7.7/fds.spec
-	cd 6.7.7 && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-5.5.3-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.1.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.2.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.3.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.3.1-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.3.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.4.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.5.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.5.1-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.5.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.5.3-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.6.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.0-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.1-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.3-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.4-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.5-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.6-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.7.7-1.fc35.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
