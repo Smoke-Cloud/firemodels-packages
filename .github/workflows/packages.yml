@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install prerequisites
-        run: pacman -Sy wget
+        run: pacman -Sy --noconfirm wget
       - run: ./install-oneapi.sh
       - name: Build Package
         run: |
