@@ -1,0 +1,20 @@
+on: [push, pull_request]
+
+name: Continuous integration
+
+jobs:
+  build-rpm:
+    name: Build RPM
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container: ["fedora:35","centos:8.4.2105"]
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: install prerequisites
+        run: |
+          yum install -y git gcc openssl-devel cargo rpmdevtools
+      - name: Create archive
+        run: |
+          make -f Makefile.fedora
