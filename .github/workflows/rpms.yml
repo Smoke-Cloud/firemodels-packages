@@ -31,3 +31,8 @@ jobs:
       - name: Create archive
         run: |
           make -f Makefile.fedora
+      - uses: actions/upload-artifact@v2
+        with:
+          name: RPMs
+          path: |
+            *.rpm
