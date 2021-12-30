@@ -1,4 +1,4 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Jake O'Shannessy <joshannessy@smokecloud.io>
 pkgname=intel-oneapi-base
 pkgver=2021.4.0
 pkgrel=1

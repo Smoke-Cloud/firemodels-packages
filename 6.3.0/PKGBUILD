@@ -1,5 +1,5 @@
-# Maintainer: Your Name <youremail@domain.com>
-pkgname=fds-6.3.0+smokecloud.ifort
+# Maintainer: Jake O'Shannessy <joshannessy@smokecloud.io>
+pkgname=fds-6.3.0
 pkgver=6.3.0
 pkgrel=1
 epoch=
@@ -43,15 +43,14 @@ check() {
 }
 
 package() {
-        FINAL_INSTALL_DIR=/opt/FDS/$pkgver+smokecloud.ifort
+        FINAL_INSTALL_DIR=/usr/bin
         cd fds-smv_deprecated/FDS_Compilation/mpi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
-        mkdir -p $INSTALLDIR/bin
-        mv fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec
+        mkdir -p $INSTALLDIR
+        install fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec-${pkgver}
 
         echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
-        echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/bin/fds
-        echo "ulimit -s unlimited" >> ${INSTALLDIR}/bin/fds
-        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/bin/fds-exec \"\${@:2}\"" >> ${INSTALLDIR}/bin/fds
-        chmod 755 ${INSTALLDIR}/bin/fds
+        echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/fds-${pkgver}
+        echo "ulimit -s unlimited" >> ${INSTALLDIR}/fds-${pkgver}
+        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/fds-exec-${pkgver} \"\${@:2}\"" >> ${INSTALLDIR}/fds-${pkgver}
 }
