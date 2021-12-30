@@ -56,7 +56,7 @@ jobs:
           bash ../makerpm.sh
       - uses: actions/upload-artifact@v2
         with:
-          name: FDS-${{ matrix.container }}-${{ matrix.fds-version }}
+          name: FDS-RPMs
           path: |
             ${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
   build-arch:
@@ -98,6 +98,6 @@ jobs:
           makepkg -f
       - uses: actions/upload-artifact@v2
         with:
-          name: FDS-${{ matrix.container }}-${{ matrix.fds-version }}
+          name: FDS-Arch
           path: |
             ${{ matrix.fds-version }}/*.zst
