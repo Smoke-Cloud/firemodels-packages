@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        container: ["fedora:35"]
-        # container: ["fedora:35","centos:8.4.2105"]
+        container: ["fedora:35","centos:8.4.2105"]
         fds-version:
           - "5.5.3"
           - "6.1.2"
@@ -30,6 +29,7 @@ jobs:
           - "6.7.5"
           - "6.7.6"
           - "6.7.7"
+          - "latest"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
           gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
-      - name: install prerequisites
+      - name: Install prerequisites
         run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
       - run: yum install -y intel-basekit intel-hpckit
       - name: Build RPM
