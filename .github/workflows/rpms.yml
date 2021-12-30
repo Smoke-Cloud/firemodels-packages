@@ -47,7 +47,7 @@ jobs:
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
         run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
-      # - run: yum install -y intel-basekit intel-hpckit
+      - run: yum install -y intel-basekit intel-hpckit
       - name: Build RPM
         run: |
           cd ${{ matrix.fds-version }}
