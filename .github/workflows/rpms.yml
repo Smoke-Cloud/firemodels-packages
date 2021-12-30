@@ -15,6 +15,7 @@ jobs:
       - name: install prerequisites
         run: |
           yum install -y git gcc openssl-devel cargo rpmdevtools make
+      - run: ./install-oneapi-fedora.sh
       - name: Create archive
         run: |
           make -f Makefile.fedora
