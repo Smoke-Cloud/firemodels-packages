@@ -47,12 +47,12 @@ jobs:
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
         run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
-      - run: yum install -y intel-basekit intel-hpckit
+      # - run: yum install -y intel-basekit intel-hpckit
       - name: Build RPM
         run: |
           cd ${{ matrix.fds-version }}
-          rpmdev-setuptree
-          cp backports.patch ~/rpmbuild/SOURCES || true
+          mkdir -p rpmbuild/SOURCES
+          cp backports.patch rpmbuild/SOURCES || true
           bash ../makerpm.sh
       - uses: actions/upload-artifact@v2
         with:
