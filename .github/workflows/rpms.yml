@@ -10,6 +10,26 @@ jobs:
       matrix:
         container: ["fedora:35"]
         # container: ["fedora:35","centos:8.4.2105"]
+        fds-version:
+          - "5.5.3"
+          - "6.1.2"
+          - "6.2.0"
+          - "6.3.0"
+          - "6.3.1"
+          - "6.3.2"
+          - "6.4.0"
+          - "6.5.0"
+          - "6.5.1"
+          - "6.5.2"
+          - "6.5.3"
+          - "6.6.0"
+          - "6.7.0"
+          - "6.7.1"
+          - "6.7.3"
+          - "6.7.4"
+          - "6.7.5"
+          - "6.7.6"
+          - "6.7.7"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v2
@@ -28,11 +48,14 @@ jobs:
       - name: install prerequisites
         run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
       - run: yum install -y intel-basekit intel-hpckit
-      - name: Create archive
+      - name: Build RPM
         run: |
-          make -f Makefile.fedora
+          cd ${{ matrix.version }}
+          rpmdev-setuptree
+          cp backports.patch ~/rpmbuild/SOURCES || true
+          bash ../makerpm.sh
       - uses: actions/upload-artifact@v2
         with:
           name: RPMs
           path: |
-            *.rpm
+            ~/rpmbuild/RPMS/*/*.rpm
