@@ -58,4 +58,4 @@ jobs:
         with:
           name: RPMs
           path: |
-            ~/rpmbuild/RPMS/*/*.rpm
+            ${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
