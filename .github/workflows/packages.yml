@@ -59,3 +59,45 @@ jobs:
           name: RPMs
           path: |
             ${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
+  build-arch:
+    name: Build Arch Linux package
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container: ["archlinux:base-devel"]
+        fds-version:
+          - "5.5.3"
+          - "6.1.2"
+          - "6.2.0"
+          - "6.3.0"
+          - "6.3.1"
+          - "6.3.2"
+          - "6.4.0"
+          - "6.5.0"
+          - "6.5.1"
+          - "6.5.2"
+          - "6.5.3"
+          - "6.6.0"
+          - "6.7.0"
+          - "6.7.1"
+          - "6.7.3"
+          - "6.7.4"
+          - "6.7.5"
+          - "6.7.6"
+          - "6.7.7"
+          - "latest"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v2
+      # - name: Install prerequisites
+      #   run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
+      - run: ./install-oneapi.sh
+      - name: Build Package
+        run: |
+          cd ${{ matrix.fds-version }}
+          makepkg -f
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Arch Packages
+          path: |
+            ${{ matrix.fds-version }}/*.zst
