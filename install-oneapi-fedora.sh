@@ -11,4 +11,5 @@ EOF
 
 mv /tmp/oneAPI.repo /etc/yum.repos.d
 
+yum install -y gcc
 yum install -y intel-basekit intel-hpckit
