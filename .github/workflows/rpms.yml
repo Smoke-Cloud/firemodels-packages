@@ -50,7 +50,7 @@ jobs:
       - run: yum install -y intel-basekit intel-hpckit
       - name: Build RPM
         run: |
-          cd ${{ matrix.version }}
+          cd ${{ matrix.fds-version }}
           rpmdev-setuptree
           cp backports.patch ~/rpmbuild/SOURCES || true
           bash ../makerpm.sh
