@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        container: ["fedora:35","centos:8.4.2105"]
+        container: ["fedora:35"]
+        # container: ["fedora:35","centos:8.4.2105"]
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v2
