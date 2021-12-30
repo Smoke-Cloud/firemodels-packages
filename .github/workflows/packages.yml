@@ -89,8 +89,8 @@ jobs:
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v2
-      # - name: Install prerequisites
-      #   run: yum install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
+      - name: Install prerequisites
+        run: pacman -S wget
       - run: ./install-oneapi.sh
       - name: Build Package
         run: |
