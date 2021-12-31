@@ -33,7 +33,7 @@ prepare() {
 
 build() {
         source /opt/intel/oneapi/setvars.sh
-        %{repo}-%{commit}/FDS_Compilation/mpi_intel_linux_64
+        cd ${repo}-${commit}/FDS_Compilation/mpi_intel_linux_64
         dir=$(pwd)
         target=${dir##*/}
         make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile $target
@@ -45,7 +45,7 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/usr/bin
-        %{repo}-%{commit}/FDS_Compilation/mpi_intel_linux_64
+        cd ${repo}-${commit}/FDS_Compilation/mpi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
         install fds_mpi_intel_linux_64 $INSTALLDIR/bin/fds-exec-${pkgver}
