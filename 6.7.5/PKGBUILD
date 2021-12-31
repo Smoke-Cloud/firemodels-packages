@@ -45,9 +45,9 @@ package() {
         cd ${repo}-${commit}/Build/impi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
-        install fds_impi_intel_linux_64 $INSTALLDIR/bin/fds-exec-${pkgver}
+        install fds_impi_intel_linux_64 $INSTALLDIR/fds-exec-${pkgver}
 
-        echo "#!/bin/sh" > ${INSTALLDIR}/bin/fds
+        echo "#!/bin/sh" > ${INSTALLDIR}/fds
         echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/fds-${pkgver}
         echo "ulimit -s unlimited" >> ${INSTALLDIR}/fds-${pkgver}
         echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/fds-exec-${pkgver} \"\${@:2}\"" >> ${INSTALLDIR}/fds-${pkgver}
