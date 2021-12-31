@@ -19,21 +19,22 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds-smv_deprecated#commit=59962898c0dbd5926605eed69ed2690c720ca001" "backports.patch")
+commit=59962898c0dbd5926605eed69ed2690c720ca001
+repo=fds-smv_deprecated
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch")
 noextract=()
 sha1sums=('SKIP' '7c75a76ec455e31fae9f74869fdcb5bc95fcddc7')
 validpgpkeys=()
 
 prepare() {
-        patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory fds-smv_deprecated/FDS_Source --strip 2
+        patch --strip=1 --input="${srcdir}/backports.patch" --directory ${repo}-${commit}
         echo "prepare done"
 }
 
 build() {
         source /opt/intel/oneapi/setvars.sh
         cd fds-smv_deprecated/FDS_Compilation/mpi_intel_linux_64
-        platform=intel64
-        dir=`pwd`
+        dir=$(pwd)
         target=${dir##*/}
         make -j4 FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile $target
 }

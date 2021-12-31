@@ -19,21 +19,22 @@ backup=()
 options=(!strip)
 install=
 changelog=
-source=("git+https://github.com/firemodels/fds#commit=eb56ed1a8a2205333c5b98d636226159ba063d20" "backports.patch")
+commit=eb56ed1a8a2205333c5b98d636226159ba063d20
+repo=fds
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch")
 noextract=()
 sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7')
 validpgpkeys=()
 
 prepare() {
-        patch --forward --strip=1 --input="${srcdir}/backports.patch" --directory fds/Source --strip 2
+        patch --strip=1 --input="${srcdir}/backports.patch" --directory ${repo}-${commit}
         echo "prepare done"
 }
 
 build() {
         source /opt/intel/oneapi/setvars.sh
         cd fds/Build/mpi_intel_linux_64
-        platform=intel64
-        dir=`pwd`
+        dir=$(pwd)
         target=${dir##*/}
         make -j4 MPIFORT=mpiifort VPATH="../../Source" -f ../makefile $target
 }
