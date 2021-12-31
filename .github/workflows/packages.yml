@@ -97,8 +97,7 @@ jobs:
           useradd builder
           cd ${{ matrix.fds-version }}
           chown -R builder:builder .
-          su builder
-          makepkg -f
+          su builder -c "makepkg -f" 
       - uses: actions/upload-artifact@v2
         with:
           name: FDS-Arch
