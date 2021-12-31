@@ -21,7 +21,7 @@ install=
 changelog=
 source=("git+https://github.com/firemodels/fds-smv_deprecated#commit=689afcd4c59504cc031b860fd081d935a2a3351f" "backports.patch")
 noextract=()
-sha1sums=('SKIP' '506f2f5fc447f951940d8b7c2668790e6faa2273')
+sha1sums=('SKIP' 'a8049e56e8e0f9bf127df0838dd3f9cad56a0fe1')
 validpgpkeys=()
 
 prepare() {
