@@ -11,8 +11,9 @@ fi
 usage() {
     printf "usage: fds [--version] [--help] <FDS-FILE>\n\n"
     printf "options:\n"
-    printf "    -h --help     Show this information.\n"
-    printf "    -v --version  Show version.\n"
+    printf "    -h/--help     Show this information.\n"
+    printf "    -v/--version  Show version.\n"
+    printf "    -n/--version  Set the number of MPI processes.\n"
 }
 
 eval set -- "$TEMP"
