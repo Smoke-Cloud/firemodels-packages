@@ -34,6 +34,7 @@ build() {
         source /opt/intel/oneapi/setvars.sh
         cd ${repo}-${commit}/Build/impi_intel_linux_64
         ./make_fds.sh
+        cp fds_impi_intel_linux_64 ../../../fds-exec
 }
 
 check() {
@@ -43,6 +44,7 @@ check() {
 package() {
         FINAL_INSTALL_DIR=/usr/bin
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
+        mkdir -p $INSTALLDIR
         {
                 echo "#!/bin/sh"
                 echo "PROGRAM_VERSION=${pkgver}"
@@ -50,7 +52,5 @@ package() {
                 cat fds.sh
         } > fds-script
         install fds-script "${INSTALLDIR}"/fds
-        cd ${repo}-${commit}/Build/impi_intel_linux_64
-        mkdir -p $INSTALLDIR
-        install fds_impi_intel_linux_64 $INSTALLDIR/fds-exec
+        install fds-exec "${INSTALLDIR}"/fds-exec
 }
