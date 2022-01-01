@@ -1,7 +1,7 @@
 PROGRAM_NAME=fds
 # The default number of MPI processes is 1
 N_PROCESSES=1
-TEMP=$(getopt --name $PROGRAM_NAME --options hvn:: --longoptions help,version -- "$@")
+TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version -- "$@")
 
 if [ $? -ne 0 ]; then
         echo "Error parsing arguments. Try $PROGRAM_NAME --help"
