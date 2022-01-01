@@ -2,6 +2,7 @@
 /*/pkg
 /*/src
 */*.zip
+*/fds.sh
 /*/*.part
 /*/*.tar.gz
 /*/fds

@@ -45,6 +45,7 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/usr/bin
+        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         {
                 echo "#!/bin/sh"
                 echo "PROGRAM_VERSION=${pkgver}"
@@ -53,9 +54,7 @@ package() {
         } > fds-script
         install fds-script "${INSTALLDIR}"/fds
         cd ${repo}-${commit}/Build/impi_intel_linux_64
-        INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
         install fds_impi_intel_linux_64 $INSTALLDIR/fds-exec
 }
-
 
