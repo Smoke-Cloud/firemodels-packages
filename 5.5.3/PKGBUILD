@@ -50,8 +50,9 @@ package() {
         mkdir -p $INSTALLDIR
         install fds5_mpi_intel_linux_64 $INSTALLDIR/fds-exec-${pkgver}
 
-        echo "#!/bin/sh" > ${INSTALLDIR}/fds-${pkgver}
-        echo "source /opt/intel/oneapi/setvars.sh" >> ${INSTALLDIR}/fds-${pkgver}
-        echo "ulimit -s unlimited" >> ${INSTALLDIR}/fds-${pkgver}
-        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/fds-exec-${pkgver} \"\${@:2}\"" >> ${INSTALLDIR}/fds-${pkgver}
+        echo "#!/bin/sh" > fds
+        echo "source /opt/intel/oneapi/setvars.sh" >> fds
+        echo "ulimit -s unlimited" >> fds
+        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/fds-exec-${pkgver} \"\${@:2}\"" >> fds
+        install fds ${INSTALLDIR}/fds-${pkgver}
 }
