@@ -7,6 +7,7 @@ License:        PublicDomain
 %global commit  71f02560677bb87dace8c81f2e5b817d24e70c46
 %global repo    fds
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
+Source1:        fds.sh.zip
 Url:            https://pages.nist.gov/fds-smv
 
 BuildRequires:  intel-hpckit
@@ -20,6 +21,7 @@ FDS
 
 %prep
 %setup -qc
+%setup -qc -a 1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}

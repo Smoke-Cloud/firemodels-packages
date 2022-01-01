@@ -7,6 +7,7 @@ License:        PublicDomain
 %global commit  352eda994c0639660ccc86bbc230b51d00592e8c
 %global repo    fds-smv_deprecated
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
+Source1:        fds.sh.zip
 Patch0:         backports.patch
 Url:            https://pages.nist.gov/fds-smv
 
@@ -21,6 +22,7 @@ FDS
 
 %prep
 %setup -qc
+%setup -qc -a 1
 cd %{repo}-%{commit}
 %patch0 -p1
 

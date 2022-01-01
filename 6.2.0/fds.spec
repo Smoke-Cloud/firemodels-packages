@@ -7,6 +7,7 @@ License:        PublicDomain
 %global commit  a16945293f61e4de274c9bd714ceca40bb0a2028
 %global repo    fds
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
+Source1:        fds.sh
 Patch0:         backports.patch
 Url:            https://pages.nist.gov/fds-smv
 
@@ -21,6 +22,7 @@ FDS
 
 %prep
 %setup -qc
+%setup -qc -a 1
 cd %{repo}-%{commit}
 %patch0 -p1
 
