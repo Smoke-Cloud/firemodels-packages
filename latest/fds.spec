@@ -24,10 +24,12 @@ FDS
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
 %build
-echo "#!/bin/sh" > fds
-echo "source /opt/intel/oneapi/setvars.sh" >> fds
-echo "ulimit -s unlimited" >> fds
-echo "exec mpiexec -np \$1 %{_bindir}/fds-exec \"\${@:2}\"" >> fds
+{
+    echo "#!/bin/sh"
+    echo "PROGRAM_VERSION=%{version}"
+    echo "FDS_EXEC=fds-exec"
+    cat fds.sh
+} > fds-script
 source /opt/intel/oneapi/setvars.sh
 cd %{repo}-%{commit}/Build/impi_intel_linux_64
 ./make_fds.sh
@@ -36,7 +38,7 @@ cd %{repo}-%{commit}/Build/impi_intel_linux_64
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 install %{repo}-%{commit}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec
-install fds $RPM_BUILD_ROOT/%{_bindir}/fds
+install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds
 
 %files
 %{_bindir}/fds

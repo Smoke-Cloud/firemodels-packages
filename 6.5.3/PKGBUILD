@@ -21,9 +21,9 @@ install=
 changelog=
 commit=eb56ed1a8a2205333c5b98d636226159ba063d20
 repo=fds
-source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch")
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch" "fds.sh")
 noextract=()
-sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7')
+sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7' 'SKIP')
 validpgpkeys=()
 
 prepare() {
@@ -45,14 +45,16 @@ check() {
 
 package() {
         FINAL_INSTALL_DIR=/usr/bin
-        cd ${repo}-${commit}/Build/mpi_intel_linux_64
+        {
+                echo "#!/bin/sh"
+                echo "PROGRAM_VERSION=${pkgver}"
+                echo "FDS_EXEC=fds-exec"
+                cat fds.sh
+        } > fds-script
+        install fds-script "${INSTALLDIR}"/fds
+        cd ${repo}-${commit}/Build/impi_intel_linux_64
         INSTALLDIR=$pkgdir$FINAL_INSTALL_DIR
         mkdir -p $INSTALLDIR
-        install fds_mpi_intel_linux_64 $INSTALLDIR/fds-exec-${pkgver}
-
-        echo "#!/bin/sh" > fds
-        echo "source /opt/intel/oneapi/setvars.sh" >> fds
-        echo "ulimit -s unlimited" >> fds
-        echo "exec mpiexec -np \$1 ${FINAL_INSTALL_DIR}/fds-exec-${pkgver} \"\${@:2}\"" >> fds
-        install fds ${INSTALLDIR}/fds-${pkgver}
+        install fds_impi_intel_linux_64 $INSTALLDIR/fds-exec
 }
+

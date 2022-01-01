@@ -53,6 +53,7 @@ jobs:
           cd ${{ matrix.fds-version }}
           mkdir -p rpmbuild/SOURCES
           cp backports.patch rpmbuild/SOURCES || true
+          cp ../fds.sh .
           bash ../makerpm.sh
       - uses: actions/upload-artifact@v2
         with:
@@ -97,7 +98,8 @@ jobs:
           useradd builder
           cd ${{ matrix.fds-version }}
           chown -R builder:builder .
-          su builder -c "makepkg -f" 
+          cp ../fds.sh .
+          su builder -c "makepkg -f"
       - uses: actions/upload-artifact@v2
         with:
           name: FDS-Arch
