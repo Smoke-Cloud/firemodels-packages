@@ -52,6 +52,5 @@ package() {
                 cat fds.sh
         } > fds-script
         install fds-script "${INSTALLDIR}"/fds
-        ls -A *
         install fds-exec "${INSTALLDIR}"/fds-exec
 }
