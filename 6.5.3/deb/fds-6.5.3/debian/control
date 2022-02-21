@@ -1,4 +1,4 @@
-Source: fds
+Source: fds-6.5.3
 Section: science
 Priority: optional
 Maintainer: Jake O'Shannessy <joshannessy@smokecloud.io>
@@ -6,9 +6,9 @@ Build-Depends: debhelper-compat (= 12)
 Standards-Version: 4.4.1
 Homepage: https://pages.nist.gov/fds-smv/
 
-Package: fds
+Package: fds-6.5.3
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Fire Dynamics Simulator
- Fire Dynamics Simulator (FDS) is a large-eddy simulation (LES) code for 
+ Fire Dynamics Simulator (FDS) is a large-eddy simulation (LES) code for
  low-speed flows, with an emphasis on smoke and heat transport from fires.
