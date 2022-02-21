@@ -1,0 +1,27 @@
+Description: Add top-level makefile
+ Adds a makefile to make building compatible with the Debian defaults.
+Author: Jake O'Shannessy <joshannessy@smokecloud.io>
+---
+--- /dev/null
++++ fds-6.5.2/Makefile
+@@ -0,0 +1,20 @@
++FINAL_INSTALL_DIR=$(DESTDIR)/usr/bin
++INSTALLDIR=$(FINAL_INSTALL_DIR)
++pkgver=6.5.2
++
++build:
++	cd FDS_Compilation/mpi_intel_linux_64 && . /opt/intel/oneapi/setvars.sh && make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile mpi_intel_linux_64
++	cp FDS_Compilation/mpi_intel_linux_64/fds_mpi_intel_linux_64 fds-exec
++
++install:
++	mkdir -p $(INSTALLDIR)
++	echo "#!/bin/sh" > fds-script
++	echo "PROGRAM_VERSION=$(pkgver)" >> fds-script
++	echo "FDS_EXEC=fds-exec-$(pkgver)" >> fds-script
++	cat fds.sh >> fds-script
++	install fds-script "${INSTALLDIR}"/fds-$(pkgver)
++	install fds-exec "${INSTALLDIR}"/fds-exec-$(pkgver)
++
++clean:
++	cd FDS_Compilation/mpi_intel_linux_64 && rm -f *.o *.mod fds_mpi_intel_linux_64
++	rm -f fds-exec fds-script
