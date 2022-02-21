@@ -1,54 +1,33 @@
-Description: <short summary of the patch>
- TODO: Put a short summary on the line above and replace this paragraph
- with a longer explanation of this change. Complete the meta-information
- with other relevant fields (see below for details). To make it easier, the
- information below has been extracted from the changelog. Adjust it or drop
- it.
- .
- fds (6.5.3-1) focal; urgency=low
- .
-   * Initial packaging release
+Description: Add backports for OneAPI
+ Make minor to the changes to code to adapt to newer compilers.
 Author: Jake O'Shannessy <joshannessy@smokecloud.io>
-
 ---
-The information above should follow the Patch Tagging Guidelines, please
-checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
-are templates for supplementary fields that you might want to add:
-
-Origin: <vendor|upstream|other>, <url of original patch>
-Bug: <url in upstream bugtracker>
-Bug-Debian: https://bugs.debian.org/<bugnumber>
-Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
-Forwarded: <no|not-needed|url proving that it has been forwarded>
-Reviewed-By: <name and email of someone who approved the patch>
-Last-Update: 2022-02-20
-
 --- fds-6.5.3.orig/Source/main.f90
 +++ fds-6.5.3/Source/main.f90
 @@ -1302,7 +1302,6 @@ CALL DUMP_CPU_TIME
- 
+
  IF (USE_MPI) THEN
     IF (VERBOSE) WRITE(LU_ERR,'(A,I6,A)') 'MPI process ',MYID,' has completed'
 -   CALL MPI_FINALIZE(IERR)
  ENDIF
- 
+
  IF (MYID==0) THEN
 @@ -1342,6 +1341,10 @@ IF (MYID==0) THEN
- 
+
  ENDIF
- 
+
 +IF (USE_MPI) THEN
 +   CALL MPI_FINALIZE(IERR)
 +ENDIF
 +
  STOP
- 
+
  END SUBROUTINE END_FDS
 --- fds-6.5.3.orig/Source/smvv.f90
 +++ fds-6.5.3/Source/smvv.f90
 @@ -800,7 +800,7 @@ SUBROUTINE SMOKE3D_TO_FILE(LU_SMOKE3D,LU
    REAL(FB), INTENT(IN) :: HRRPUV_MAX_SMV
- 
+
    INTEGER, PARAMETER :: SOOT=1, FIRE=2, OTHER=3
 -  CHARACTER(LEN=1), DIMENSION(:), POINTER :: BUFFER_IN, BUFFER_OUT
 +  CHARACTER(LEN=1), DIMENSION(:), ALLOCATABLE :: BUFFER_IN, BUFFER_OUT
@@ -56,11 +35,11 @@ Last-Update: 2022-02-20
    REAL(FB) :: FACTOR, CUTMAX
    REAL(FB) :: VAL_FDS,VAL_SMV,MAXVAL
 @@ -869,7 +869,7 @@ SUBROUTINE RLE(BUFFER_IN, NCHARS_IN, BUF
- 
+
    INTEGER, INTENT(IN) :: NCHARS_IN
    CHARACTER(LEN=1), INTENT(IN), DIMENSION(NCHARS_IN) :: BUFFER_IN
 -  CHARACTER(LEN=1), INTENT(OUT), DIMENSION(:), POINTER :: BUFFER_OUT
 +  CHARACTER(LEN=1), INTENT(OUT), DIMENSION(:) :: BUFFER_OUT
    INTEGER, INTENT(OUT) :: NCHARS_OUT
- 
+
    CHARACTER(LEN=1) :: MARK=CHAR(255),THISCHAR,LASTCHAR
