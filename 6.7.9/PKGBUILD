@@ -1,5 +1,5 @@
 # Maintainer: Jake O'Shannessy <joshannessy@smokecloud.io>
-pkgname=fds
+pkgname=fds-6.7.9
 pkgver=6.7.9
 pkgrel=1
 epoch=
@@ -21,7 +21,7 @@ install=
 changelog=
 commit=ec52dee4274fcf994d358c8b0f883eec8f67e041
 repo=fds
-source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "fds.sh")
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "../fds.sh")
 noextract=()
 sha1sums=('SKIP' 'SKIP')
 validpgpkeys=()
@@ -48,9 +48,9 @@ package() {
         {
                 echo "#!/bin/sh"
                 echo "PROGRAM_VERSION=${pkgver}"
-                echo "FDS_EXEC=fds-exec"
+                echo "FDS_EXEC=fds-exec-${pkgver}"
                 cat fds.sh
         } > fds-script
-        install fds-script "${INSTALLDIR}"/fds
-        install fds-exec "${INSTALLDIR}"/fds-exec
+        install fds-script "${INSTALLDIR}"/fds-"${pkgver}"
+        install fds-exec "${INSTALLDIR}"/fds-exec-"${pkgver}"
 }

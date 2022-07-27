@@ -1,4 +1,4 @@
-Name:           fds
+Name:           fds-6.7.9
 Version:        6.7.9
 Release:        1%{?dist}
 Summary:        Fire Dynamics Simulator
@@ -29,7 +29,7 @@ FDS
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "FDS_EXEC=fds-exec"
+    echo "FDS_EXEC=fds-exec-%{version}"
     cat fds.sh
 } > fds-script
 source /opt/intel/oneapi/setvars.sh
@@ -39,12 +39,12 @@ cd %{repo}-%{commit}/Build/impi_intel_linux
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux $RPM_BUILD_ROOT/%{_bindir}/fds-exec
-install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds
+install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
+install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 
 %files
-%{_bindir}/fds
-%{_bindir}/fds-exec
+%{_bindir}/fds-%{version}
+%{_bindir}/fds-exec-%{version}
 
 %changelog
 * Sat Dec 18 2021 admin

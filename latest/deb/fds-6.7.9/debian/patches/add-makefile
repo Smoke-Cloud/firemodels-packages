@@ -3,7 +3,7 @@ Description: Add top-level makefile
 Author: Jake O'Shannessy <joshannessy@smokecloud.io>
 ---
 --- /dev/null
-+++ fds-6.7.7/Makefile
++++ fds-6.7.9/Makefile
 @@ -0,0 +1,20 @@
 +FINAL_INSTALL_DIR=$(DESTDIR)/usr/bin
 +INSTALLDIR=$(FINAL_INSTALL_DIR)
