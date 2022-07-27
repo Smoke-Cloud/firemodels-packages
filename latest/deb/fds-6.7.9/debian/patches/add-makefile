@@ -7,11 +7,11 @@ Author: Jake O'Shannessy <joshannessy@smokecloud.io>
 @@ -0,0 +1,20 @@
 +FINAL_INSTALL_DIR=$(DESTDIR)/usr/bin
 +INSTALLDIR=$(FINAL_INSTALL_DIR)
-+pkgver=6.7.7
++pkgver=6.7.9
 +
 +build:
-+	cd Build/impi_intel_linux_64 && . /opt/intel/oneapi/setvars.sh && ./make_fds.sh
-+	cp Build/impi_intel_linux_64/fds_impi_intel_linux_64 fds-exec
++	cd Build/impi_intel_linux && . /opt/intel/oneapi/setvars.sh && ./make_fds.sh
++	cp Build/impi_intel_linux/fds_impi_intel_linux fds-exec
 +
 +install:
 +	mkdir -p $(INSTALLDIR)
@@ -23,5 +23,5 @@ Author: Jake O'Shannessy <joshannessy@smokecloud.io>
 +	install fds-exec "${INSTALLDIR}"/fds-exec
 +
 +clean:
-+	cd Build/impi_intel_linux_64 && rm -f *.o *.mod fds_impi_intel_linux_64
++	cd Build/impi_intel_linux && rm -f *.o *.mod fds_impi_intel_linux_64
 +	rm -f fds-exec fds-script
