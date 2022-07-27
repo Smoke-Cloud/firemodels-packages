@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        container: ["fedora:35"]
+        container: ["fedora:36"]
         fds-version:
           - "5.5.3"
           - "6.1.2"
