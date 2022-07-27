@@ -46,7 +46,7 @@ jobs:
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
-        run: dnf install -y git gcc procps kmod openssl-devel cargo rpmdevtools make
+        run: dnf install -y git gcc procps kmod openssl-devel cargo rpmdevtools make libxcrypt-compat
       - run: dnf install -y intel-basekit intel-hpckit
       - name: Build RPM
         run: |
