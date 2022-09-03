@@ -1,6 +1,6 @@
 Name:           fds-6.5.3
 Version:        6.5.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        PublicDomain
@@ -9,6 +9,7 @@ License:        PublicDomain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Source1:        fds.sh.zip
 Patch0:         backports.patch
+Patch1:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
 BuildRequires:  intel-hpckit
@@ -25,6 +26,7 @@ FDS
 %setup -qc -a 1
 cd %{repo}-%{commit}
 %patch0 -p1
+%patch1 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}

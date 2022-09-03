@@ -1,114 +1,114 @@
 .PHONY: default check
 
 default: \
-	fds-6.7.9-6.7.9-1.fc35.x86_64.rpm \
-	fds-6.7.8-6.7.8-1.fc35.x86_64.rpm \
-	fds-6.7.7-6.7.7-1.fc35.x86_64.rpm \
-	fds-6.7.6-6.7.6-1.fc35.x86_64.rpm \
-	fds-6.7.5-6.7.5-1.fc35.x86_64.rpm \
-	fds-6.7.4-6.7.4-1.fc35.x86_64.rpm \
-	fds-6.7.3-6.7.3-1.fc35.x86_64.rpm \
-	fds-6.7.1-6.7.1-1.fc35.x86_64.rpm \
-	fds-6.7.0-6.7.0-1.fc35.x86_64.rpm \
-	fds-6.6.0-6.6.0-1.fc35.x86_64.rpm \
-	fds-6.5.3-6.5.3-1.fc35.x86_64.rpm \
-	fds-6.5.2-6.5.2-1.fc35.x86_64.rpm \
-	fds-6.5.1-6.5.1-1.fc35.x86_64.rpm \
-	fds-6.5.0-6.5.0-1.fc35.x86_64.rpm \
-	fds-6.4.0-6.4.0-1.fc35.x86_64.rpm \
-	fds-6.3.2-6.3.2-1.fc35.x86_64.rpm \
-	fds-6.3.1-6.3.1-1.fc35.x86_64.rpm \
-	fds-6.3.0-6.3.0-1.fc35.x86_64.rpm \
-	fds-6.2.0-6.2.0-1.fc35.x86_64.rpm \
-	fds-6.1.2-6.1.2-1.fc35.x86_64.rpm \
-	fds-5.5.3-5.5.3-1.fc35.x86_64.rpm
+	fds-6.7.9-6.7.9-2.fc36.x86_64.rpm \
+	fds-6.7.8-6.7.8-2.fc36.x86_64.rpm \
+	fds-6.7.7-6.7.7-2.fc36.x86_64.rpm \
+	fds-6.7.6-6.7.6-2.fc36.x86_64.rpm \
+	fds-6.7.5-6.7.5-2.fc36.x86_64.rpm \
+	fds-6.7.4-6.7.4-2.fc36.x86_64.rpm \
+	fds-6.7.3-6.7.3-2.fc36.x86_64.rpm \
+	fds-6.7.1-6.7.1-2.fc36.x86_64.rpm \
+	fds-6.7.0-6.7.0-2.fc36.x86_64.rpm \
+	fds-6.6.0-6.6.0-2.fc36.x86_64.rpm \
+	fds-6.5.3-6.5.3-2.fc36.x86_64.rpm \
+	fds-6.5.2-6.5.2-2.fc36.x86_64.rpm \
+	fds-6.5.1-6.5.1-2.fc36.x86_64.rpm \
+	fds-6.5.0-6.5.0-2.fc36.x86_64.rpm \
+	fds-6.4.0-6.4.0-2.fc36.x86_64.rpm \
+	fds-6.3.2-6.3.2-2.fc36.x86_64.rpm \
+	fds-6.3.1-6.3.1-2.fc36.x86_64.rpm \
+	fds-6.3.0-6.3.0-2.fc36.x86_64.rpm \
+	fds-6.2.0-6.2.0-2.fc36.x86_64.rpm \
+	fds-6.1.2-6.1.2-2.fc36.x86_64.rpm \
+	fds-5.5.3-5.5.3-2.fc36.x86_64.rpm
 
 install: default
-	dnf install fds-6.7.9-6.7.9-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.8-6.7.8-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.7-6.7.7-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.6-6.7.6-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.5-6.7.5-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.4-6.7.4-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.3-6.7.3-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.1-6.7.1-1.fc35.x86_64.rpm -y
-	dnf install fds-6.7.0-6.7.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.6.0-6.6.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.5.3-6.5.3-1.fc35.x86_64.rpm -y
-	dnf install fds-6.5.2-6.5.2-1.fc35.x86_64.rpm -y
-	dnf install fds-6.5.1-6.5.1-1.fc35.x86_64.rpm -y
-	dnf install fds-6.5.0-6.5.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.4.0-6.4.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.3.2-6.3.2-1.fc35.x86_64.rpm -y
-	dnf install fds-6.3.1-6.3.1-1.fc35.x86_64.rpm -y
-	dnf install fds-6.3.0-6.3.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.2.0-6.2.0-1.fc35.x86_64.rpm -y
-	dnf install fds-6.1.2-6.1.2-1.fc35.x86_64.rpm -y
-	dnf install fds-5.5.3-5.5.3-1.fc35.x86_64.rpm -y
+	dnf install fds-6.7.9-6.7.9-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.8-6.7.8-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.7-6.7.7-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.6-6.7.6-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.5-6.7.5-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.4-6.7.4-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.3-6.7.3-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.1-6.7.1-2.fc36.x86_64.rpm -y
+	dnf install fds-6.7.0-6.7.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.6.0-6.6.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.5.3-6.5.3-2.fc36.x86_64.rpm -y
+	dnf install fds-6.5.2-6.5.2-2.fc36.x86_64.rpm -y
+	dnf install fds-6.5.1-6.5.1-2.fc36.x86_64.rpm -y
+	dnf install fds-6.5.0-6.5.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.4.0-6.4.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.3.2-6.3.2-2.fc36.x86_64.rpm -y
+	dnf install fds-6.3.1-6.3.1-2.fc36.x86_64.rpm -y
+	dnf install fds-6.3.0-6.3.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.2.0-6.2.0-2.fc36.x86_64.rpm -y
+	dnf install fds-6.1.2-6.1.2-2.fc36.x86_64.rpm -y
+	dnf install fds-5.5.3-5.5.3-2.fc36.x86_64.rpm -y
 
 reinstall: default
-	dnf reinstall fds-6.7.9-6.7.9-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.8-6.7.8-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.7-6.7.7-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.6-6.7.6-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.5-6.7.5-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.4-6.7.4-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.3-6.7.3-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.1-6.7.1-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.7.0-6.7.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.6.0-6.6.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.5.3-6.5.3-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.5.2-6.5.2-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.5.1-6.5.1-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.5.0-6.5.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.4.0-6.4.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.3.2-6.3.2-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.3.1-6.3.1-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.3.0-6.3.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.2.0-6.2.0-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-6.1.2-6.1.2-1.fc35.x86_64.rpm -y
-	dnf reinstall fds-5.5.3-5.5.3-1.fc35.x86_64.rpm -y
+	dnf reinstall fds-6.7.9-6.7.9-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.8-6.7.8-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.7-6.7.7-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.6-6.7.6-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.5-6.7.5-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.4-6.7.4-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.3-6.7.3-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.1-6.7.1-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.7.0-6.7.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.6.0-6.6.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.5.3-6.5.3-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.5.2-6.5.2-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.5.1-6.5.1-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.5.0-6.5.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.4.0-6.4.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.3.2-6.3.2-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.3.1-6.3.1-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.3.0-6.3.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.2.0-6.2.0-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-6.1.2-6.1.2-2.fc36.x86_64.rpm -y
+	dnf reinstall fds-5.5.3-5.5.3-2.fc36.x86_64.rpm -y
 
 
-fds-%-5.5.3-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-5.5.3-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.1.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.1.2-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.2.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.2.0-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.3.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.3.0-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.3.1-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.3.1-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.3.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.3.2-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.4.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.4.0-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.5.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.5.0-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.5.1-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.5.1-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.5.2-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.5.2-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.5.3-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.5.3-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.6.0-1.fc35.x86_64.rpm: %/fds.spec %/backports.patch
+fds-%-6.6.0-2.fc36.x86_64.rpm: %/fds.spec %/backports.patch
 	cd $(*) && mkdir -p rpmbuild/SOURCES && cp backports.patch rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.0-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.0-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.1-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.1-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.3-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.3-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.4-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.4-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.5-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.5-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.6-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.6-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.7-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.7-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.8-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.8-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
-fds-%-6.7.9-1.fc35.x86_64.rpm: %/fds.spec
+fds-%-6.7.9-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
