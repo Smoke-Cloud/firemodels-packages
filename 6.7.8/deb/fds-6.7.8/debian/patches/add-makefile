@@ -23,5 +23,5 @@ Author: Jake O'Shannessy <joshannessy@smokecloud.io>
 +	install fds-exec "${INSTALLDIR}"/fds-exec-$(pkgver)
 +
 +clean:
-+	cd Build/impi_intel_linux_64 && rm -f *.o *.mod fds_impi_intel_linux
++	cd Build/impi_intel_linux && rm -f *.o *.mod fds_impi_intel_linux
 +	rm -f fds-exec fds-script
