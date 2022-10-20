@@ -21,9 +21,9 @@ install=
 changelog=
 commit=71f02560677bb87dace8c81f2e5b817d24e70c46
 repo=fds
-source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "../fds.sh")
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "../fds.sh" "version.patch")
 noextract=()
-sha1sums=('SKIP' 'SKIP')
+sha1sums=('SKIP' 'SKIP' 'SKIP')
 validpgpkeys=()
 
 prepare() {

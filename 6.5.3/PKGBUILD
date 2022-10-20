@@ -21,9 +21,9 @@ install=
 changelog=
 commit=eb56ed1a8a2205333c5b98d636226159ba063d20
 repo=fds
-source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch" "fds.sh")
+source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "backports.patch" "fds.sh" "version.patch")
 noextract=()
-sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7' 'SKIP')
+sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7' 'SKIP' 'SKIP')
 validpgpkeys=()
 
 prepare() {
