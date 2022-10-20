@@ -27,7 +27,8 @@ sha1sums=('SKIP' 'SKIP')
 validpgpkeys=()
 
 prepare() {
-        echo "done"
+        patch --strip=1 --input="${srcdir}/version.patch" --directory ${repo}-${commit}
+        echo "prepare done"
 }
 
 build() {

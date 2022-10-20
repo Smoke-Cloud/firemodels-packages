@@ -27,6 +27,7 @@ sha1sums=('SKIP' '847af10d83119c8cb1ac58e3dee1902dee0582d7' 'SKIP')
 validpgpkeys=()
 
 prepare() {
+        patch --strip=1 --input="${srcdir}/version.patch" --directory ${repo}-${commit}
         patch --strip=1 --input="${srcdir}/backports.patch" --directory ${repo}-${commit}
         echo "prepare done"
 }
@@ -57,4 +58,3 @@ package() {
         install fds-script "${INSTALLDIR}"/fds-"${pkgver}"
         install fds-exec "${INSTALLDIR}"/fds-exec-"${pkgver}"
 }
-
