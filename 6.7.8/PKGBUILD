@@ -1,6 +1,6 @@
 # Maintainer: Jake O'Shannessy <joshannessy@smokecloud.io>
-pkgname=fds-6.7.9
-pkgver=6.7.9
+pkgname=fds-6.7.8
+pkgver=6.7.8
 pkgrel=1
 epoch=
 pkgdesc="Fire Dynamics Simulator (FDS) from NIST."
@@ -19,7 +19,7 @@ backup=()
 options=(!strip)
 install=
 changelog=
-commit=ec52dee4274fcf994d358c8b0f883eec8f67e041
+commit=fbf3e11eee06c89b85fcc936e592bcf27bb9827f
 repo=fds
 source=("https://github.com/firemodels/${repo}/archive/${commit}.zip" "../fds.sh")
 noextract=()
