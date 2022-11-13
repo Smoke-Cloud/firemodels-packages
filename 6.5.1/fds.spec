@@ -39,6 +39,8 @@ cd %{repo}-%{commit}
 } > fds-script
 source /opt/intel/oneapi/setvars.sh
 cd %{repo}-%{commit}/FDS_Compilation/mpi_intel_linux_64
+export full_commit=%{commit}
+export commit=${full_commit:0:9}
 platform=intel64
 dir=$(pwd)
 target=${dir##*/}

@@ -35,6 +35,8 @@ prepare() {
 build() {
         source /opt/intel/oneapi/setvars.sh
         cd ${repo}-${commit}/FDS_Compilation/mpi_intel_linux_64
+        export full_commit=%{commit}
+        export commit=${full_commit:0:9}
         dir=$(pwd)
         target=${dir##*/}
         make FCOMPL=mpiifort  FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" -j4 VPATH="../../FDS_Source" -f ../makefile "$target"

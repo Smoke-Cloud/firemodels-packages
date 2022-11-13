@@ -41,6 +41,8 @@ source /opt/intel/oneapi/setvars.sh
 
 cd %{repo}-%{commit}
 cd Build/mpi_intel_linux_64
+export full_commit=%{commit}
+export commit=${full_commit:0:9}
 dir=$(pwd)
 target=${dir##*/}
 make MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"

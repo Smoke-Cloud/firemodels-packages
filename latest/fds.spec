@@ -37,6 +37,8 @@ cd %{repo}-%{commit}
 } > fds-script
 source /opt/intel/oneapi/setvars.sh
 cd %{repo}-%{commit}/Build/impi_intel_linux
+export full_commit=%{commit}
+export commit=${full_commit:0:9}
 ./make_fds.sh
 
 %install

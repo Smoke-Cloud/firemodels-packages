@@ -40,6 +40,8 @@ cd %{repo}-%{commit}
 source /opt/intel/oneapi/setvars.sh
 cd %{repo}-%{commit}
 cd Build/impi_intel_linux_64
+export full_commit=%{commit}
+export commit=${full_commit:0:9}
 ./make_fds.sh
 
 %install
