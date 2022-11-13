@@ -1,0 +1,13 @@
+diff --git a/FDS_Source/main.f90 b/FDS_Source/main.f90
+index 93d5c449d..3eaa6fe82 100644
+--- a/FDS_Source/main.f90
++++ b/FDS_Source/main.f90
+@@ -103,7 +103,7 @@ WALL_CLOCK_START = WALL_CLOCK_TIME()
+  
+ ! Assign a compilation date (All Nodes)
+ 
+-WRITE(VERSION_STRING,'(A)') 'FDS 6.2.0'
++WRITE(VERSION_STRING,'(A)') '6.2.0+ga16945293'
+ 
+ IF (INDEX(mainrev,':',BACK=.TRUE.)>0) THEN
+    WRITE(REVISION_DATE,'(A)',IOSTAT=IOS,ERR=5) mainrev(INDEX(mainrev,':')+2:LEN_TRIM(mainrev)-2)
