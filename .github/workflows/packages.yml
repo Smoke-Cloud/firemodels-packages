@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        container: ["fedora:36"]
+        container:
+          - "fedora:36"
+          - "rockylinux:9"
         fds-version:
           - "5.5.3"
           - "6.1.2"
