@@ -52,10 +52,10 @@ jobs:
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
         run: dnf install -y git gcc rpmdevtools make zip 
-      - name: Install fedora libxcrypt-compat and procps
-        run: dnf install -y libxcrypt-compat | true
+      - name: Install fedora libxcrypt-compat
+        run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
-        run: dnf install -y procps | true
+        run: dnf install -y procps || true
       - run: dnf install -y intel-basekit intel-hpckit
       - name: Build RPM
         run: |
