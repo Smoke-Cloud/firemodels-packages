@@ -37,7 +37,7 @@ jobs:
           - "latest"
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Add intel RPM repo
         run: |
           tee > /tmp/oneAPI.repo << EOF
@@ -61,7 +61,7 @@ jobs:
         run: |
           cd ${{ matrix.fds-version }}
           bash ../makerpm.sh
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: FDS-RPMs
           path: |
@@ -95,7 +95,7 @@ jobs:
           - "6.7.9"
           - "latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Add intel apt repo
         run: |
           wget -qO- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | sudo tee /etc/apt/trusted.gpg.d/intel-oneapi.asc
@@ -108,7 +108,7 @@ jobs:
         run: |
           cd ${{ matrix.fds-version }}/deb
           bash build_debian.sh
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: FDS-DEBs
           path: |
@@ -144,7 +144,7 @@ jobs:
           - "latest"
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install prerequisites
         run: pacman -Sy --noconfirm wget git
       - run: ./install-oneapi.sh
@@ -155,7 +155,7 @@ jobs:
           chown -R builder:builder .
           cp ../fds.sh .
           su builder -c "makepkg -f"
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: FDS-Arch
           path: |
