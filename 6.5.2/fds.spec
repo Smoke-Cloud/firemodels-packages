@@ -14,6 +14,7 @@ Url:            https://pages.nist.gov/fds-smv
 
 BuildRequires:  intel-hpckit
 BuildRequires:  intel-basekit
+BuildRequires:  make
 Requires:       bash
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
