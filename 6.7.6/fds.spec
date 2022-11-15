@@ -53,5 +53,7 @@ install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 %{_bindir}/fds-exec-%{version}
 
 %changelog
-* Sat Dec 18 2021 admin
--
+* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.6-2
+- Correct embedded version information
+* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.6-1
+- Initial package
