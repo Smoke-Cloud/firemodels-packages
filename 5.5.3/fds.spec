@@ -3,7 +3,7 @@ Version:        5.5.3
 Release:        2%{?dist}
 Summary:        Fire Dynamics Simulator
 
-License:        PublicDomain
+License:        Public Domain
 %global commit  bf0a6a88f318803adb96edef5c547746fc77e4a5
 %global repo    fds
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
@@ -57,5 +57,5 @@ install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
 %{_bindir}/fds-exec-%{version}
 
 %changelog
-* Sat Dec 18 2021 admin
+* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@gmail.com> - 6.7.9-2
 -

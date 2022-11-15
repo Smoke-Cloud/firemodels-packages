@@ -3,7 +3,7 @@ Version:        6.7.6
 Release:        2%{?dist}
 Summary:        Fire Dynamics Simulator
 
-License:        PublicDomain
+License:        Public Domain
 %global commit  5064c500c065b7abc5a34e0ae569a7ad7ec61ec8
 %global repo    fds
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
