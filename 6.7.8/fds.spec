@@ -90,7 +90,7 @@ cd %{repo}-%{commit}
 
 # Build OpenMPI version
 %{_openmpi_load}
-pushd %{repo}-%{commit}/Build/ompi_gnu_linux%{?arch_suffix}
+pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
@@ -101,7 +101,7 @@ popd
 
 # Build IntelMPI version
 %{_intelmpi_load}
-pushd %{repo}-%{commit}/Build/impi_intel_linux%{?arch_suffix}
+pushd %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=intelmpi
 export compiler=intel
@@ -122,13 +122,13 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 
 # Install OpenMPI version
 %{_openmpi_load}
-install %{repo}-%{commit}/Build/ompi_gnu_linux%{?arch_suffix}/fds_ompi_gnu_linux%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
 
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/Build/impi_intel_linux%{?arch_suffix}/fds_impi_intel_linux%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
+install %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}/fds_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
 %{_intelmpi_unload}
 
 %files common
