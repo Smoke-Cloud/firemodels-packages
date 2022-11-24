@@ -3,6 +3,8 @@
 %global this_version 6.7.8
 %global version_suffix %{this_version}
 %undefine arch_suffix
+%global gnu_string ompi_gnu_linux
+%global intel_string impi_intel_linux
 %global this_release 2
 
 #TODO: this isn't as clean as the openmpi version
