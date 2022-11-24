@@ -76,4 +76,4 @@ if [ "$USE_MKL" = true ]; then
         module load mkl
         FDS_EXEC=$FDS_EXEC-mkl
 fi
-exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC""$VERSION_SUFFIX" "$@"
+exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION"/""$FDS_EXEC""$VERSION_SUFFIX" "$@"

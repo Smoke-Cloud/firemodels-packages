@@ -25,16 +25,26 @@ Source1:        fds.sh.zip
 Patch0:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-Requires:       bash
-Requires:       util-linux
+Requires:       %{name}-common = %{version}-%{release}
 
 %description
 FDS
+
+
+%package common
+Summary:        Fire Dynamics Simulator common files
+%description common
+FDS common files
+Requires:       bash
+Requires:       util-linux
+
+
 
 %package openmpi
 Summary:        Fire Dynamics Simulator with OpenMPI
 BuildRequires: openmpi-devel(x86-64)
 Requires: openmpi(x86-64)
+Requires: %{name}-common = %{version}-%{release}
 %description openmpi
 FDS with OpenMPI
 
@@ -48,6 +58,7 @@ BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
+Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
 
@@ -63,14 +74,17 @@ cd %{repo}-%{commit}
 
 %build
 
-# Build OpenMPI version
-%{_openmpi_load}
+# Build common files
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION_SUFFIX=-%{version}"
+    echo "VERSION=latest"
+    echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
-} > ./fds-script-openmpi
+} > ./fds-script
+
+# Build OpenMPI version
+%{_openmpi_load}
 pushd %{repo}-%{commit}/Build/ompi_gnu_linux
 export full_commit=%{commit}
 export mpi=openmpi
@@ -82,12 +96,6 @@ popd
 
 # Build IntelMPI version
 %{_intelmpi_load}
-{
-    echo "#!/bin/sh"
-    echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION_SUFFIX=-%{version}"
-    cat fds.sh
-} > ./fds-script-intelmpi
 pushd %{repo}-%{commit}/Build/impi_intel_linux
 export full_commit=%{commit}
 export mpi=intelmpi
@@ -100,28 +108,31 @@ popd
 %install
 rm -rf %{buildroot}
 
+# Install common
+install fds-script %{buildroot}/%{_bindir}/fds
+
+
 # Install OpenMPI version
 %{_openmpi_load}
 mkdir -p %{buildroot}/%{_bindir}
-install %{repo}-%{commit}/Build/ompi_gnu_linux/fds_ompi_gnu_linux %{buildroot}/%{_bindir}/fds-exec-openmpi
-install fds-script-openmpi %{buildroot}/%{_bindir}/fds-openmpi
+install %{repo}-%{commit}/Build/ompi_gnu_linux/fds_ompi_gnu_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-openmpi
 %{_openmpi_unload}
 
 
 # Install Intel MPI
 %{_intelmpi_load}
 mkdir -p %{buildroot}/%{_bindir}
-install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux %{buildroot}/%{_bindir}/fds-exec-intelmpi
-install fds-script-intelmpi %{buildroot}/%{_bindir}/fds-intelmpi
+install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-intelmpi
 %{_intelmpi_unload}
 
+%files common
+%{_bindir}/fds
+
 %files openmpi
-%{_bindir}/fds-openmpi
-%{_bindir}/fds-exec-openmpi
+%{_libexecdir}/fds/latest/fds-exec-openmpi
 
 %files intelmpi
-%{_bindir}/fds-intelmpi
-%{_bindir}/fds-exec-intelmpi
+%{_libexecdir}/fds/latest/fds-exec-intelmpi
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.9-2
