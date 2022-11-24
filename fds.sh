@@ -53,7 +53,7 @@ while true; do
         esac
 done
 set "$@"
-FDS_EXEC=fds
+FDS_EXEC=$PROGRAM_NAME
 if [ "$USE_INTELMPI" = true ]; then
         if [ "$USE_OPENMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
@@ -76,4 +76,4 @@ if [ "$USE_MKL" = true ]; then
         module load mkl
         FDS_EXEC=$FDS_EXEC-mkl
 fi
-exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC" "$@"
+exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC""$VERSION_SUFFIX" "$@"

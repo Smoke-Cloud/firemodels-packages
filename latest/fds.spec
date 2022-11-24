@@ -67,9 +67,8 @@ cd %{repo}-%{commit}
 %{_openmpi_load}
 {
     echo "#!/bin/sh"
-    echo "module load mpi/openmpi-x86_64"
     echo "PROGRAM_VERSION=%{version}"
-    echo "FDS_EXEC=fds-exec-openmpi"
+    echo "VERSION_SUFFIX=-%{version}"
     cat fds.sh
 } > ./fds-script-openmpi
 pushd %{repo}-%{commit}/Build/ompi_gnu_linux
@@ -85,9 +84,8 @@ popd
 %{_intelmpi_load}
 {
     echo "#!/bin/sh"
-    echo ". /opt/intel/oneapi/setvars.sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "FDS_EXEC=fds-exec-intelmpi"
+    echo "VERSION_SUFFIX=-%{version}"
     cat fds.sh
 } > ./fds-script-intelmpi
 pushd %{repo}-%{commit}/Build/impi_intel_linux
