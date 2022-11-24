@@ -11,9 +11,9 @@ Source1:        fds.sh.zip
 Patch0:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-BuildRequires:  intel-hpckit
-BuildRequires:  intel-basekit
-BuildRequires:  make
+BuildRequires:  intel-oneapi-mpi 
+BuildRequires:  intel-oneapi-mkl 
+BuildRequires:  intel-oneapi-compiler-fortran
 Requires:       bash
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi

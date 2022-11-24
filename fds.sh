@@ -1,7 +1,7 @@
 PROGRAM_NAME=fds
 # The default number of MPI processes is 1
 N_PROCESSES=1
-TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version -- "$@")
+TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mkl -- "$@")
 
 if [ $? -ne 0 ]; then
         echo "Error parsing arguments. Try $PROGRAM_NAME --help"
@@ -13,7 +13,10 @@ usage() {
     printf "options:\n"
     printf "    -h/--help     Show this information.\n"
     printf "    -v/--version  Show version.\n"
-    printf "    -n/--version  Set the number of MPI processes.\n"
+    printf "    --intelmpi    Use Intel MPI.\n"
+    printf "    --openmpi     Use Open MPI.\n"
+    printf "    --mkl         Use MKL.\n"
+    printf "    -n  Set the number of MPI processes.\n"
 }
 
 eval set -- "$TEMP"
@@ -30,6 +33,15 @@ while true; do
                 -n)
                         N_PROCESSES="$2"; shift 2; continue
                 ;;
+                --intelmpi)
+                        USE_INTELMPI=true; shift 2; continue
+                ;;
+                --openmpi)
+                        USE_OPENMPI=true; shift 2; continue
+                ;;
+                --mkl)
+                        USE_MKL=true; shift 2; continue
+                ;;
                 --)
                         # End of options
                         break
@@ -41,5 +53,27 @@ while true; do
         esac
 done
 set "$@"
-. /opt/intel/oneapi/setvars.sh
+FDS_EXEC=fds
+if [ "$USE_INTELMPI" = true ]; then
+        if [ "$USE_OPENMPI" = true ]; then
+                echo "Cannot specify Intel MPI and Open MPI simultaneously."
+                exit 2
+        fi
+        module use /opt/intel/oneapi/modulefiles
+        module load mpi
+        FDS_EXEC=$FDS_EXEC-intelmpi
+fi
+if [ "$USE_OPENMPI" = true ]; then
+        if [ "$USE_MKL" = true ]; then
+                echo "Cannot specify MKL and Open MPI simultaneously."
+                exit 2
+        fi
+        module load mpi
+        FDS_EXEC=$FDS_EXEC-openmpi
+fi
+if [ "$USE_MKL" = true ]; then
+        module use /opt/intel/oneapi/modulefiles
+        module load mkl
+        FDS_EXEC=$FDS_EXEC-mkl
+fi
 exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC" "$@"
