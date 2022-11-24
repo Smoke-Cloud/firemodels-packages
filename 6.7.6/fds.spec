@@ -2,6 +2,9 @@
 %global repo    fds
 %global this_version 6.7.6
 %global version_suffix %{this_version}
+%global arch_suffix _64
+%global gnu_string mpi_gnu_linux
+%global intel_string impi_intel_linux
 %global this_release 2
 
 #TODO: this isn't as clean as the openmpi version
@@ -75,31 +78,72 @@ cd %{repo}-%{commit}
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
+
 %build
+
+# Build common files
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "FDS_EXEC=fds-exec-%{version}"
+    echo "VERSION=latest"
+    echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
-} > fds-script
-source /opt/intel/oneapi/setvars.sh
-cd %{repo}-%{commit}/Build/impi_intel_linux_64
+} > ./fds-script
+
+# Build OpenMPI version
+%{_openmpi_load}
+pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
+export mpi=openmpi
+export compiler=gnu
 export commit=${full_commit:0:9}
 ./make_fds.sh
+popd
+%{_openmpi_unload}
+
+# Build IntelMPI version
+%{_intelmpi_load}
+pushd %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}
+export full_commit=%{commit}
+export mpi=intelmpi
+export compiler=intel
+export commit=${full_commit:0:9}
+./make_fds.sh
+popd
+%{_intelmpi_unload}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install %{repo}-%{commit}/Build/impi_intel_linux_64/fds_impi_intel_linux_64 $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
-install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/%{_libexecdir}/fds/%{version}
+echo %{buildroot}/%{_bindir}
 
-%files
+# Install common
+install fds-script %{buildroot}/%{_bindir}/fds-%{version}
+
+
+# Install OpenMPI version
+%{_openmpi_load}
+install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+%{_openmpi_unload}
+
+
+# Install Intel MPI
+%{_intelmpi_load}
+install %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}/fds_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
+%{_intelmpi_unload}
+
+%files common
 %{_bindir}/fds-%{version}
-%{_bindir}/fds-exec-%{version}
+
+%files openmpi
+%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+
+%files intelmpi
+%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
 
 %changelog
-* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.6-2
+* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2
 - Correct embedded version information
-* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.6-1
+* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-1
 - Initial package
