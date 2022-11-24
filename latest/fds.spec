@@ -25,7 +25,7 @@ Source1:        fds.sh.zip
 Patch0:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-Requires:       %{name}-common = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 
 %description
 FDS
@@ -44,7 +44,7 @@ Requires:       util-linux
 Summary:        Fire Dynamics Simulator with OpenMPI
 BuildRequires: openmpi-devel(x86-64)
 Requires: openmpi(x86-64)
-Requires: %{name}-common = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 %description openmpi
 FDS with OpenMPI
 
@@ -58,7 +58,7 @@ BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
-Requires:       %{name}-common = %{version}-%{release}
+Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
 
@@ -107,6 +107,9 @@ popd
 
 %install
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/%{_libexecdir}/fds/latest
+echo %{buildroot}/%{_bindir}
 
 # Install common
 install fds-script %{buildroot}/%{_bindir}/fds
@@ -114,14 +117,12 @@ install fds-script %{buildroot}/%{_bindir}/fds
 
 # Install OpenMPI version
 %{_openmpi_load}
-mkdir -p %{buildroot}/%{_bindir}
 install %{repo}-%{commit}/Build/ompi_gnu_linux/fds_ompi_gnu_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-openmpi
 %{_openmpi_unload}
 
 
 # Install Intel MPI
 %{_intelmpi_load}
-mkdir -p %{buildroot}/%{_bindir}
 install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-intelmpi
 %{_intelmpi_unload}
 
