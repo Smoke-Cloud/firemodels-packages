@@ -1,11 +1,11 @@
 #TODO: this isn't as clean as the openmpi version
-%define _intelmpi_load \
+%global _intelmpi_load \
  module use /opt/intel/oneapi/modulefiles \
  . /etc/profile.d/modules.sh; \
  module load mpi \
  module load compiler \
  module load mkl;
-%define _intelmpi_unload \
+%global _intelmpi_unload \
  module use /opt/intel/oneapi/modulefiles \
  . /etc/profile.d/modules.sh; \
  module unload mkl \

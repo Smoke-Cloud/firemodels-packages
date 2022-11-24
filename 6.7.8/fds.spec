@@ -1,25 +1,71 @@
-Name:           fds-6.7.8
-Version:        6.7.8
-Release:        2%{?dist}
+%global commit  fbf3e11eee06c89b85fcc936e592bcf27bb9827f
+%global repo    fds
+%global this_version 6.7.8
+%global version_suffix %{this_version}
+%global this_release 2
+
+#TODO: this isn't as clean as the openmpi version
+%global _intelmpi_load \
+ module use /opt/intel/oneapi/modulefiles \
+ . /etc/profile.d/modules.sh; \
+ module load mpi \
+ module load compiler \
+ module load mkl;
+%global _intelmpi_unload \
+ module use /opt/intel/oneapi/modulefiles \
+ . /etc/profile.d/modules.sh; \
+ module unload mkl \
+ module unload compiler \
+ module unload mpi;
+
+Name:           fds%{version_suffix}
+Version:        %{this_version}
+Release:        %{this_release}%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
-%global commit  fbf3e11eee06c89b85fcc936e592bcf27bb9827f
-%global repo    fds
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Source1:        fds.sh.zip
 Patch0:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-BuildRequires:  intel-oneapi-mpi 
-BuildRequires:  intel-oneapi-mkl 
-BuildRequires:  intel-oneapi-compiler-fortran
-Requires:       bash
-Requires:       intel-oneapi-runtime-libs
-Requires:       intel-oneapi-mpi
+Requires: %{name}-common = %{version}-%{release}
 
 %description
 FDS
+
+
+%package common
+Summary:        Fire Dynamics Simulator common files
+%description common
+FDS common files
+Requires:       bash
+Requires:       util-linux
+
+
+
+%package openmpi
+Summary:        Fire Dynamics Simulator with OpenMPI
+BuildRequires: openmpi-devel(x86-64)
+Requires: openmpi(x86-64)
+Requires: %{name}-common = %{version}-%{release}
+%description openmpi
+FDS with OpenMPI
+
+You will need to load the openmpi-%{_arch} module to setup your path properly.
+
+
+%package intelmpi
+Summary:        Fire Dynamics Simulator with Intel MPI
+BuildRequires:  intel-oneapi-mpi-devel
+BuildRequires:  intel-oneapi-mkl-devel
+BuildRequires:  intel-oneapi-compiler-fortran
+Requires:       intel-oneapi-runtime-libs
+Requires:       intel-oneapi-mpi
+Requires:       %{name}-common = %{version}-%{release}
+%description intelmpi
+FDS with IntelMPI
+
 
 %prep
 %setup -qc
@@ -29,31 +75,72 @@ cd %{repo}-%{commit}
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
+
 %build
+
+# Build common files
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "FDS_EXEC=fds-exec-%{version}"
+    echo "VERSION=latest"
+    echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
-} > fds-script
-source /opt/intel/oneapi/setvars.sh
-cd %{repo}-%{commit}/Build/impi_intel_linux
+} > ./fds-script
+
+# Build OpenMPI version
+%{_openmpi_load}
+pushd %{repo}-%{commit}/Build/ompi_gnu_linux
 export full_commit=%{commit}
+export mpi=openmpi
+export compiler=gnu
 export commit=${full_commit:0:9}
 ./make_fds.sh
+popd
+%{_openmpi_unload}
+
+# Build IntelMPI version
+%{_intelmpi_load}
+pushd %{repo}-%{commit}/Build/impi_intel_linux
+export full_commit=%{commit}
+export mpi=intelmpi
+export compiler=intel
+export commit=${full_commit:0:9}
+./make_fds.sh
+popd
+%{_intelmpi_unload}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux $RPM_BUILD_ROOT/%{_bindir}/fds-exec-%{version}
-install fds-script $RPM_BUILD_ROOT/%{_bindir}/fds-%{version}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/%{_libexecdir}/fds/%{version}
+echo %{buildroot}/%{_bindir}
 
-%files
-%{_bindir}/fds-%{version}
-%{_bindir}/fds-exec-%{version}
+# Install common
+install fds-script %{buildroot}/%{_bindir}/fds
+
+
+# Install OpenMPI version
+%{_openmpi_load}
+install %{repo}-%{commit}/Build/ompi_gnu_linux/fds_ompi_gnu_linux %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+%{_openmpi_unload}
+
+
+# Install Intel MPI
+%{_intelmpi_load}
+install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
+%{_intelmpi_unload}
+
+%files common
+%{_bindir}/fds
+
+%files openmpi
+%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+
+%files intelmpi
+%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
 
 %changelog
-* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.8-2
+* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2
 - Correct embedded version information
-* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.7.8-1
+* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-1
 - Initial package

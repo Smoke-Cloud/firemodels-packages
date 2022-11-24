@@ -1,26 +1,72 @@
-Name:           fds-6.3.1
-Version:        6.3.1
-Release:        2%{?dist}
+%global commit  352eda994c0639660ccc86bbc230b51d00592e8c
+%global repo    fds-smv_deprecated
+%global this_version 6.3.1
+%global version_suffix %{this_version}
+%global this_release 2
+
+#TODO: this isn't as clean as the openmpi version
+%global _intelmpi_load \
+ module use /opt/intel/oneapi/modulefiles \
+ . /etc/profile.d/modules.sh; \
+ module load mpi \
+ module load compiler \
+ module load mkl;
+%global _intelmpi_unload \
+ module use /opt/intel/oneapi/modulefiles \
+ . /etc/profile.d/modules.sh; \
+ module unload mkl \
+ module unload compiler \
+ module unload mpi;
+
+Name:           fds%{version_suffix}
+Version:        %{this_version}
+Release:        %{this_release}%{?dist}
 Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
-%global commit  352eda994c0639660ccc86bbc230b51d00592e8c
-%global repo    fds-smv_deprecated
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Source1:        fds.sh.zip
 Patch0:         backports.patch
 Patch1:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-BuildRequires:  intel-oneapi-mpi 
-BuildRequires:  intel-oneapi-mkl 
-BuildRequires:  intel-oneapi-compiler-fortran
-Requires:       bash
-Requires:       intel-oneapi-runtime-libs
-Requires:       intel-oneapi-mpi
+Requires: %{name}-common = %{version}-%{release}
 
 %description
 FDS
+
+
+%package common
+Summary:        Fire Dynamics Simulator common files
+%description common
+FDS common files
+Requires:       bash
+Requires:       util-linux
+
+
+
+%package openmpi
+Summary:        Fire Dynamics Simulator with OpenMPI
+BuildRequires: openmpi-devel(x86-64)
+Requires: openmpi(x86-64)
+Requires: %{name}-common = %{version}-%{release}
+%description openmpi
+FDS with OpenMPI
+
+You will need to load the openmpi-%{_arch} module to setup your path properly.
+
+
+%package intelmpi
+Summary:        Fire Dynamics Simulator with Intel MPI
+BuildRequires:  intel-oneapi-mpi-devel
+BuildRequires:  intel-oneapi-mkl-devel
+BuildRequires:  intel-oneapi-compiler-fortran
+Requires:       intel-oneapi-runtime-libs
+Requires:       intel-oneapi-mpi
+Requires:       %{name}-common = %{version}-%{release}
+%description intelmpi
+FDS with IntelMPI
+
 
 %prep
 %setup -qc
