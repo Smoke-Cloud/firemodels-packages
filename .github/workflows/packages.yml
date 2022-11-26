@@ -53,7 +53,7 @@ jobs:
       - name: Enable powertools
         run: |
           dnf install "dnf-command(config-manager)"
-          dnf config-manager --enable powertools
+          dnf config-manager --enable powertools || true
       - name: Install prerequisites
         run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make Lmod
       - name: Install fedora libxcrypt-compat
