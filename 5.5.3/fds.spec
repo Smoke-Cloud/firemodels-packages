@@ -135,13 +135,13 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/FDS_Compilation/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+install %{repo}-%{commit}/FDS_Compilation/%{gnu_string}%{?arch_suffix}/fds5_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
 %endif
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/FDS_Compilation/%{intel_string}%{?arch_suffix}/fds_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
+install %{repo}-%{commit}/FDS_Compilation/%{intel_string}%{?arch_suffix}/fds5_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
 %{_intelmpi_unload}
 
 %files common
