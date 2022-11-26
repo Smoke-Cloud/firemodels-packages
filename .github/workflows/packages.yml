@@ -53,7 +53,7 @@ jobs:
       - name: General update
         run: dnf update -y --refresh
       - name: Enable epel
-        run: dnf install epel-release
+        run: dnf install -y epel-release
       - name: Install prerequisites
         run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make Lmod
       - name: Install fedora libxcrypt-compat
