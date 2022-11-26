@@ -50,9 +50,11 @@ jobs:
           gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
+      - name: General update
+        run: dnf update -y --refresh
       - name: Enable powertools
         run: |
-          dnf install "dnf-command(config-manager)"
+          dnf install -y "dnf-command(config-manager)"
           dnf config-manager --enable powertools || true
       - name: Install prerequisites
         run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make Lmod
