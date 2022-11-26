@@ -50,6 +50,8 @@ jobs:
           gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
+      - name: Enable powertools
+        run: dnf config-manager --enable powertools
       - name: Install prerequisites
         run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make Lmod
       - name: Install fedora libxcrypt-compat
