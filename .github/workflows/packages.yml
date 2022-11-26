@@ -51,7 +51,7 @@ jobs:
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
-        run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make
+        run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make Lmod
       - name: Install fedora libxcrypt-compat
         run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
