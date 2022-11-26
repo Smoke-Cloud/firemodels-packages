@@ -147,8 +147,10 @@ install %{repo}-%{commit}/FDS_Compilation/%{intel_string}%{?arch_suffix}/fds_%{i
 %files common
 %{_bindir}/fds-%{version}
 
+%if %{build_openmpi}
 %files openmpi
 %{_libexecdir}/fds/%{version}/fds-exec-openmpi
+%endif
 
 %files intelmpi
 %{_libexecdir}/fds/%{version}/fds-exec-intelmpi
