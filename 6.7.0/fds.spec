@@ -4,7 +4,7 @@
 %global version_suffix %{this_version}
 %global build_openmpi 0
 %global gnu_string mpi_gnu_linux
-%global intel_string impi_intel_linux
+%global intel_string mpi_intel_linux
 %global this_release 2
 
 #TODO: this isn't as clean as the openmpi version
