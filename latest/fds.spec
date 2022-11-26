@@ -85,7 +85,7 @@ cd %{repo}-%{commit}
 
 # Build OpenMPI version
 %{_openmpi_load}
-pushd %{repo}-%{commit}/Build/ompi_gnu_linux
+pushd %{repo}-%{commit}/Build/%{gnu_string}
 export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
@@ -96,7 +96,7 @@ popd
 
 # Build IntelMPI version
 %{_intelmpi_load}
-pushd %{repo}-%{commit}/Build/impi_intel_linux
+pushd %{repo}-%{commit}/Build/%{intel_string}
 export full_commit=%{commit}
 export mpi=intelmpi
 export compiler=intel
@@ -117,13 +117,13 @@ install fds-script %{buildroot}/%{_bindir}/fds
 
 # Install OpenMPI version
 %{_openmpi_load}
-install %{repo}-%{commit}/Build/ompi_gnu_linux/fds_ompi_gnu_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-openmpi
+install %{repo}-%{commit}/Build/%{gnu_string}/fds_%{gnu_string} %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-openmpi
 %{_openmpi_unload}
 
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/Build/impi_intel_linux/fds_impi_intel_linux %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-intelmpi
+install %{repo}-%{commit}/Build/%{intel_string}/fds_%{intel_string} %{buildroot}/%{_libexecdir}/fds/latest/fds-exec-intelmpi
 %{_intelmpi_unload}
 
 %files common

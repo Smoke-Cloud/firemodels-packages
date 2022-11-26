@@ -94,7 +94,7 @@ cd %{repo}-%{commit}
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-pushd %{repo}-%{commit}/Build/ompi_gnu_linux%{?arch_suffix}
+pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
@@ -128,7 +128,7 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/Build/ompi_gnu_linux%{?arch_suffix}/fds_ompi_gnu_linux%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
 %endif
 
