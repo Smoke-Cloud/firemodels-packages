@@ -1,4 +1,4 @@
-PROGRAM_NAME=fds
+PROGRAM_NAME=fds-exec
 # The default number of MPI processes is 1
 N_PROCESSES=1
 TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mkl -- "$@")
