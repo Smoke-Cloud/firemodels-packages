@@ -10,7 +10,7 @@ trap 'err_report $LINENO' ERR
 export OMP_NUM_THREADS=1
 
 test_fds() {
-    mkdir -p "test/$1" && cp "test-inputs/$1.fds" "test/$1/input.fds" && pushd "test/$1" && "fds-$1" 2 input.fds && popd
+    mkdir -p "test/$1" && cp "test-inputs/$1.fds" "test/$1/input.fds" && pushd "test/$1" && "fds-$1" -n 2 input.fds && popd
 }
 
 test_fds 5.5.3
