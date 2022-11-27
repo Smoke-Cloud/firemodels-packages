@@ -58,7 +58,6 @@ Requires: %{name}-common = %{version}-%{release}
 FDS with OpenMPI
 
 You will need to load the openmpi-%{_arch} module to setup your path properly.
-
 %endif
 
 %package intelmpi
@@ -88,7 +87,7 @@ cd %{repo}-%{commit}
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION=latest"
+    echo "VERSION=%{version}"
     echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
 } > ./fds-script

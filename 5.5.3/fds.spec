@@ -89,7 +89,7 @@ cd %{repo}-%{commit}
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION=latest"
+    echo "VERSION=%{version}"
     echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
 } > ./fds-script
@@ -97,7 +97,7 @@ cd %{repo}-%{commit}
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
+pushd %{repo}-%{commit}/FDS_Compilation/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu

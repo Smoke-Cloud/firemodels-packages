@@ -54,26 +54,25 @@ while true; do
 done
 set "$@"
 FDS_EXEC=$PROGRAM_NAME
-if [ "$USE_INTELMPI" = true ]; then
-        if [ "$USE_OPENMPI" = true ]; then
+if [ "$USE_OPENMPI" = true ]; then
+        if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
                 exit 2
         fi
-        module use /opt/intel/oneapi/modulefiles
-        module load mpi
-        FDS_EXEC=$FDS_EXEC-intelmpi
-fi
-if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_MKL" = true ]; then
                 echo "Cannot specify MKL and Open MPI simultaneously."
                 exit 2
         fi
         module load mpi
         FDS_EXEC=$FDS_EXEC-openmpi
-fi
-if [ "$USE_MKL" = true ]; then
+else
+        # Use Intel MPI by default.
         module use /opt/intel/oneapi/modulefiles
-        module load mkl
-        FDS_EXEC=$FDS_EXEC-mkl
+        module load mpi
+        FDS_EXEC=$FDS_EXEC-intelmpi
+        if [ "$USE_MKL" = true ]; then
+                module load mkl
+                FDS_EXEC=$FDS_EXEC-mkl
+        fi
 fi
 exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION"/"$FDS_EXEC" "$@"

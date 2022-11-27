@@ -87,7 +87,7 @@ cd %{repo}-%{commit}
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION=latest"
+    echo "VERSION=%{version}"
     echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
 } > ./fds-script

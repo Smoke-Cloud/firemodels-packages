@@ -87,7 +87,7 @@ cd %{repo}-%{commit}
 {
     echo "#!/bin/sh"
     echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION=latest"
+    echo "VERSION=%{version}"
     echo "LIBEXECDIR=%{_libexecdir}/fds"
     cat fds.sh
 } > ./fds-script
@@ -132,7 +132,6 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
 %endif
-
 
 # Install Intel MPI
 %{_intelmpi_load}
