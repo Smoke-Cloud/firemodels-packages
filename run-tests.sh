@@ -32,5 +32,7 @@ test_fds 6.7.4
 test_fds 6.7.5
 test_fds 6.7.6
 test_fds 6.7.7
+test_fds 6.7.8
+test_fds 6.7.9
 
 echo "tests run successfully"
