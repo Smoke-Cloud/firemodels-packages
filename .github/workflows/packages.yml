@@ -69,7 +69,12 @@ jobs:
       - name: Build RPM
         run: |
           cd ${{ matrix.fds-version }}
-          bash ../makerpm.sh --define "build_openmpi $build_openmpi"
+          if [ ${{ matrix.container }} = "rockylinux:8" ]
+          then
+            bash ../makerpm.sh --define 'build_openmpi 0'
+          else
+            bash ../makerpm.sh
+          fi
         env:
           build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
       - uses: actions/upload-artifact@v3
