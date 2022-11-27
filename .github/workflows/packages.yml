@@ -11,7 +11,7 @@ jobs:
         container:
           - "fedora:36"
           - "rockylinux:9"
-          # - "rockylinux:8"
+          - "rockylinux:8"
         fds-version:
           - "5.5.3"
           - "6.1.2"
@@ -69,7 +69,9 @@ jobs:
       - name: Build RPM
         run: |
           cd ${{ matrix.fds-version }}
-          bash ../makerpm.sh
+          bash ../makerpm.sh --define "build_openmpi $build_openmpi"
+        env:
+          build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
       - uses: actions/upload-artifact@v3
         with:
           name: FDS-RPMs
