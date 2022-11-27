@@ -48,6 +48,7 @@ Requires:       util-linux
 
 
 
+%if %{build_openmpi}
 %package openmpi
 Summary:        Fire Dynamics Simulator with OpenMPI
 BuildRequires: openmpi-devel(x86-64)
@@ -57,7 +58,7 @@ Requires: %{name}-common = %{version}-%{release}
 FDS with OpenMPI
 
 You will need to load the openmpi-%{_arch} module to setup your path properly.
-
+%endif
 
 %package intelmpi
 Summary:        Fire Dynamics Simulator with Intel MPI
@@ -92,6 +93,7 @@ cd %{repo}-%{commit}
 } > ./fds-script
 
 # Build OpenMPI version
+%if %{build_openmpi}
 %{_openmpi_load}
 pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
@@ -101,6 +103,7 @@ export commit=${full_commit:0:9}
 ./make_fds.sh
 popd
 %{_openmpi_unload}
+%endif
 
 # Build IntelMPI version
 %{_intelmpi_load}
@@ -124,10 +127,11 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 
 
 # Install OpenMPI version
+%if %{build_openmpi}
 %{_openmpi_load}
 install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
-
+%endif
 
 # Install Intel MPI
 %{_intelmpi_load}
@@ -137,8 +141,10 @@ install %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}/fds_%{intel_strin
 %files common
 %{_bindir}/fds-%{version}
 
+%if %{build_openmpi}
 %files openmpi
 %{_libexecdir}/fds/%{version}/fds-exec-openmpi
+%endif
 
 %files intelmpi
 %{_libexecdir}/fds/%{version}/fds-exec-intelmpi
