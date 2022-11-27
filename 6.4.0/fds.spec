@@ -34,7 +34,7 @@ Patch0:         backports.patch
 Patch1:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
-Requires: %{name}-common = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 
 %description
 FDS
@@ -54,7 +54,7 @@ Requires:       util-linux
 Summary:        Fire Dynamics Simulator with OpenMPI
 BuildRequires: openmpi-devel(x86-64)
 Requires: openmpi(x86-64)
-Requires: %{name}-common = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 %description openmpi
 FDS with OpenMPI
 
@@ -68,7 +68,7 @@ BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
-Requires:       %{name}-common = %{version}-%{release}
+Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
 
