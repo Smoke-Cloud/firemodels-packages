@@ -52,12 +52,8 @@ jobs:
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: General update
         run: dnf update -y --refresh
-      - name: Enable epel
-        run: dnf install -y epel-release || true
-      - name: Install Lmod
-        run: dnf install -y Lmod || true
-      - name: Install Lmod 2
-        run: dnf install -y Lmod --enablerepo powertools || true
+      - name: Install environment-modules
+        run: dnf install -y environment-modules
       - name: Install prerequisites
         run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make
       - name: Install fedora libxcrypt-compat
