@@ -1,11 +1,4 @@
-%global commit  71f02560677bb87dace8c81f2e5b817d24e70c46
-%global repo    fds
-%global this_version 6.7.5
-%global version_suffix %{this_version}
-%global arch_suffix _64
-%{!?build_openmpi:%global build_openmpi 0}
-%global gnu_string mpi_gnu_linux
-%global intel_string impi_intel_linux
+
 %global this_release 2
 
 #TODO: this isn't as clean as the openmpi version
@@ -30,7 +23,8 @@ Summary:        Fire Dynamics Simulator
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Source1:        fds.sh.zip
-Patch0:         version.patch
+Patch0:         backports.patch
+Patch1:         version.patch
 Url:            https://pages.nist.gov/fds-smv
 
 Requires: %{name}-common = %{version}-%{release}
@@ -52,6 +46,7 @@ Requires:       util-linux
 %package openmpi
 Summary:        Fire Dynamics Simulator with OpenMPI
 BuildRequires: openmpi-devel(x86-64)
+BuildRequires: make
 Requires: openmpi(x86-64)
 Requires: %{name}-common = %{version}-%{release}
 %description openmpi
@@ -65,6 +60,7 @@ Summary:        Fire Dynamics Simulator with Intel MPI
 BuildRequires:  intel-oneapi-mpi-devel
 BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
+BuildRequires:  make
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
 Requires:       %{name}-common = %{version}-%{release}
@@ -77,6 +73,7 @@ FDS with IntelMPI
 %setup -qc -a 1
 cd %{repo}-%{commit}
 %patch0 -p1
+%patch1 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
@@ -95,7 +92,7 @@ cd %{repo}-%{commit}
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-pushd %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}
+pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
@@ -107,7 +104,7 @@ popd
 
 # Build IntelMPI version
 %{_intelmpi_load}
-pushd %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}
+pushd %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=intelmpi
 export compiler=intel
@@ -129,13 +126,13 @@ install fds-script %{buildroot}/%{_bindir}/fds-%{version}
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/Build/%{gnu_string}%{?arch_suffix}/fds_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
+install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-openmpi
 %{_openmpi_unload}
 %endif
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/Build/%{intel_string}%{?arch_suffix}/fds_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
+install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version}/fds-exec-intelmpi
 %{_intelmpi_unload}
 
 %files common
