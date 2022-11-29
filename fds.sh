@@ -75,4 +75,4 @@ else
                 FDS_EXEC=$FDS_EXEC-mkl
         fi
 fi
-exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION"/"$FDS_EXEC" "$@"
+exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION_DIR"/"$FDS_EXEC" "$@"
