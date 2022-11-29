@@ -11,3 +11,4 @@ test/
 */rpmbuild
 *.rpm
 */fds.spec
+dist/

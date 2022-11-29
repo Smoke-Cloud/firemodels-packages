@@ -1,7 +1,7 @@
 make-fedora version:
 	mkdir -p dist
 	cd {{version}} && bash ../makerpm.sh
-	cp {{version}}/rpmbuild/RPMS/*.rpm ../dist
+	cp {{version}}/rpmbuild/RPMS/x86_64/*.rpm dist
 
 install-fedora version:
 	dnf install -y dist/fds{{version}}*

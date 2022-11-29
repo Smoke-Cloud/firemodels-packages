@@ -60,6 +60,8 @@ Summary:        Fire Dynamics Simulator with Intel MPI
 BuildRequires:  intel-oneapi-mpi-devel
 BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
+# TODO: this is not always necessary
+BuildRequires:  intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
 BuildRequires:  make
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
