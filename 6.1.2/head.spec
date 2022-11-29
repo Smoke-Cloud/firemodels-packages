@@ -8,10 +8,10 @@
 %global intel_string mpi_intel_linux
 %global build_dir FDS_Compilation
 %global openmpi_build_command \
- dir=$(pwd)
- target=${dir##*/}
+ dir=$(pwd) \
+ target=${dir##*/} \
  make FCOMPL=mpifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
 %global intelmpi_build_command \
- dir=$(pwd)
- target=${dir##*/}
+ dir=$(pwd) \
+ target=${dir##*/} \
  make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"

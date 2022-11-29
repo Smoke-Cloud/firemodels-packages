@@ -8,10 +8,10 @@
 %global intel_string mpi_intel_linux
 %global build_dir Build
 %global openmpi_build_command \
- dir=$(pwd)
- target=${dir##*/}
+ dir=$(pwd) \
+ target=${dir##*/} \
  make MPIFORT=mpifort VPATH="../../Source" -f ../makefile "$target"
 %global intelmpi_build_command \
- dir=$(pwd)
- target=${dir##*/}
+ dir=$(pwd) \
+ target=${dir##*/} \
  make MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
