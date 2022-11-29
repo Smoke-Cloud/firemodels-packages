@@ -97,7 +97,7 @@ export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
 export commit=${full_commit:0:9}
-./make_fds.sh
+%{openmpi_build_command}
 popd
 %{_openmpi_unload}
 %endif
@@ -109,7 +109,7 @@ export full_commit=%{commit}
 export mpi=intelmpi
 export compiler=intel
 export commit=${full_commit:0:9}
-./make_fds.sh
+%{intelmpi_build_command}
 popd
 %{_intelmpi_unload}
 
