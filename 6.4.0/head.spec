@@ -6,6 +6,7 @@
 %{!?build_openmpi:%global build_openmpi 0}
 %global gnu_string mpi_gnu_linux
 %global intel_string mpi_intel_linux
+%global build_dir FDS_Compilation
 %global openmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
