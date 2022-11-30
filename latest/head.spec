@@ -1,9 +1,9 @@
 %global commit  ec52dee4274fcf994d358c8b0f883eec8f67e041
 %global repo    fds
 %global this_version 6.7.9
-%global version_suffix %{this_version}
-%global version_dir %{this_version}
-%global script_suffix -%{this_version}
+%global version_dir latest
+%undefine script_suffix
+%undefine version_suffix
 %undefine arch_suffix
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string ompi_gnu_linux
