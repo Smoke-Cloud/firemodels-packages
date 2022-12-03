@@ -1,14 +1,1 @@
-*.pkg.tar.zst
-/*/pkg
-/*/src
-*/*.zip
-*/fds.sh
-/*/*.part
-/*/*.tar.gz
-/*/fds
-/*/fds-smv_deprecated
-test/
-*/rpmbuild
-*.rpm
-*/fds.spec
 dist/

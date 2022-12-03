@@ -85,4 +85,4 @@ jobs:
         with:
           name: CFAST-RPMs
           path: |
-            cfast/build/${{ matrix.cfast-version }}/rpmbuild/RPMS/*/*.rpm
+            dist/*.rpm

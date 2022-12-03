@@ -55,7 +55,7 @@ jobs:
       - name: Install environment-modules
         run: dnf install -y environment-modules
       - name: Install prerequisites
-        run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make
+        run: dnf install -y git gcc kmod openssl-devel rpmdevtools make
       - name: Install fedora libxcrypt-compat
         run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
@@ -79,7 +79,7 @@ jobs:
         with:
           name: FDS-RPMs
           path: |
-            fds/build/${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
+            dist/*.rpm
   build-deb:
     name: Build deb
     if: false
