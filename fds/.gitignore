@@ -1,0 +1,2 @@
+build/*/rpmbuild/
+build/*/fds.spec

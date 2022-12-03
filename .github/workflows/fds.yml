@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: Continuous integration
+name: FDS
 
 jobs:
   build-rpm:
@@ -10,29 +10,29 @@ jobs:
       matrix:
         container:
           - "fedora:36"
-          - "rockylinux:9"
-          - "rockylinux:8"
+          # - "rockylinux:9"
+          # - "rockylinux:8"
         fds-version:
           - "5.5.3"
-          - "6.1.2"
-          - "6.2.0"
-          - "6.3.0"
-          - "6.3.1"
-          - "6.3.2"
-          - "6.4.0"
-          - "6.5.0"
-          - "6.5.1"
-          - "6.5.2"
-          - "6.5.3"
-          - "6.6.0"
-          - "6.7.0"
-          - "6.7.1"
-          - "6.7.3"
-          - "6.7.4"
-          - "6.7.5"
-          - "6.7.6"
-          - "6.7.7"
-          - "6.7.8"
+          # - "6.1.2"
+          # - "6.2.0"
+          # - "6.3.0"
+          # - "6.3.1"
+          # - "6.3.2"
+          # - "6.4.0"
+          # - "6.5.0"
+          # - "6.5.1"
+          # - "6.5.2"
+          # - "6.5.3"
+          # - "6.6.0"
+          # - "6.7.0"
+          # - "6.7.1"
+          # - "6.7.3"
+          # - "6.7.4"
+          # - "6.7.5"
+          # - "6.7.6"
+          # - "6.7.7"
+          # - "6.7.8"
           - "6.7.9"
           - "latest"
     container: ${{ matrix.container }}
@@ -64,12 +64,13 @@ jobs:
       - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |
-          cd ${{ matrix.fds-version }}
+          mkdir -p fds/build/${{ matrix.fds-version }}
+          cd fds/build/${{ matrix.fds-version }}
           if [ ${{ matrix.container }} = "rockylinux:8" ]
           then
-            bash ../makerpm.sh --define 'build_openmpi 0'
+            bash ../../makerpm.sh --define 'build_openmpi 0'
           else
-            bash ../makerpm.sh
+            bash ../../makerpm.sh
           fi
         env:
           build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
@@ -77,7 +78,7 @@ jobs:
         with:
           name: FDS-RPMs
           path: |
-            ${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
+            fds/build/${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
   build-deb:
     name: Build deb
     if: false
