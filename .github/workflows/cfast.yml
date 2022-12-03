@@ -57,6 +57,7 @@ jobs:
         run: dnf install -y procps || true
       - name: Install prerequisites
         run: dnf install -y git gcc-gfortran rpmdevtools make intel-oneapi-compiler-fortran
+      - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |
           cd cfast
