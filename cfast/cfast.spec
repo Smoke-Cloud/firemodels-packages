@@ -1,7 +1,7 @@
 
-%global commit  1a0cb7865104e6d45573cb04f137d5a1e0368081
+%global commit  31ef0951cd827fb7f08b090b716a00f6288c8eb5
 %global repo    cfast
-%global this_version 6.1.1
+%global this_version 7.2.3
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}
@@ -30,7 +30,7 @@
  module unload mpi;
 
 Name:           cfast
-Version:        6.1.1
+Version:        7.2.3
 Release:        %{this_release}%{?dist}
 Summary:        CFAST
 
@@ -45,7 +45,6 @@ BuildRequires: make
 
 %prep
 %setup -qc
-%setup -qc -a 1
 cd %{repo}-%{commit}
 
 %global __brp_check_rpaths %{nil}
@@ -64,11 +63,10 @@ popd
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/%{_bindir}
-install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_bindir}/cfast
+install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast7_linux%{?arch_suffix} %{buildroot}/%{_bindir}/cfast
 
 %files
-%{buildroot}/%{_bindir}/cfast
+%{_bindir}/cfast
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.1.1-2
