@@ -10,15 +10,15 @@ jobs:
       matrix:
         container:
           - "fedora:36"
-          - "rockylinux:9"
-          - "rockylinux:8"
+          # - "rockylinux:9"
+          # - "rockylinux:8"
         cfast-version:
           # - "7.0.0"
           - "7.0.1"
           - "7.1.0"
           - "7.1.1"
           - "7.1.2"
-          - "7.2.0"
+          # - "7.2.0"
           - "7.2.1"
           - "7.2.2"
           - "7.2.3"
