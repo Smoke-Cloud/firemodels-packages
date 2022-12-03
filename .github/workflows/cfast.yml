@@ -77,12 +77,12 @@ jobs:
       - name: Build RPM
         run: |
           export version=${{ matrix.cfast-version }}
-          export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
-          export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
+          export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' cfast/versions.csv)
+          export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' cfast/versions.csv)
           cd cfast/$version
           ../buildrpm.sh $version $commit $date
       - uses: actions/upload-artifact@v3
         with:
           name: CFAST-RPMs
           path: |
-            ${{ matrix.cfast-version }}/rpmbuild/RPMS/*/*.rpm
+            cfast/${{ matrix.cfast-version }}/rpmbuild/RPMS/*/*.rpm

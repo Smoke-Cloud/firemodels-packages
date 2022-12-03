@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+set -euxo pipefail
 export QA_RPATHS=7
-mkdir -p $1
-cd $1
-export version=$1
-export rev=$2
-export revision_date=$3
+mkdir -p "$1"
+cd "$1"
+export version="$1"
+export rev="$2"
+export revision_date="$3"
 shift 3
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 cp ../version.patch rpmbuild/SOURCES || true
@@ -21,4 +22,4 @@ rpmbuild -ba cfast.spec \
     --define "revision_date ${revision_date}" \
     "$@"
 mkdir -p ../dist
-cp rpmbuild/RPMS/$(rpmbuild --eval "%{_arch}")/*.rpm ../dist/
+cp rpmbuild/RPMS/"$(rpmbuild --eval '%{_arch}')"/*.rpm ../dist/
