@@ -76,9 +76,10 @@ jobs:
       #     build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
       - name: Build RPM
         run: |
+          cd cfast
           export version=${{ matrix.cfast-version }}
-          export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' cfast/versions.csv)
-          export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' cfast/versions.csv)
+          export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
+          export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
           ./buildrpm.sh $version $commit $date
       - uses: actions/upload-artifact@v3
         with:
