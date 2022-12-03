@@ -64,16 +64,19 @@ jobs:
       - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |
-          mkdir -p fds/build/${{ matrix.fds-version }}
-          cd fds/build/${{ matrix.fds-version }}
-          pwd
-          ls
-          ls ../../
+          cd fds
+          export version=${{ matrix.fds-version }}
+          export repo=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
+          export commit=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
+          export date=$(awk -F, -v version="$version" '$1 == version { print $4; exit }' versions.csv)
+          export version_patch=$(awk -F, -v version="$version" '$1 == version { print $5; exit }' versions.csv)
+          export backports_patch=$(awk -F, -v version="$version" '$1 == version { print $6; exit }' versions.csv)
+          ./buildrpm.sh $version $commit $date $version_patch
           if [ "${{ matrix.container }}" = "rockylinux:8" ]
           then
-            bash ../../makerpm.sh --define 'build_openmpi 0'
+            bash ../../makerpm.sh $version $repo $commit $date $version_patch $backports_patch --define 'build_openmpi 0'
           else
-            bash ../../makerpm.sh
+            bash./buldrpm.sh $version $repo $commit $date $version_patch $backports_patch
           fi
       - uses: actions/upload-artifact@v3
         with:
