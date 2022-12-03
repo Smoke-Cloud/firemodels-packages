@@ -1,0 +1,64 @@
+on: [push, pull_request]
+
+name: CFAST
+
+jobs:
+  build-rpm:
+    name: Build RPM
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - "fedora:36"
+          - "rockylinux:9"
+          - "rockylinux:8"
+        cfast-version:
+          - "7.2.3"
+          # - "latest"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v3
+      # - name: Add intel RPM repo
+      #   run: |
+      #     tee > /tmp/oneAPI.repo << EOF
+      #     [oneAPI]
+      #     name=Intel® oneAPI repository
+      #     baseurl=https://yum.repos.intel.com/oneapi
+      #     enabled=1
+      #     gpgcheck=1
+      #     repo_gpgcheck=1
+      #     gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+      #     EOF
+      #     mv /tmp/oneAPI.repo /etc/yum.repos.d
+      # - name: General update
+      #   run: dnf update -y --refresh
+      # - name: Install environment-modules
+      #   run: dnf install -y environment-modules
+      # - name: Install prerequisites
+      #   run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make
+      # - name: Install fedora libxcrypt-compat
+      #   run: dnf install -y libxcrypt-compat || true
+      # - name: Install fedora procps
+      #   run: dnf install -y procps || true
+      # - run: dnf install -y intel-oneapi-mpi-devel intel-oneapi-mkl-devel intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic openmpi-devel
+      # - run: /opt/intel/oneapi/modulefiles-setup.sh
+      # - name: Build RPM
+      #   run: |
+      #     cd ${{ matrix.fds-version }}
+      #     if [ ${{ matrix.container }} = "rockylinux:8" ]
+      #     then
+      #       bash ../makerpm.sh --define 'build_openmpi 0'
+      #     else
+      #       bash ../makerpm.sh
+      #     fi
+      #   env:
+      #     build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
+      - name: Build RPM
+        run: |
+          cd cfast/${{ matrix.cfast-version }}
+          ../buildrpm.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: CFAST-RPMs
+          path: |
+            ${{ matrix.cfast-version }}/rpmbuild/RPMS/*/*.rpm
