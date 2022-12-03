@@ -1,0 +1,38 @@
+diff --git a/Build/CFAST/makefile b/Build/CFAST/makefile
+index 90d67b8ff..aa45fb8b4 100644
+--- a/Build/CFAST/makefile
++++ b/Build/CFAST/makefile
+@@ -20,11 +20,11 @@ ifeq ($(shell echo "check_quotes"),"check_quotes")
+ else
+ # linux/osx
+   GIT_HASH := $(shell git describe --long --dirty)
+-  GIT_DATE := $(shell git log -1 --format=%cd)
+-  BUILD_DATE := $(shell date "+%b %d, %Y  %T")
++  GIT_DATE := $(shell date "+%b %d, %Y  %T" --date='@${REVISION_DATE}')
++  BUILD_DATE := $(shell date "+%b %d, %Y  %T" --date='@${SOURCE_DATE_EPOCH}')
+ endif
+ 
+-GITINFO_BASE=-DGITHASH_PP=\"$(GIT_HASH)\" -DGITDATE_PP=\""$(GIT_DATE)\""  -DVERSION_PP=\""$(VERSION)\""
++GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
+ GITINFO=-fpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ GITINFOGNU=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ 
+--- a/Source/CFAST/solve.f90
++++ b/Source/CFAST/solve.f90
+@@ -597,7 +597,8 @@ module solve_routines
+                 end do
+                 info2(2) = 1
+                 told = t
+-                call ddassl (calculate_residuals,n_odes,t,p,pprime,tdout,info2,vrtol,vatol,idid,rwork,lrwork,iwork,liw,rpar,ipar,jac)
++                call ddassl (calculate_residuals,n_odes,t,p,pprime,tdout,info2,vrtol,vatol,idid,rwork,lrwork,iwork,liw,&
++                    rpar,ipar,jac)
+ 
+                 ! make sure dassl is happy (again)
+                 if (idid<0) then
+@@ -1645,4 +1646,4 @@ module solve_routines
+ 
+     end subroutine update_data
+ 
+-end module solve_routines
+\ No newline at end of file
++end module solve_routines

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
-while IFS="," read -r version rev date
+while IFS="," read -r version commit date version_patch
 do
-   echo "Record is : $version - $rev - $date"
-   ./buildrpm.sh "$version" "$rev" "$date"
+   echo "Record is : $version - $commit - $date" "$version_patch"
+   ./buildrpm.sh "$version" "$commit" "$date" "$version_patch"
 done < <(tail -n +2 versions.csv)

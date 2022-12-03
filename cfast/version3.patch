@@ -1,0 +1,21 @@
+diff --git a/CFAST/makefile b/CFAST/makefile
+index 74bb78f48..439e25a27 100644
+--- a/CFAST/makefile
++++ b/CFAST/makefile
+@@ -19,12 +19,12 @@ ifeq ($(shell echo "check_quotes"),"check_quotes")
+ else
+ # linux/osx
+   GIT_HASH := $(shell git describe --long --dirty)
+-  GIT_DATE := $(shell git log -1 --format=%cd)
+-  BUILD_DATE := $(shell date "+%b %d, %Y  %T")
++  GIT_DATE := $(shell date "+%b %d, %Y  %T" --date='@${REVISION_DATE}')
++  BUILD_DATE := $(shell date "+%b %d, %Y  %T" --date='@${SOURCE_DATE_EPOCH}')
+ endif
+ 
+-GITINFO_BASE=-DGITHASH_PP=\"$(GIT_HASH)\" -DGITDATE_PP=\""$(GIT_DATE)\""
+-GITINFO=-fpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
++GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
++GITINFO=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ GITINFOGNU=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ 
+ 

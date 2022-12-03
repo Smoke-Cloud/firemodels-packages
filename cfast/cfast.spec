@@ -2,11 +2,18 @@
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}
-%global arch_suffix _64
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string gnu_linux
 %global intel_string intel_linux
-%global build_dir Build/CFAST
+%if "%{this_version}" <= "7.0.1"
+    %global build_dir CFAST
+%else
+    %global build_dir Build/CFAST
+%endif
+%if "%{this_version}" >= "7.0.1"
+    %global arch_suffix _64
+%else
+%endif
 %global openmpi_build_command ./make_cfast.sh
 %global intelmpi_build_command ./make_cfast.sh
 
@@ -33,7 +40,7 @@ Summary:        CFAST
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
-Patch0:         version.patch
+Patch0:         %{version_patch}
 Url:            https://pages.nist.gov/cfast
 
 %description
@@ -56,6 +63,7 @@ export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
 export commit=${full_commit:0:9}
+export build_version=%{this_version}
 export REVISION_DATE=%{revision_date}
 %{openmpi_build_command}
 popd

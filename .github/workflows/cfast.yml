@@ -13,7 +13,6 @@ jobs:
           - "rockylinux:9"
           - "rockylinux:8"
         cfast-version:
-          - "6.1.1"
           - "7.0.0"
           - "7.0.1"
           - "7.1.0"
@@ -24,7 +23,7 @@ jobs:
           - "7.2.2"
           - "7.2.3"
           - "7.2.4"
-          # - "7.3.0"
+          - "7.3.0"
           - "7.3.1"
           - "7.4.0"
           - "7.4.2"
@@ -80,7 +79,8 @@ jobs:
           export version=${{ matrix.cfast-version }}
           export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
           export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
-          ./buildrpm.sh $version $commit $date
+          export version_patch=$(awk -F, -v version="$version" '$1 == version { print $4; exit }' versions.csv)
+          ./buildrpm.sh $version $commit $date $version_patch
       - uses: actions/upload-artifact@v3
         with:
           name: CFAST-RPMs
