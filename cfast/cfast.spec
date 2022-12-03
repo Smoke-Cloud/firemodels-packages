@@ -1,12 +1,8 @@
-
-%global commit  31ef0951cd827fb7f08b090b716a00f6288c8eb5
 %global repo    cfast
-%global this_version 7.2.3
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}
 %global arch_suffix _64
-%global revision_date 1502462675
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string gnu_linux
 %global intel_string intel_linux
@@ -31,7 +27,7 @@
  module unload mpi;
 
 Name:           cfast
-Version:        7.2.3
+Version:        %{this_version}
 Release:        %{this_release}%{?dist}
 Summary:        CFAST
 
@@ -73,7 +69,7 @@ install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast7_li
 %{_bindir}/cfast
 
 %changelog
-* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.1.1-2
+* Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{this_version}-2
 - Correct embedded version information
-* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - 6.1.1-1
+* Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - %{this_version}-1
 - Initial package
