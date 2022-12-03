@@ -1,5 +1,3 @@
-diff --git a/FDS_Compilation/makefile b/FDS_Compilation/makefile
-index 8c7116292..892527547 100644
 --- a/FDS_Compilation/makefile
 +++ b/FDS_Compilation/makefile
 @@ -19,14 +19,14 @@ ifeq ($(shell echo "check_quotes"),"check_quotes")
@@ -17,7 +15,7 @@ index 8c7116292..892527547 100644
  endif
  
 -GITINFO_BASE=-DGITHASH_PP=\"$(GIT_HASH)\" -DGITDATE_PP=\""$(GIT_DATE)\""
-+GITINFO_BASE=-DGITHASH_PP=\"6.5.0+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
++GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
  GITINFO=-fpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
  GITINFOGNU=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
  GITINFOXLF=-qsuffix=cpp=f90 '-WF,-DGITHASH_PP=\"$(GIT_HASH)\",-DGITDATE_PP=\"$(GIT_DATE)\",-DBUILDDATE_PP=\"$(BUILD_DATE_XLF)\"'

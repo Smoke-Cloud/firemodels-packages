@@ -123,8 +123,14 @@ jobs:
       - run: sudo apt-get install -y intel-oneapi-mpi intel-oneapi-mkl intel-oneapi-compiler-fortran
       - name: Build deb
         run: |
-          cd ${{ matrix.fds-version }}/deb
-          bash build_debian.sh
+          export version=${{ matrix.fds-version }}
+          export repo=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
+          export commit=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
+          export date=$(awk -F, -v version="$version" '$1 == version { print $4; exit }' versions.csv)
+          export version_patch=$(awk -F, -v version="$version" '$1 == version { print $5; exit }' versions.csv)
+          export backports_patch=$(awk -F, -v version="$version" '$1 == version { print $6; exit }' versions.csv)
+          cd fds/build/${{ matrix.fds-version }}/deb
+          ../../build_debian.sh $version $repo $commit
       - uses: actions/upload-artifact@v3
         with:
           name: FDS-DEBs
