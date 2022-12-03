@@ -13,7 +13,7 @@ jobs:
           - "rockylinux:9"
           - "rockylinux:8"
         cfast-version:
-          - "7.0.0"
+          # - "7.0.0"
           - "7.0.1"
           - "7.1.0"
           - "7.1.1"
