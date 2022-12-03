@@ -66,14 +66,15 @@ jobs:
         run: |
           mkdir -p fds/build/${{ matrix.fds-version }}
           cd fds/build/${{ matrix.fds-version }}
-          if [ ${{ matrix.container }} = "rockylinux:8" ]
+          pwd
+          ls
+          ls ../../
+          if [ "${{ matrix.container }}" = "rockylinux:8" ]
           then
             bash ../../makerpm.sh --define 'build_openmpi 0'
           else
             bash ../../makerpm.sh
           fi
-        env:
-          build_openmpi: ${{ matrix.container == 'rockylinux:8' }}
       - uses: actions/upload-artifact@v3
         with:
           name: FDS-RPMs
@@ -127,51 +128,3 @@ jobs:
           name: FDS-DEBs
           path: |
             ${{ matrix.fds-version }}/deb/*.deb
-  build-arch:
-    name: Build Arch Linux package
-    if: false
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container: ["archlinux:base-devel"]
-        fds-version:
-          # - "5.5.3"
-          - "6.1.2"
-          - "6.2.0"
-          - "6.3.0"
-          - "6.3.1"
-          - "6.3.2"
-          - "6.4.0"
-          - "6.5.0"
-          - "6.5.1"
-          - "6.5.2"
-          - "6.5.3"
-          - "6.6.0"
-          - "6.7.0"
-          - "6.7.1"
-          - "6.7.3"
-          - "6.7.4"
-          - "6.7.5"
-          - "6.7.6"
-          - "6.7.7"
-          - "6.7.8"
-          - "6.7.9"
-          - "latest"
-    container: ${{ matrix.container }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install prerequisites
-        run: pacman -Sy --noconfirm wget git
-      - run: ./install-oneapi.sh
-      - name: Build Package
-        run: |
-          useradd builder
-          cd ${{ matrix.fds-version }}
-          chown -R builder:builder .
-          cp ../fds.sh .
-          su builder -c "makepkg -f"
-      - uses: actions/upload-artifact@v3
-        with:
-          name: FDS-Arch
-          path: |
-            ${{ matrix.fds-version }}/*.zst
