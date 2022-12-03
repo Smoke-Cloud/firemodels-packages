@@ -37,10 +37,11 @@ Summary:        CFAST
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
 Patch0:         %{version_patch}
+Patch1:         %{backports_patch}
 Url:            https://pages.nist.gov/cfast
 
 %description
-CAST
+CFAST
 
 BuildRequires: make
 BuildRequires:  intel-oneapi-compiler-fortran
@@ -49,6 +50,7 @@ BuildRequires:  intel-oneapi-compiler-fortran
 %setup -qc
 cd %{repo}-%{commit}
 %patch0 -p1
+%patch1 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}

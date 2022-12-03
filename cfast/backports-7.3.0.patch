@@ -1,0 +1,18 @@
+--- a/Source/CFAST/input.f90
++++ b/Source/CFAST/input.f90
+@@ -421,7 +421,7 @@
+     ! set up any specified slice or iso files
+     call setup_slice_iso
+ 
+-    close (iofili)
++    ! close (iofili)
+     return
+ 
+ 5022 format ('***Error: Initial temperature outside of allowable range (-50 to +100)',f5.2)
+@@ -790,4 +790,4 @@
+ 
+     end subroutine set_grid
+ 
+-    end module input_routines
+\ No newline at end of file
++    end module input_routines
