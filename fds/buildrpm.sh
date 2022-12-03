@@ -31,4 +31,5 @@ rpmbuild -ba fds.spec \
     --define "revision_date ${revision_date}" \
     --define "version_patch ${version_patch}" \
      "$@"
-
+mkdir -p ../../../dist
+cp rpmbuild/RPMS/"$(rpmbuild --eval '%{_arch}')"/*.rpm ../../../dist/
