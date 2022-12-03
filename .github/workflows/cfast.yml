@@ -34,8 +34,8 @@ jobs:
       #   run: dnf update -y --refresh
       # - name: Install environment-modules
       #   run: dnf install -y environment-modules
-      # - name: Install prerequisites
-      #   run: dnf install -y git gcc kmod openssl-devel cargo rpmdevtools make
+      - name: Install prerequisites
+        run: dnf install -y git gcc-gfortran rpmdevtools make
       # - name: Install fedora libxcrypt-compat
       #   run: dnf install -y libxcrypt-compat || true
       # - name: Install fedora procps
