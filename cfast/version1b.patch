@@ -1,0 +1,33 @@
+diff --git a/Build/CFAST/makefile b/Build/CFAST/makefile
+index 90d67b8ff..aa45fb8b4 100644
+--- a/Build/CFAST/makefile
++++ b/Build/CFAST/makefile
+@@ -20,11 +20,11 @@ ifeq ($(shell echo "check_quotes"),"check_quotes")
+ else
+ # linux/osx
+   GIT_HASH := $(shell git describe --long --dirty)
+-  GIT_DATE := $(shell git log -1 --format=%cd)
+-  BUILD_DATE := $(shell date "+%b %d, %Y  %T")
++  GIT_DATE := $(shell date "+%b %d, %Y  %T" --date='@${REVISION_DATE}')
++  BUILD_DATE := $(shell date "+%b %d, %Y  %T" --date='@${SOURCE_DATE_EPOCH}')
+ endif
+ 
+-GITINFO_BASE=-DGITHASH_PP=\"$(GIT_HASH)\" -DGITDATE_PP=\""$(GIT_DATE)\""  -DVERSION_PP=\""$(VERSION)\""
++GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
+ GITINFO=-fpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ GITINFOGNU=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
+ 
+diff --git a/Source/CFAST/output.f90 b/Source/CFAST/output.f90
+index 93ac8f053..d94203562 100644
+--- a/Source/CFAST/output.f90
++++ b/Source/CFAST/output.f90
+@@ -764,7 +764,8 @@ module output_routines
+         end do
+     end if
+ 5030 format (//,'There are no vertical natural flow connections')
+-5040 format (//,'Vertical Natural Flow Connections (Ceiling, ...)',//,'Top            Bottom         Vent    Shape     Area      ', &
++5040 format (//,'Vertical Natural Flow Connections (Ceiling, ...)',//,&
++        'Top            Bottom         Vent    Shape     Area      ', &
+         'Open/Close  Trigger                 Initial     Initial     Final       Final',/, &
+         'Compartment    Compartment    Number                      Type        Value       Target      Time        ',&
+         'Fraction    Time        Fraction',/, &
