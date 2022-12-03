@@ -24,7 +24,7 @@ jobs:
           - "7.2.2"
           - "7.2.3"
           - "7.2.4"
-          - "7.3.0"
+          # - "7.3.0"
           - "7.3.1"
           - "7.4.0"
           - "7.4.2"
@@ -79,8 +79,7 @@ jobs:
           export version=${{ matrix.cfast-version }}
           export commit=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' cfast/versions.csv)
           export date=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' cfast/versions.csv)
-          cd cfast/$version
-          ../buildrpm.sh $version $commit $date
+          ./buildrpm.sh $version $commit $date
       - uses: actions/upload-artifact@v3
         with:
           name: CFAST-RPMs
