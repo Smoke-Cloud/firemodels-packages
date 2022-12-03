@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install prerequisites
-        run: dnf install -y git gcc-gfortran rpmdevtools make
+        run: dnf install -y git gcc-gfortran rpmdevtools make intel-oneapi-compiler-fortran
       - name: Build RPM
         run: |
           cd cfast
