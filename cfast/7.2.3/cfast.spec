@@ -6,6 +6,7 @@
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}
 %global arch_suffix _64
+%global revision_date 1502462675
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string gnu_linux
 %global intel_string intel_linux
@@ -36,6 +37,7 @@ Summary:        CFAST
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
+Patch0:         version.patch
 Url:            https://pages.nist.gov/cfast
 
 %description
@@ -46,6 +48,7 @@ BuildRequires: make
 %prep
 %setup -qc
 cd %{repo}-%{commit}
+%patch0 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
@@ -57,6 +60,7 @@ export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
 export commit=${full_commit:0:9}
+export REVISION_DATE=%{revision_date}
 %{openmpi_build_command}
 popd
 

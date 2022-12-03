@@ -1,5 +1,6 @@
 #!/bin/sh
 export QA_RPATHS=7
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+cp version.patch rpmbuild/SOURCES || true
 spectool -g cfast.spec -C rpmbuild/SOURCES --all
 rpmbuild -ba cfast.spec --define "_topdir $(pwd)/rpmbuild" "$@"
