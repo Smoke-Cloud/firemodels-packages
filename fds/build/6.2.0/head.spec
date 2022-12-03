@@ -1,6 +1,3 @@
-%global commit  a16945293f61e4de274c9bd714ceca40bb0a2028
-%global repo    fds
-%global this_version 6.2.0
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}

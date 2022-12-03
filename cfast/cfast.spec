@@ -33,7 +33,7 @@
  module unload compiler \
  module unload mpi;
 
-Name:           cfast
+Name:           cfast%{?version_suffix}
 Version:        %{this_version}
 Release:        %{this_release}%{?dist}
 Summary:        CFAST
@@ -71,10 +71,10 @@ popd
 
 %install
 rm -rf %{buildroot}
-install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast7_linux%{?arch_suffix} %{buildroot}/%{_bindir}/cfast
+install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast7_linux%{?arch_suffix} %{buildroot}/%{_bindir}/cfast%{?version_suffix}
 
 %files
-%{_bindir}/cfast
+%{_bindir}/cfast%{?version_suffix}
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{this_version}-2

@@ -1,6 +1,3 @@
-%global commit  f7f414800cb6e0829433ad150b0da71d4074ed9d
-%global repo    fds-smv_deprecated
-%global this_version 6.3.0
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
 %global script_suffix -%{this_version}

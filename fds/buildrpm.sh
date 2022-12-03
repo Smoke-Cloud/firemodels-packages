@@ -4,25 +4,31 @@ export QA_RPATHS=7
 mkdir -p build/"$1"
 cd build/"$1"
 export version="$1"
-export commit="$2"
-export revision_date="$3"
-export version_patch="$4"
-shift 4
+export repo="$2"
+export commit="$3"
+export revision_date="$4"
+export version_patch="$5"
+export backports_patch="$6"
+shift 6
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-cp ../../"$version_patch" rpmbuild/SOURCES || true
-cp ../../cfast.spec .
-spectool -g cfast.spec -C rpmbuild/SOURCES --all \
+rm rpmbuild/SOURCES/fds.sh.zip || true
+zip rpmbuild/SOURCES/fds.sh.zip ../../fds.sh
+cp ../../"$backports_patch" rpmbuild/SOURCES || true
+cp ../../"$version_patch"  rpmbuild/SOURCES || true
+cat head.spec ../../template.spec > fds.spec
+spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "_topdir $(pwd)/rpmbuild" \
     --define="this_version ${version}" \
+    --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
     --define "version_patch ${version_patch}"
-rpmbuild -ba cfast.spec \
+rpmbuild -ba fds.spec \
     --define "_topdir $(pwd)/rpmbuild" \
     --define="this_version ${version}" \
+    --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
     --define "version_patch ${version_patch}" \
-    "$@"
-mkdir -p ../../../dist
-cp rpmbuild/RPMS/"$(rpmbuild --eval '%{_arch}')"/*.rpm ../../../dist/
+     "$@"
+

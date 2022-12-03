@@ -99,6 +99,7 @@ export full_commit=%{commit}
 export mpi=openmpi
 export compiler=gnu
 export commit=${full_commit:0:9}
+export build_version=%{this_version}
 %{openmpi_build_command}
 popd
 %{_openmpi_unload}
@@ -111,6 +112,7 @@ export full_commit=%{commit}
 export mpi=intelmpi
 export compiler=intel
 export commit=${full_commit:0:9}
+export build_version=%{this_version}
 %{intelmpi_build_command}
 popd
 %{_intelmpi_unload}
