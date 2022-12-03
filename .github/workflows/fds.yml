@@ -74,9 +74,9 @@ jobs:
           ./buildrpm.sh $version $commit $date $version_patch
           if [ "${{ matrix.container }}" = "rockylinux:8" ]
           then
-            bash ../../makerpm.sh $version $repo $commit $date $version_patch $backports_patch --define 'build_openmpi 0'
+            bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch --define 'build_openmpi 0'
           else
-            bash./buldrpm.sh $version $repo $commit $date $version_patch $backports_patch
+            bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch
           fi
       - uses: actions/upload-artifact@v3
         with:
