@@ -1,4 +1,4 @@
 build/*/rpmbuild/
 build/*/fds.spec
-tests/
+test/
 build/

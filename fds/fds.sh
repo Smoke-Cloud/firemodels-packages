@@ -75,4 +75,9 @@ else
                 FDS_EXEC=$FDS_EXEC-mkl
         fi
 fi
+export I_MPI_COMPATIBILITY
+if [ "$VERSION_DIR" = "5.5.3" ]; then
+        # FDS 5 needs some MPI compatability options
+        I_MPI_COMPATIBILITY=4
+fi
 exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION_DIR"/"$FDS_EXEC" "$@"
