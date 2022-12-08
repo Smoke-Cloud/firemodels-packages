@@ -96,8 +96,8 @@ cd %{repo}-%{commit}
 %{_openmpi_load}
 pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
-export mpi=openmpi
-export compiler=gnu
+export mpi=.openmpi
+export compiler=.gnu
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 %{openmpi_build_command}
@@ -109,8 +109,9 @@ popd
 %{_intelmpi_load}
 pushd %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}
 export full_commit=%{commit}
-export mpi=intelmpi
-export compiler=intel
+export mpi=.intelmpi
+export compiler=.intel
+export mkl=.mkl
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 %{intelmpi_build_command}

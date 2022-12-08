@@ -15,7 +15,7 @@
  endif
  
 -GITINFO_BASE=-DGITHASH_PP=\"$(GIT_HASH)\" -DGITDATE_PP=\""$(GIT_DATE)\""
-+GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\""
++GITINFO_BASE=-DGITHASH_PP=\"$(build_version)+g$(commit)$(compiler)$(mpi)$(mkl)\" -DGITDATE_PP=\""$(GIT_DATE)\""
  GITINFO=-fpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
  GITINFOGNU=-cpp $(GITINFO_BASE) -DBUILDDATE_PP=\""$(BUILD_DATE)\""
  GITINFOXLF=-qsuffix=cpp=f90 '-WF,-DGITHASH_PP=\"$(GIT_HASH)\",-DGITDATE_PP=\"$(GIT_DATE)\",-DBUILDDATE_PP=\"$(BUILD_DATE_XLF)\"'

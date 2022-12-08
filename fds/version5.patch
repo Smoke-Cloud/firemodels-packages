@@ -1,13 +1,78 @@
+diff --git a/FDS_Compilation/makefile b/FDS_Compilation/makefile
+index d99aa827d..275866924 100644
+--- a/FDS_Compilation/makefile
++++ b/FDS_Compilation/makefile
+@@ -11,6 +11,8 @@
+ 
+ VPATH = ../FDS_Source
+ 
++GITINFO_BASE=-cpp -DGITHASH_PP=\"$(build_version)+g$(commit)$(compiler)$(mpi)$(mkl)\" -DGITDATE_PP=\""$(GIT_DATE)\""
++
+ # Definition of the non-MPI object variables
+ 
+ obj_serial = prec.o mpis.o cons.o devc.o data.o type.o mesh.o func.o smvv.o irad.o \
+@@ -138,7 +140,7 @@ intel_linux_64_profile : obj = fds_intel_linux_64_profile
+ intel_linux_64_profile : setup $(obj_serial)
+ 	$(FCOMPL) $(FFLAGS) $(LFLAGS) $(FOPENMPFLAGS) -o $(obj) $(obj_serial)
+ 
+-intel_linux_64 : FFLAGS = -m64 -O2 -ipo
++intel_linux_64 : FFLAGS = -m64 -O2 -ipo $(GITINFO_BASE)
+ intel_linux_64 : LFLAGS = -static-intel
+ intel_linux_64 : FCOMPL = ifort
+ intel_linux_64 : FOPENMPFLAGS = -openmp -openmp-link static -liomp5
+@@ -154,7 +156,7 @@ intel_linux_64_dv : obj = fds_intel_linux_64_dv
+ intel_linux_64_dv : setup $(obj_serial)
+ 	$(FCOMPL) $(FFLAGS) $(LFLAGS) $(FOPENMPFLAGS) -o $(obj) $(obj_serial)
+ 
+-impi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo -mt_mpi
++impi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo -mt_mpi $(GITINFO_BASE)
+ impi_intel_linux_64 : LFLAGS = -static-intel
+ impi_intel_linux_64 : FCOMPL = mpiifort
+ impi_intel_linux_64 : FOPENMPFLAGS = -openmp -openmp-link static -liomp5
+@@ -178,7 +180,7 @@ mpi1p4_intel_linux_64ib : obj = fds_mpi1p4_intel_linux_64ib
+ mpi1p4_intel_linux_64ib : setup $(obj_mpi)
+ 	$(FCOMPL) $(FFLAGS) $(LFLAGS) $(FOPENMPFLAGS) -o $(obj) $(obj_mpi)
+ 	
+-mpi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo
++mpi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo $(GITINFO_BASE)
+ mpi_intel_linux_64 : LFLAGS = -static-intel
+ mpi_intel_linux_64 : FCOMPL = mpifort
+ mpi_intel_linux_64 : FOPENMPFLAGS = 
+@@ -391,7 +393,7 @@ aix_mpi : $(obj_mpi)
+ 
+ #*** GNU Compilers ***
+ 
+-gnu_linux : FFLAGS = -O2
++gnu_linux : FFLAGS = -O2 $(GITINFO_BASE)
+ gnu_linux : FCOMPL = gfortran
+ gnu_linux : FOPENMPFLAGS = -fopenmp
+ gnu_linux : obj = fds_gnu_linux
+@@ -405,7 +407,7 @@ gnu_osx : obj     = fds_gnu_osx
+ gnu_osx : $(obj_serial)
+ 	$(FCOMPL) $(FFLAGS) $(FOPENMPFLAGS) -o $(obj) $(obj_serial)
+ 
+-mpi_gnu_linux : FFLAGS = -O2
++mpi_gnu_linux : FFLAGS = -O2 $(GITINFO_BASE)
+ mpi_gnu_linux : FCOMPL = mpifort
+ mpi_gnu_linux : FOPENMPFLAGS = 
+ mpi_gnu_linux : obj = fds_mpi_gnu_linux
 diff --git a/FDS_Source/main.f90 b/FDS_Source/main.f90
-index 4b7a8a90c..2e1106989 100644
+index 4b7a8a90c..0167ec116 100644
 --- a/FDS_Source/main.f90
 +++ b/FDS_Source/main.f90
-@@ -105,7 +105,7 @@ WALL_CLOCK_START = WALL_CLOCK_TIME()
+@@ -1,3 +1,6 @@
++#ifndef GITHASH_PP
++#define GITHASH_PP "unknown"
++#endif
+ PROGRAM FDS  
+ 
+ ! Fire Dynamics Simulator, Main Program, Multiple CPU version.
+@@ -105,7 +108,7 @@ WALL_CLOCK_START = WALL_CLOCK_TIME()
   
  ! Assign a compilation date (All Nodes)
  
 -WRITE(VERSION_STRING,'(A)') 'FDS 6.1.2'
-+WRITE(VERSION_STRING,'(A)') '6.1.2+g689afcd4c'
++WRITE(VERSION_STRING,'(A)') TRIM(GITHASH_PP)
  
  IF (INDEX(mainrev,':',BACK=.TRUE.)>0) THEN
     WRITE(REVISION_DATE,'(A)',IOSTAT=IOS,ERR=5) mainrev(INDEX(mainrev,':')+2:LEN_TRIM(mainrev)-2)
