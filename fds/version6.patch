@@ -216,6 +216,19 @@ index 8d9abec77..0059c2903 100644
  mpi_gnu_linux_64 : CFLAGS = -m64 -O2 -unroll
  mpi_gnu_linux_64 : FCOMPL = mpif77
  mpi_gnu_linux_64 : CCOMPL = mpicc 
+diff --git a/FDS_Source/cons.f90 b/FDS_Source/cons.f90
+index 51899fb0a..35110192d 100644
+--- a/FDS_Source/cons.f90
++++ b/FDS_Source/cons.f90
+@@ -80,7 +80,7 @@ CHARACTER(256) :: TERRAIN_IMAGE
+ 
+ ! Dates, version numbers, revision numbers
+ 
+-CHARACTER(20) :: COMPILE_DATE='null',VERSION_STRING='null'
++CHARACTER(256) :: COMPILE_DATE='null',VERSION_STRING='null'
+ REAL(FB) :: VERSION_NUMBER=5.0
+ INTEGER :: SVN_REVISION_NUMBER=0
+  
 diff --git a/FDS_Source/main.f90 b/FDS_Source/main.f90
 index e045187e4..81fd7c7dc 100644
 --- a/FDS_Source/main.f90
