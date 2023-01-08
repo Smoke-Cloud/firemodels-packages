@@ -64,12 +64,12 @@ if [ "$USE_OPENMPI" = true ]; then
                 exit 2
         fi
         module load mpi
-        FDS_EXEC=$FDS_EXEC-openmpi
+        FDS_EXEC=${FDS_EXEC}_openmpi
 else
         # Use Intel MPI by default.
         module use /opt/intel/oneapi/modulefiles
         module load mpi
-        FDS_EXEC=$FDS_EXEC-intelmpi
+        FDS_EXEC=${FDS_EXEC}_intelmpi
         if [ "$USE_MKL" = true ]; then
                 module load mkl
                 FDS_EXEC=$FDS_EXEC-mkl
