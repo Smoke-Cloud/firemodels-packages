@@ -55,6 +55,20 @@ FDS with OpenMPI
 You will need to load the openmpi-%{_arch} module to setup your path properly.
 %endif
 
+%if %{build_mpich}
+%package mpich
+Summary:        Fire Dynamics Simulator with OpenMPI
+BuildRequires: mpich-devel
+BuildRequires: make
+Requires: mpich
+Requires: %{name}-common = %{version}-%{release}
+%description mpich
+FDS with MPICH
+
+You will need to load the mpich-%{_arch} module to setup your path properly.
+%endif
+
+%if %{build_intelmpi}
 %package intelmpi
 Summary:        Fire Dynamics Simulator with Intel MPI
 BuildRequires:  intel-oneapi-mpi-devel
@@ -69,6 +83,15 @@ Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
 
+%endif
+
+%if %{build_docs}
+%package doc
+Summary:        FDS documentation
+Group:          Productivity/Scientific/Physics
+BuildArch:      noarch
+Requires:       %{name}-common = %{version}-%{release}
+%endif
 
 %prep
 %setup -qc
@@ -104,7 +127,22 @@ popd
 %{_openmpi_unload}
 %endif
 
+# Build MPICH version
+%if %{build_mpich}
+%{_mpich_load}
+pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
+export full_commit=%{commit}
+export mpi=.mpich
+export compiler=.gnu
+export commit=${full_commit:0:9}
+export build_version=%{this_version}
+%{openmpi_build_command}
+popd
+%{_mpich_unload}
+%endif
+
 # Build IntelMPI version
+%if %{build_intelmpi}
 %{_intelmpi_load}
 pushd %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}
 export full_commit=%{commit}
@@ -116,29 +154,42 @@ export build_version=%{this_version}
 %{intelmpi_build_command}
 popd
 %{_intelmpi_unload}
+%endif
+
+# Build docs
+%if %{build_docs}
+pushd %{repo}-%{commit}/Manuals
+./Build_Manuals.sh
+popd
+%endif
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}%{_libdir}/openmpi/bin
-mkdir -p %{buildroot}%{_libdir}/intelmpi/bin
 echo %{buildroot}/%{_bindir}
 
 # Install common
-install fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
-
+install -D fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
 
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
+install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
 %{_openmpi_unload}
 %endif
 
+# Install MPICH version
+%if %{build_mpich}
+%{_mpich_load}
+install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
+%{_mpich_unload}
+%endif
+
 # Install Intel MPI
+%if %{build_intelmpi}
 %{_intelmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
+install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
 %{_intelmpi_unload}
+%endif
 
 %files common
 %{_bindir}/fds%{?script_suffix}
@@ -148,8 +199,15 @@ install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?majo
 %{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
 %endif
 
+%if %{build_mpich}
+%files mpich
+%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
+%endif
+
+%if %{build_intelmpi}
 %files intelmpi
 %{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
+%endif
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2

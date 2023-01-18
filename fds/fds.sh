@@ -1,7 +1,7 @@
 PROGRAM_NAME=fds
 # The default number of MPI processes is 1
 N_PROCESSES=1
-TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mkl -- "$@")
+TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mpich,mkl -- "$@")
 
 if [ $? -ne 0 ]; then
         echo "Error parsing arguments. Try $PROGRAM_NAME --help"
@@ -15,6 +15,7 @@ usage() {
     printf "    -v/--version  Show version.\n"
     printf "    --intelmpi    Use Intel MPI.\n"
     printf "    --openmpi     Use Open MPI.\n"
+    printf "    --mpich       Use MPICH.\n"
     printf "    --mkl         Use MKL.\n"
     printf "    -n  Set the number of MPI processes.\n"
 }
@@ -39,6 +40,9 @@ while true; do
                 --openmpi)
                         USE_OPENMPI=true; shift 1; continue
                 ;;
+                --mpich)
+                        USE_MPICH=true; shift 1; continue
+                ;;
                 --mkl)
                         USE_MKL=true; shift 1; continue
                 ;;
@@ -59,11 +63,29 @@ if [ "$USE_OPENMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
                 exit 2
         fi
+        if [ "$USE_MPICH" = true ]; then
+                echo "Cannot specify MPICH and Open MPI simultaneously."
+                exit 2
+        fi
         if [ "$USE_MKL" = true ]; then
                 echo "Cannot specify MKL and Open MPI simultaneously."
                 exit 2
         fi
-        module load mpi
+        module load mpi/openmpi
+elif [ "$USE_MPICH" = true ]; then
+        if [ "$USE_INTELMPI" = true ]; then
+                echo "Cannot specify Intel MPI and Open MPI simultaneously."
+                exit 2
+        fi
+        if [ "$USE_OPENMPI" = true ]; then
+                echo "Cannot specify MPICH and Open MPI simultaneously."
+                exit 2
+        fi
+        if [ "$USE_MKL" = true ]; then
+                echo "Cannot specify MKL and Open MPI simultaneously."
+                exit 2
+        fi
+        module load mpi/mpich
 else
         # Use Intel MPI by default. First we have to load the module files from
         # the OneAPI installations as they aren't loaded by default.
