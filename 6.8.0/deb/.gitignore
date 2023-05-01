@@ -1,0 +1,9 @@
+fds-*
+*.zip
+!fds-[0-9].[0-9].[0-9]
+fds-[0-9].[0-9].[0-9]/*
+!fds-[0-9].[0-9].[0-9]/debian
+fds-[0-9].[0-9].[0-9]/debian/.debhelper
+fds-[0-9].[0-9].[0-9]/debian/debhelper-build-stamp
+fds-[0-9].[0-9].[0-9]/debian/files
+fds-[0-9].[0-9].[0-9]/debian/fds*

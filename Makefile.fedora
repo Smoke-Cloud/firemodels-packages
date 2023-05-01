@@ -1,6 +1,7 @@
 .PHONY: default check
 
 default: \
+	fds-6.8.0-6.8.0-2.fc36.x86_64.rpm \
 	fds-6.7.9-6.7.9-2.fc36.x86_64.rpm \
 	fds-6.7.8-6.7.8-2.fc36.x86_64.rpm \
 	fds-6.7.7-6.7.7-2.fc36.x86_64.rpm \
@@ -24,6 +25,7 @@ default: \
 	fds-5.5.3-5.5.3-2.fc36.x86_64.rpm
 
 install: default
+	dnf install fds-6.8.0-6.8.0-2.fc36.x86_64.rpm -y
 	dnf install fds-6.7.9-6.7.9-2.fc36.x86_64.rpm -y
 	dnf install fds-6.7.8-6.7.8-2.fc36.x86_64.rpm -y
 	dnf install fds-6.7.7-6.7.7-2.fc36.x86_64.rpm -y
@@ -47,6 +49,7 @@ install: default
 	dnf install fds-5.5.3-5.5.3-2.fc36.x86_64.rpm -y
 
 reinstall: default
+	dnf reinstall fds-6.8.0-6.8.0-2.fc36.x86_64.rpm -y
 	dnf reinstall fds-6.7.9-6.7.9-2.fc36.x86_64.rpm -y
 	dnf reinstall fds-6.7.8-6.7.8-2.fc36.x86_64.rpm -y
 	dnf reinstall fds-6.7.7-6.7.7-2.fc36.x86_64.rpm -y
@@ -111,4 +114,6 @@ fds-%-6.7.7-2.fc36.x86_64.rpm: %/fds.spec
 fds-%-6.7.8-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
 fds-%-6.7.9-2.fc36.x86_64.rpm: %/fds.spec
+	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
+fds-%-6.8.0-2.fc36.x86_64.rpm: %/fds.spec
 	cd $(*) && mkdir -p rpmbuild/SOURCES && bash ../makerpm.sh && cp rpmbuild/RPMS/x86_64/$@ .. && cd ..
