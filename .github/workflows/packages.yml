@@ -34,6 +34,7 @@ jobs:
           - "6.7.7"
           - "6.7.8"
           - "6.7.9"
+          - "6.8.0"
           - "latest"
     container: ${{ matrix.container }}
     steps:
@@ -51,7 +52,7 @@ jobs:
           EOF
           mv /tmp/oneAPI.repo /etc/yum.repos.d
       - name: Install prerequisites
-        run: dnf install -y git gcc rpmdevtools make zip 
+        run: dnf install -y git gcc rpmdevtools make zip
       - name: Install fedora libxcrypt-compat
         run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
