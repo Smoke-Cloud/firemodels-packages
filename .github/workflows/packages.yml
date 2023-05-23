@@ -10,6 +10,8 @@ jobs:
       matrix:
         container:
           - "fedora:36"
+          - "fedora:37"
+          - "fedora:38"
           - "rockylinux:9"
           - "rockylinux:8"
         fds-version:
