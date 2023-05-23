@@ -67,97 +67,97 @@ jobs:
           name: FDS-RPMs
           path: |
             ${{ matrix.fds-version }}/rpmbuild/RPMS/*/*.rpm
-  build-deb:
-    name: Build deb
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        fds-version:
-          - "5.5.3"
-          - "6.1.2"
-          - "6.2.0"
-          - "6.3.0"
-          - "6.3.1"
-          - "6.3.2"
-          - "6.4.0"
-          - "6.5.0"
-          - "6.5.1"
-          - "6.5.2"
-          - "6.5.3"
-          - "6.6.0"
-          - "6.7.0"
-          - "6.7.1"
-          - "6.7.3"
-          - "6.7.4"
-          - "6.7.5"
-          - "6.7.6"
-          - "6.7.7"
-          - "6.7.8"
-          - "6.7.9"
-          - "latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Add intel apt repo
-        run: |
-          wget -qO- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | sudo tee /etc/apt/trusted.gpg.d/intel-oneapi.asc
-          sudo add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"
-          sudo apt-get update
-      - name: Install prerequisites
-        run: sudo apt-get install -y git gcc openssl make devscripts debhelper
-      - run: sudo apt-get install -y intel-basekit intel-hpckit
-      - name: Build deb
-        run: |
-          cd ${{ matrix.fds-version }}/deb
-          bash build_debian.sh
-      - uses: actions/upload-artifact@v3
-        with:
-          name: FDS-DEBs
-          path: |
-            ${{ matrix.fds-version }}/deb/*.deb
-  build-arch:
-    name: Build Arch Linux package
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container: ["archlinux:base-devel"]
-        fds-version:
-          # - "5.5.3"
-          - "6.1.2"
-          - "6.2.0"
-          - "6.3.0"
-          - "6.3.1"
-          - "6.3.2"
-          - "6.4.0"
-          - "6.5.0"
-          - "6.5.1"
-          - "6.5.2"
-          - "6.5.3"
-          - "6.6.0"
-          - "6.7.0"
-          - "6.7.1"
-          - "6.7.3"
-          - "6.7.4"
-          - "6.7.5"
-          - "6.7.6"
-          - "6.7.7"
-          - "6.7.8"
-          - "6.7.9"
-          - "latest"
-    container: ${{ matrix.container }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install prerequisites
-        run: pacman -Sy --noconfirm wget git
-      - run: ./install-oneapi.sh
-      - name: Build Package
-        run: |
-          useradd builder
-          cd ${{ matrix.fds-version }}
-          chown -R builder:builder .
-          cp ../fds.sh .
-          su builder -c "makepkg -f"
-      - uses: actions/upload-artifact@v3
-        with:
-          name: FDS-Arch
-          path: |
-            ${{ matrix.fds-version }}/*.zst
+  # build-deb:
+  #   name: Build deb
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       fds-version:
+  #         - "5.5.3"
+  #         - "6.1.2"
+  #         - "6.2.0"
+  #         - "6.3.0"
+  #         - "6.3.1"
+  #         - "6.3.2"
+  #         - "6.4.0"
+  #         - "6.5.0"
+  #         - "6.5.1"
+  #         - "6.5.2"
+  #         - "6.5.3"
+  #         - "6.6.0"
+  #         - "6.7.0"
+  #         - "6.7.1"
+  #         - "6.7.3"
+  #         - "6.7.4"
+  #         - "6.7.5"
+  #         - "6.7.6"
+  #         - "6.7.7"
+  #         - "6.7.8"
+  #         - "6.7.9"
+  #         - "latest"
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Add intel apt repo
+  #       run: |
+  #         wget -qO- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | sudo tee /etc/apt/trusted.gpg.d/intel-oneapi.asc
+  #         sudo add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"
+  #         sudo apt-get update
+  #     - name: Install prerequisites
+  #       run: sudo apt-get install -y git gcc openssl make devscripts debhelper
+  #     - run: sudo apt-get install -y intel-basekit intel-hpckit
+  #     - name: Build deb
+  #       run: |
+  #         cd ${{ matrix.fds-version }}/deb
+  #         bash build_debian.sh
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: FDS-DEBs
+  #         path: |
+  #           ${{ matrix.fds-version }}/deb/*.deb
+  # build-arch:
+  #   name: Build Arch Linux package
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       container: ["archlinux:base-devel"]
+  #       fds-version:
+  #         # - "5.5.3"
+  #         - "6.1.2"
+  #         - "6.2.0"
+  #         - "6.3.0"
+  #         - "6.3.1"
+  #         - "6.3.2"
+  #         - "6.4.0"
+  #         - "6.5.0"
+  #         - "6.5.1"
+  #         - "6.5.2"
+  #         - "6.5.3"
+  #         - "6.6.0"
+  #         - "6.7.0"
+  #         - "6.7.1"
+  #         - "6.7.3"
+  #         - "6.7.4"
+  #         - "6.7.5"
+  #         - "6.7.6"
+  #         - "6.7.7"
+  #         - "6.7.8"
+  #         - "6.7.9"
+  #         - "latest"
+  #   container: ${{ matrix.container }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Install prerequisites
+  #       run: pacman -Sy --noconfirm wget git
+  #     - run: ./install-oneapi.sh
+  #     - name: Build Package
+  #       run: |
+  #         useradd builder
+  #         cd ${{ matrix.fds-version }}
+  #         chown -R builder:builder .
+  #         cp ../fds.sh .
+  #         su builder -c "makepkg -f"
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: FDS-Arch
+  #         path: |
+  #           ${{ matrix.fds-version }}/*.zst
