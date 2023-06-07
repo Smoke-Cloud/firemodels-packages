@@ -1,0 +1,30 @@
+on: [push, pull_request]
+
+name: FDS
+
+jobs:
+  build-rpm:
+    name: Build RPM
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - "fedora:36"
+          - "fedora:37"
+          - "fedora:38"
+          - "rockylinux:8"
+          - "rockylinux:9"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: General update
+        run: dnf update -y --refresh
+      - run: dnf install -y systemd, systemd-rpm-macros cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
+      - name: Build RPM
+        run: |
+          bash ./buildrpm.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: FDS-RPMs
+          path: |
+            dist/*.rpm
