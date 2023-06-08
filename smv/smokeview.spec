@@ -9,7 +9,6 @@ License:        AllRightsReserved
 Source0:        https://github.com/firemodels/smv/archive/%{commit}.zip
 Url:            https://github.com/firemodels/smv
 
-BuildRequires:  systemd, systemd-rpm-macros
 BuildRequires:  cmake, gd-devel, freeglut-devel, glui-devel
 Requires:       bash
 Requires:       lua-filesystem
