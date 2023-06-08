@@ -22,6 +22,7 @@ jobs:
       - run: dnf install -y cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
       - name: Build RPM
         run: |
+          cd smv
           bash ./buildrpm.sh
       - uses: actions/upload-artifact@v3
         with:
