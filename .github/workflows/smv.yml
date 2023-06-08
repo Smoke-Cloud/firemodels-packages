@@ -28,6 +28,6 @@ jobs:
           bash ./buildrpm.sh
       - uses: actions/upload-artifact@v3
         with:
-          name: FDS-RPMs
+          name: SMV-RPMs
           path: |
             dist/*.rpm
