@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: General update
         run: dnf update -y --refresh
-      - run: dnf install -y systemd, systemd-rpm-macros cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
+      - run: dnf install -y cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
       - name: Build RPM
         run: |
           bash ./buildrpm.sh
