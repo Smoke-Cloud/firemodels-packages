@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: General update
         run: dnf update -y --refresh
+      - name: Install prerequisites
+        run: dnf install -y git gcc rpmdevtools make
       - run: dnf install -y cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
       - name: Build RPM
         run: |
