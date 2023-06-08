@@ -18,7 +18,7 @@ cp ../../"$version_patch"  rpmbuild/SOURCES || true
 cat ../../"$version".spec ../../template.spec > fds.spec
 spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "_topdir $(pwd)/rpmbuild" \
-    --define="this_version ${version}" \
+    --define "this_version ${version}" \
     --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
@@ -26,7 +26,7 @@ spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "backports_patch ${backports_patch}"
 rpmbuild -ba fds.spec \
     --define "_topdir $(pwd)/rpmbuild" \
-    --define="this_version ${version}" \
+    --define "this_version ${version}" \
     --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
