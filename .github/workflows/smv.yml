@@ -21,7 +21,7 @@ jobs:
         run: dnf update -y --refresh
       - name: Install prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
-      - run: dnf install -y cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui
+      - run: dnf install -y cmake gd-devel freeglut-devel glui-devel bash lua-filesystem lua gd freeglut glui libXmu-devel
       - name: Build RPM
         run: |
           cd smv
