@@ -9,7 +9,7 @@ License:        AllRightsReserved
 Source0:        https://github.com/firemodels/smv/archive/%{commit}.zip
 Url:            https://github.com/firemodels/smv
 
-BuildRequires:  cmake, gd-devel, freeglut-devel, glui-devel, libXmu-devel
+BuildRequires:  cmake, gd-devel, freeglut-devel, glui-devel, libXmu-devel, lua-devel
 Requires:       bash
 Requires:       lua-filesystem
 Requires:       lua
