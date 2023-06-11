@@ -3,7 +3,7 @@ Version:        6.8.0
 Release:        1%{?dist}
 Summary:        Smokeview
 
-%global commit b15f08ac9862d989f2a6ad0b71efb64681239623
+%global commit 9f82628646f4295e47f3058ea932eb680a416b7a
 
 License:        AllRightsReserved
 Source0:        https://github.com/firemodels/smv/archive/%{commit}.zip
