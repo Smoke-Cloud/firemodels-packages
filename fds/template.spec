@@ -132,13 +132,12 @@ popd
 %{_mpich_load}
 mkdir -p %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}
 pushd %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}
-cp %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/make_fds.sh .
 export full_commit=%{commit}
 export mpi=.mpich
 export compiler=.gnu
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
-%{openmpi_build_command}
+%{mpich_build_command}
 popd
 %{_mpich_unload}
 %endif

@@ -18,3 +18,7 @@
  dir=$(pwd) \
  target=${dir##*/} \
  make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
+%global mpich_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make FCOMPL=mpifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile ompi_gnu_linux

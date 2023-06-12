@@ -17,3 +17,7 @@
  dir=$(pwd) \
  target=${dir##*/} \
  make MPIFORT=mpiifort VPATH="../../Source" -f ../makefile "$target"
+%global mpich_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make MPIFORT=mpifort VPATH="../../Source" -f ../makefile ompi_gnu_linux

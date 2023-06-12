@@ -11,3 +11,7 @@
 %global build_dir Build
 %global openmpi_build_command ./make_fds.sh
 %global intelmpi_build_command ./make_fds.sh
+%global mpich_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make VPATH="../../Source" -f ../makefile ompi_gnu_linux
