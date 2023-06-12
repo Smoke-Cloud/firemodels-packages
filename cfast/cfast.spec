@@ -1,7 +1,6 @@
 %global repo    cfast
-%global version_suffix %{this_version}
 %global version_dir %{this_version}
-%global script_suffix %{this_version}
+%global script_suffix %{version_suffix}
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string gnu_linux
 %global intel_string intel_linux

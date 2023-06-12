@@ -130,7 +130,9 @@ popd
 # Build MPICH version
 %if %{build_mpich}
 %{_mpich_load}
-pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
+mkdir -p %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}
+pushd %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}
+cp %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/make_fds.sh .
 export full_commit=%{commit}
 export mpi=.mpich
 export compiler=.gnu
