@@ -1,4 +1,5 @@
 version,commit,date,version_patch,backports_patch
+7.7.4,6b52d0c33bd3760782782ad156e992f0196ca2d9,1673642530,version1.patch,backports-7.7.4.patch
 7.7.3,80af8c65a8a9d54ec1823cc043f8e278f9804269,1652293105,version1.patch,backports-7.7.3.patch
 7.7.2,8f924606a394685787630d93e21f86d574c79692,1635874076,version1.patch,backports-7.7.2.patch
 7.7.1,67bb5b38c01d824e19c07a60e59af74dcb0f435c,1627499433,version1.patch,backports-7.7.1.patch
