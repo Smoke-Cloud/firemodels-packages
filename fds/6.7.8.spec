@@ -14,4 +14,4 @@
 %global mpich_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
- make VPATH="../../Source" -f ../makefile ompi_gnu_linux
+ make VPATH="../../Source" -f ../makefile %{gnu_string}%{arch_suffix}

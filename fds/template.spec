@@ -116,6 +116,7 @@ cd %{repo}-%{commit}
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
+mkdir -p %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=.openmpi

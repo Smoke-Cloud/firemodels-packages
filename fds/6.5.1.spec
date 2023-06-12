@@ -12,7 +12,7 @@
 %global openmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
- make FCOMPL=mpifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
+ make VPATH="../../FDS_Source" -f ../makefile "$target"
 %global intelmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
@@ -20,4 +20,4 @@
 %global mpich_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
- make FCOMPL=mpifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile ompi_gnu_linux
+ make VPATH="../../FDS_Source" -f ../makefile %{gnu_string}%{arch_suffix}
