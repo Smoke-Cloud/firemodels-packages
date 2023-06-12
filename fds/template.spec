@@ -86,6 +86,7 @@ cd %{repo}-%{commit}
 {
     echo "#!/bin/sh"
     echo "FDS_VERSION=%{version}"
+    echo "VERSION_SUFFIX=%{version_suffix}"
     cat fds.sh
 } > ./fds-script
 
@@ -130,13 +131,13 @@ install fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_dir}_openmpi
+install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
 %{_openmpi_unload}
 %endif
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_dir}_intelmpi
+install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
 %{_intelmpi_unload}
 
 %files common
@@ -144,11 +145,11 @@ install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?majo
 
 %if %{build_openmpi}
 %files openmpi
-%{_libdir}/openmpi/bin/fds%{version_dir}_openmpi
+%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
 %endif
 
 %files intelmpi
-%{_libdir}/intelmpi/bin/fds%{version_dir}_intelmpi
+%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2

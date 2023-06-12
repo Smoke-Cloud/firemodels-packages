@@ -53,7 +53,7 @@ while true; do
         esac
 done
 set "$@"
-FDS_EXEC=$PROGRAM_NAME$FDS_VERSION
+FDS_EXEC=$PROGRAM_NAME$VERSION_SUFFIX
 if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
