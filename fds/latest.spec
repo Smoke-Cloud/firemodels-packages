@@ -5,7 +5,7 @@
 %undefine script_suffix
 %undefine version_suffix
 %undefine arch_suffix
-%{!?build_openmpi:%global build_openmpi 1}
+%{!?build_openmpi:%global build_openmpi 0}
 %global gnu_string ompi_gnu_linux
 %global mpich_string mpich_gnu_linux
 %global intel_string impi_intel_linux
