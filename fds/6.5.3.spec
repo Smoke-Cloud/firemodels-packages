@@ -1,6 +1,6 @@
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
-%global script_suffix -%{this_version}
+%global script_suffix %{this_version}
 %global arch_suffix _64
 %{!?build_openmpi:%global build_openmpi 0}
 %global gnu_string mpi_gnu_linux

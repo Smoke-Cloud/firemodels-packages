@@ -1,4 +1,4 @@
-PROGRAM_NAME=fds-exec
+PROGRAM_NAME=fds
 # The default number of MPI processes is 1
 N_PROCESSES=1
 TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mkl -- "$@")
@@ -27,20 +27,20 @@ while true; do
                         exit 0
                 ;;
                 -v|--version)
-                        printf "%s %s\n" "$PROGRAM_NAME" "$PROGRAM_VERSION"
+                        printf "%s %s\n" "$PROGRAM_NAME" "$FDS_VERSION"
                         exit 0
                 ;;
                 -n)
                         N_PROCESSES="$2"; shift 2; continue
                 ;;
                 --intelmpi)
-                        USE_INTELMPI=true; shift 2; continue
+                        USE_INTELMPI=true; shift 1; continue
                 ;;
                 --openmpi)
-                        USE_OPENMPI=true; shift 2; continue
+                        USE_OPENMPI=true; shift 1; continue
                 ;;
                 --mkl)
-                        USE_MKL=true; shift 2; continue
+                        USE_MKL=true; shift 1; continue
                 ;;
                 --)
                         # End of options
@@ -53,7 +53,7 @@ while true; do
         esac
 done
 set "$@"
-FDS_EXEC=$PROGRAM_NAME
+FDS_EXEC=$PROGRAM_NAME$FDS_VERSION
 if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
@@ -64,20 +64,26 @@ if [ "$USE_OPENMPI" = true ]; then
                 exit 2
         fi
         module load mpi
-        FDS_EXEC=${FDS_EXEC}_openmpi
 else
-        # Use Intel MPI by default.
+        # Use Intel MPI by default. First we have to load the module files from
+        # the OneAPI installations as they aren't loaded by default.
         module use /opt/intel/oneapi/modulefiles
+        # Load mpi, this will now load intel mpi first
         module load mpi
-        FDS_EXEC=${FDS_EXEC}_intelmpi
+        # Unlike openmpi, the intel modules don't set MPI_SUFFIX so we need to
+        # do it here.
+        MPI_SUFFIX=_intelmpi
+        # The intel modules also don't account for the install location of
+        # binaries so we add that to the path here.
+        PATH="$PATH":/usr/lib64/intelmpi/bin
         if [ "$USE_MKL" = true ]; then
                 module load mkl
                 FDS_EXEC=$FDS_EXEC-mkl
         fi
 fi
 export I_MPI_COMPATIBILITY
-if [ "$VERSION_DIR" = "5.5.3" ]; then
+if [ "$FDS_VERSION" = "5.5.3" ]; then
         # FDS 5 needs some MPI compatability options
         I_MPI_COMPATIBILITY=4
 fi
-exec mpiexec -np "$N_PROCESSES" "$LIBEXECDIR"/"$VERSION_DIR"/"$FDS_EXEC" "$@"
+exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC"$MPI_SUFFIX "$@"

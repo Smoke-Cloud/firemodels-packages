@@ -1,6 +1,6 @@
 %global version_suffix %{this_version}
 %global version_dir %{this_version}
-%global script_suffix -%{this_version}
+%global script_suffix %{this_version}
 %undefine arch_suffix
 %{!?build_openmpi:%global build_openmpi 1}
 %global gnu_string ompi_gnu_linux

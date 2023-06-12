@@ -45,9 +45,9 @@ Requires:       util-linux
 %if %{build_openmpi}
 %package openmpi
 Summary:        Fire Dynamics Simulator with OpenMPI
-BuildRequires: openmpi-devel(x86-64)
+BuildRequires: openmpi-devel
 BuildRequires: make
-Requires: openmpi(x86-64)
+Requires: openmpi
 Requires: %{name}-common = %{version}-%{release}
 %description openmpi
 FDS with OpenMPI
@@ -85,9 +85,7 @@ cd %{repo}-%{commit}
 # Build common files
 {
     echo "#!/bin/sh"
-    echo "PROGRAM_VERSION=%{version}"
-    echo "VERSION_DIR=%{version_dir}"
-    echo "LIBEXECDIR=%{_libexecdir}/fds"
+    echo "FDS_VERSION=%{version}"
     cat fds.sh
 } > ./fds-script
 
@@ -121,7 +119,8 @@ popd
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_libexecdir}/fds/%{version_dir}
+mkdir -p %{buildroot}%{_libdir}/openmpi/bin
+mkdir -p %{buildroot}%{_libdir}/intelmpi/bin
 echo %{buildroot}/%{_bindir}
 
 # Install common
@@ -131,13 +130,13 @@ install fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version_dir}/fds-exec_openmpi
+install %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_dir}_openmpi
 %{_openmpi_unload}
 %endif
 
 # Install Intel MPI
 %{_intelmpi_load}
-install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}/%{_libexecdir}/fds/%{version_dir}/fds-exec_intelmpi
+install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_dir}_intelmpi
 %{_intelmpi_unload}
 
 %files common
@@ -145,11 +144,11 @@ install %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?majo
 
 %if %{build_openmpi}
 %files openmpi
-%{_libexecdir}/fds/%{version_dir}/fds-exec_openmpi
+%{_libdir}/openmpi/bin/fds%{version_dir}_openmpi
 %endif
 
 %files intelmpi
-%{_libexecdir}/fds/%{version_dir}/fds-exec_intelmpi
+%{_libdir}/intelmpi/bin/fds%{version_dir}_intelmpi
 
 %changelog
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2
