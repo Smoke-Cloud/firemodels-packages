@@ -74,7 +74,7 @@ if [ "$USE_OPENMPI" = true ]; then
         module load mpi/openmpi
 elif [ "$USE_MPICH" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
-                echo "Cannot specify Intel MPI and Open MPI simultaneously."
+                echo "Cannot specify Intel MPI and MPICH simultaneously."
                 exit 2
         fi
         if [ "$USE_OPENMPI" = true ]; then
@@ -82,7 +82,7 @@ elif [ "$USE_MPICH" = true ]; then
                 exit 2
         fi
         if [ "$USE_MKL" = true ]; then
-                echo "Cannot specify MKL and Open MPI simultaneously."
+                echo "Cannot specify MKL and MPICH simultaneously."
                 exit 2
         fi
         module load mpi/mpich
@@ -100,7 +100,6 @@ else
         PATH="$PATH":/usr/lib64/intelmpi/bin
         if [ "$USE_MKL" = true ]; then
                 module load mkl
-                FDS_EXEC=$FDS_EXEC-mkl
         fi
 fi
 export I_MPI_COMPATIBILITY

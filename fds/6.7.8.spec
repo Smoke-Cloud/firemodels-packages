@@ -7,7 +7,7 @@
 %{!?build_docs:%global build_docs 0}
 %global gnu_string ompi_gnu_linux
 %global mpich_string mpich_gnu_linux
-%global intel_string impi_intel_linux
+%global intel_string impi_intel_linux_openmp
 %global build_dir Build
 %global openmpi_build_command ./make_fds.sh
 %global intelmpi_build_command ./make_fds.sh
