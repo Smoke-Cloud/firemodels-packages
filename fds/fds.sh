@@ -58,6 +58,7 @@ while true; do
 done
 set "$@"
 FDS_EXEC=$PROGRAM_NAME$VERSION_SUFFIX
+. /etc/profile.d/modules.sh
 if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
