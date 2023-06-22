@@ -13,20 +13,8 @@
     %global arch_suffix _64
 %else
 %endif
-%global openmpi_build_command ./make_cfast.sh
-%global intelmpi_build_command ./make_cfast.sh
 
 %global this_release 2
-
-#TODO: this isn't as clean as the openmpi version
-%global _intel_load \
- . /etc/profile.d/modules.sh; \
- module use /opt/intel/oneapi/modulefiles \
- module load compiler;
-%global _intel_unload \
- . /etc/profile.d/modules.sh; \
- module use /opt/intel/oneapi/modulefiles \
- module unload compiler;
 
 Name:           cfast%{?version_suffix}
 Version:        %{this_version}
@@ -43,7 +31,7 @@ Url:            https://pages.nist.gov/cfast
 CFAST
 
 BuildRequires: make
-BuildRequires:  intel-oneapi-compiler-fortran
+BuildRequires: gfortran
 
 %prep
 %setup -qc
@@ -56,20 +44,18 @@ cd %{repo}-%{commit}
 
 %build
 
-%{_intel_load}
-pushd %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}
+pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 export REVISION_DATE=%{revision_date}
 %{intelmpi_build_command}
 popd
-%{_intel_unload}
 
 
 %install
 rm -rf %{buildroot}
-install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/cfast7_linux%{?arch_suffix} %{buildroot}/%{_bindir}/cfast%{?version_suffix}
+install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/cfast7_linux%{?arch_suffix} %{buildroot}/%{_bindir}/cfast%{?version_suffix}
 
 %files
 %{_bindir}/cfast%{?version_suffix}
