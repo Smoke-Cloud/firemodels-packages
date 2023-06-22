@@ -91,6 +91,9 @@ Summary:        FDS documentation
 Group:          Productivity/Scientific/Physics
 BuildArch:      noarch
 Requires:       %{name}-common = %{version}-%{release}
+%description doc
+Docs for FDS
+
 %endif
 
 %prep
@@ -182,7 +185,7 @@ install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?maj
 # Install MPICH version
 %if %{build_mpich}
 %{_mpich_load}
-install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
+install -D %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
 %{_mpich_unload}
 %endif
 
