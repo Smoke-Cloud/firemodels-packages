@@ -31,5 +31,6 @@ test_cfast 7.5.2
 test_cfast 7.7.1
 test_cfast 7.7.2
 test_cfast 7.7.3
+test_cfast 7.7.4
 
 echo "tests run successfully"

@@ -62,7 +62,7 @@ export full_commit=%{commit}
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 export REVISION_DATE=%{revision_date}
-%{openmpi_build_command}
+%{intelmpi_build_command}
 popd
 %{_intel_unload}
 
