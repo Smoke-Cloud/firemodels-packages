@@ -31,3 +31,60 @@ jobs:
           name: SMV-RPMs
           path: |
             dist/*.rpm
+  build_windows_msvc:
+    name: build windows-2022 msvc
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Clone smv repo
+        uses: actions/checkout@v3
+        with:
+          repository: firemodels/smv
+          path: smv/build
+          ref: be813e6197234679444ceebe8e0a4e98d67aeedc
+      - name: Clone bot repo
+        uses: actions/checkout@v3
+        with:
+          repository: firemodels/bot
+          path: smv/bot
+          ref: 2cafc15b8a2797df0ff8fe3f64ab44c1719b5db5
+      - name: build smokeview
+        working-directory: ${{github.workspace}}/smv/build
+        shell: cmd
+        run: |
+          cmake --version
+          cd smv
+          cmake -B ${{github.workspace}}\cbuild -DCMAKE_BUILD_TYPE=Release -DLUA=ON -DLUA_BUILD_BINARY=ON -DLUA_UTIL_LIBS=ON  -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%/scripts/buildsystems/vcpkg.cmake
+          cmake --build ${{github.workspace}}\cbuild -j --config Release
+      - name: build installer
+        working-directory: ${{github.workspace}}/smv/build
+        shell: cmd
+        run: |
+          echo %PATH%
+          set PATH=%PATH%;C:\Program Files (x86)\WiX Toolset v3.11\bin
+          echo %PATH%
+          candle --version
+          cmake --install ${{github.workspace}}\cbuild --config Release --prefix dist
+          mkdir -p dist/config
+          cp ../bot/Bundlebot/smv/for_bundle/smokeview.ini dist/config
+          cp ../bot/Bundlebot/smv/for_bundle/objects.svo dist/config
+          candle "SMVLuaInstaller.wxs"
+          light "SMVLuaInstaller.wixobj"
+      - name: Download test data
+        working-directory: ${{github.workspace}}/smv/build/Tests
+        shell: pwsh
+        run: .\get_test_data.ps1
+      - name: Test
+        shell: bash
+        working-directory: ${{github.workspace}}/cbuild
+        run: |
+          ctest -j10 -C Release --output-on-failure
+      - name: Archive installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: SMV-MSIs
+          path: smv/build/SMVLuaInstaller.msi
