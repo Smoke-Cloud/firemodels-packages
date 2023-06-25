@@ -39,9 +39,6 @@ cd %{repo}-%{commit}
 %patch0 -p1
 %patch1 -p1
 
-%global __brp_check_rpaths %{nil}
-%global debug_package %{nil}
-
 %build
 
 pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
@@ -49,7 +46,9 @@ export full_commit=%{commit}
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 export REVISION_DATE=%{revision_date}
-%{intelmpi_build_command}
+export GIT_DATE=$(date "+%b %d, %Y  %T" --date='@${REVISION_DATE}')
+export BUILD_DATE=$(date "+%b %d, %Y  %T" --date='@${SOURCE_DATE_EPOCH}')
+make -f ../makefile %{gnu_string}%{?arch_suffix} FFLAGS='-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace %{build_fflags} -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""'
 popd
 
 
