@@ -58,7 +58,7 @@
                                     Source='dist/bin/smokeview.exe' KeyPath='yes'>
                                 </File>
                                 <File Id='SMVLuaDefaultIni' Name='smokeview.ini'
-                                    Source='dist/config/objects.ini'>
+                                    Source='dist/config/smokeview.ini'>
                                 </File>
                                 <File Id='SMVLuaDefaultObjects' Name='objects.svo'
                                     Source='dist/config/objects.svo'>
@@ -101,7 +101,7 @@
                                 <File Id='window' Name='window.lua' Source='dist/share/smokeview/window.lua'></File>
                                 <File Id='lfs' Name='lfs.dll' Source='dist/bin/lfs.dll'></File>
                                 <File Id='lpeg' Name='lpeg.dll' Source='dist/bin/lpeg.dll'></File>
-                                <!-- <File Id='lua' Name='lua.dll' Source='dist/bin/lua.dll'></File> -->
+                                <File Id='lua' Name='lua.dll' Source='dist/bin/lua.dll'></File>
                             </Component>
                         </Directory>
                     </Directory>

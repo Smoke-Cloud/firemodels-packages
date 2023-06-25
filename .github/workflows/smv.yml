@@ -69,10 +69,10 @@ jobs:
           echo %PATH%
           candle --version
           cmake --install ${{github.workspace}}\cbuild --config Release --prefix dist
-          mkdir -p dist/config
-          cp ../bot/Bundlebot/smv/for_bundle/smokeview.ini dist/config
-          cp ../bot/Bundlebot/smv/for_bundle/objects.svo dist/config
-          candle "SMVLuaInstaller.wxs"
+          mkdir dist\config
+          cp ..\bot\Bundlebot\smv\for_bundle\smokeview.ini dist\config\smokeview.ini
+          cp ..\bot\Bundlebot\smv\for_bundle\objects.svo dist\config\objects.svo
+          candle "..\SMVLuaInstaller.wxs"
           light "SMVLuaInstaller.wixobj"
       - name: Download test data
         working-directory: ${{github.workspace}}/smv/build/Tests
