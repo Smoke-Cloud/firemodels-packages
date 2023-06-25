@@ -76,7 +76,7 @@ jobs:
           export backports_patch=$(awk -F, -v version="$version" '$1 == version { print $6; exit }' versions.csv)
           if [ "${{ matrix.container }}" = "rockylinux:8" ]
           then
-            bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch --define 'build_openmpi 0'
+            bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch --define 'build_openmpi 0' --define 'build_mpich 0'
           else
             bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch
           fi
