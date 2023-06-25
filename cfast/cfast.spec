@@ -6,13 +6,17 @@
 %global intel_string intel_linux
 %if "%{this_version}" <= "7.0.1"
     %global build_dir CFAST
+    %global vpath VPATH="../Source"
 %else
     %global build_dir Build/CFAST
 %endif
 %if "%{this_version}" >= "7.0.1"
     %global arch_suffix _64
-%else
 %endif
+
+# Due to depenencies not being sufficiently ordered we need to enforce
+# serial compilation.
+%global parallelism -j1
 
 %global this_release 2
 
@@ -48,7 +52,8 @@ export build_version=%{this_version}
 export REVISION_DATE=%{revision_date}
 export GIT_DATE=$(date "+%b %d, %Y  %T" --date='@${REVISION_DATE}')
 export BUILD_DATE=$(date "+%b %d, %Y  %T" --date='@${SOURCE_DATE_EPOCH}')
-make -f ../makefile %{gnu_string}%{?arch_suffix} FFLAGS='-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace %{build_fflags} -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""'
+%make_build %{?vpath} %{?parallelism} -f ../makefile %{gnu_string}%{?arch_suffix} \
+    FFLAGS='-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace %{build_fflags} -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""'
 popd
 
 
