@@ -3,7 +3,7 @@ Version:        6.8.0
 Release:        1%{?dist}
 Summary:        Smokeview
 
-%global commit 9f82628646f4295e47f3058ea932eb680a416b7a
+%global commit 24bb184dacf75626399537772460477597d2443a
 %global bot_commit 2cafc15b8a2797df0ff8fe3f64ab44c1719b5db5
 
 License:        AllRightsReserved

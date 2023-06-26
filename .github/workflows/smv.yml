@@ -45,7 +45,7 @@ jobs:
         with:
           repository: firemodels/smv
           path: smv/build
-          ref: be813e6197234679444ceebe8e0a4e98d67aeedc
+          ref: 24bb184dacf75626399537772460477597d2443a
       - name: Clone bot repo
         uses: actions/checkout@v3
         with:
