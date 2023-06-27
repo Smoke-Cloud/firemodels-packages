@@ -72,6 +72,8 @@ jobs:
           mkdir dist\config
           cp ..\bot\Bundlebot\smv\for_bundle\smokeview.ini dist\config\smokeview.ini
           cp ..\bot\Bundlebot\smv\for_bundle\objects.svo dist\config\objects.svo
+          cp ..\lua.cmd lua.cmd
+          cp ..\smvlua.cmd smvlua.cmd
           candle "..\SMVLuaInstaller.wxs"
           light "SMVLuaInstaller.wixobj"
       - name: Download test data
