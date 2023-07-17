@@ -1,5 +1,5 @@
 
-%global this_release 2
+%global this_release 3
 
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
@@ -71,14 +71,12 @@ You will need to load the mpich-%{_arch} module to setup your path properly.
 %if %{build_intelmpi}
 %package intelmpi
 Summary:        Fire Dynamics Simulator with Intel MPI
-BuildRequires:  intel-oneapi-mpi-devel
-BuildRequires:  intel-oneapi-mkl-devel
-BuildRequires:  intel-oneapi-compiler-fortran
-# TODO: this is not always necessary
-BuildRequires:  intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+BuildRequires:  intel-oneapi-mpi-devel-2021.9.0
+BuildRequires:  intel-oneapi-mkl-devel-2023.1.0
+BuildRequires:  intel-oneapi-compiler-fortran-2023.1.0
 BuildRequires:  make
 Requires:       intel-oneapi-runtime-libs
-Requires:       intel-oneapi-mpi
+Requires:       intel-oneapi-mpi-2021.9.0
 Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
@@ -215,6 +213,8 @@ install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?m
 %endif
 
 %changelog
+* Mon Jul 17 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-3
+- Pin intel package versions
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2
 - Correct embedded version information
 * Sat Dec 18 2021 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-1
