@@ -71,13 +71,13 @@ You will need to load the mpich-%{_arch} module to setup your path properly.
 %if %{build_intelmpi}
 %package intelmpi
 Summary:        Fire Dynamics Simulator with Intel MPI
-BuildRequires:  intel-oneapi-mpi-devel-2021.9.0
-BuildRequires:  intel-oneapi-mkl-devel-2023.1.0
-BuildRequires:  intel-oneapi-compiler-fortran-2023.1.0
+BuildRequires:  intel-oneapi-mpi-devel-2021.10.0
+BuildRequires:  intel-oneapi-mkl-devel-2023.2.0
+BuildRequires:  intel-oneapi-compiler-fortran-2023.2.1
 %{?old_compilers:%old_compilers}
 BuildRequires:  make
 Requires:       intel-oneapi-runtime-libs
-Requires:       intel-oneapi-mpi-2021.9.0
+Requires:       intel-oneapi-mpi-2021.10.0
 Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
