@@ -39,6 +39,7 @@ Summary:        Fire Dynamics Simulator common files
 FDS common files
 Requires:       bash
 Requires:       util-linux
+Requires:       environment-modules
 
 
 
