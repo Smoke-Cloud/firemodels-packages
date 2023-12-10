@@ -11,9 +11,10 @@ jobs:
         container:
           - "fedora:36"
           - "fedora:37"
-          # - "fedora:38"
-          - "rockylinux:9"
+          - "fedora:38"
+          # - "fedora:39"
           - "rockylinux:8"
+          - "rockylinux:9"
         cfast-version:
           - "7.0.1"
           - "7.1.0"

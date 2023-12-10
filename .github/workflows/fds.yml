@@ -11,9 +11,10 @@ jobs:
         container:
           - "fedora:36"
           - "fedora:37"
-          # - "fedora:38"
-          - "rockylinux:9"
+          - "fedora:38"
+          # - "fedora:39"
           - "rockylinux:8"
+          - "rockylinux:9"
         fds-version:
           - "5.5.3"
           - "6.1.2"
@@ -63,7 +64,7 @@ jobs:
         run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
         run: dnf install -y procps || true
-      - run: dnf install -y intel-oneapi-compiler-fortran-2023.2.1-16 intel-oneapi-mkl-devel-2023.2.0-49495 intel-oneapi-mpi-devel-2021.10.0-49371 openmpi-devel mpich-devel
+      - run: dnf install -y intel-oneapi-compiler-fortran-2024.0.0-49819 intel-oneapi-mkl-devel-2024.0.0-49656 intel-oneapi-mpi-devel-2021.11.0-49493 openmpi-devel mpich-devel intel-oneapi-compiler-dpcpp-cpp-2024.0.0-49819 intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2023.2.1-16
       - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |

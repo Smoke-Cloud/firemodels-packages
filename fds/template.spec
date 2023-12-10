@@ -1,19 +1,25 @@
 
-%global this_release 3
+%global this_release 4
 
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
+ export MODULES_AUTO_HANDLING=1; \
  . /etc/profile.d/modules.sh; \
- module use /opt/intel/oneapi/modulefiles \
- module load mpi \
- module load compiler \
+ module use ~/modulefiles; \
+ module load mpi/latest; \
+ module load compiler; \
+ module load ifort; \
+ module load icc; \
  module load mkl;
 %global _intelmpi_unload \
+ export MODULES_AUTO_HANDLING=1; \
  . /etc/profile.d/modules.sh; \
- module use /opt/intel/oneapi/modulefiles \
- module unload mkl \
- module unload compiler \
- module unload mpi;
+ module use ~/modulefiles; \
+ module unload mkl; \
+ module unload icc; \
+ module unload ifort; \
+ module unload compiler; \
+ module unload mpi/latest;
 
 Name:           fds%{?version_suffix}
 Version:        %{this_version}
@@ -72,13 +78,13 @@ You will need to load the mpich-%{_arch} module to setup your path properly.
 %if %{build_intelmpi}
 %package intelmpi
 Summary:        Fire Dynamics Simulator with Intel MPI
-BuildRequires:  intel-oneapi-mpi-devel-2021.10.0
-BuildRequires:  intel-oneapi-mkl-devel-2023.2.0
-BuildRequires:  intel-oneapi-compiler-fortran-2023.2.1
+BuildRequires:  intel-oneapi-mpi-devel
+BuildRequires:  intel-oneapi-mkl-devel
+BuildRequires:  intel-oneapi-compiler-fortran
 %{?old_compilers:%old_compilers}
 BuildRequires:  make
 Requires:       intel-oneapi-runtime-libs
-Requires:       intel-oneapi-mpi-2021.10.0
+Requires:       intel-oneapi-mpi
 Requires:       %{name}-common = %{version}-%{release}
 %description intelmpi
 FDS with IntelMPI
@@ -215,6 +221,8 @@ install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?m
 %endif
 
 %changelog
+* Sun Dec 10 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-4
+- Unpin intel package versions
 * Mon Jul 17 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-3
 - Pin intel package versions
 * Tue Nov 15 2022 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-2

@@ -12,8 +12,9 @@ jobs:
           - "fedora:36"
           - "fedora:37"
           - "fedora:38"
-         # - "rockylinux:8"
-         # - "rockylinux:9"
+          # - "fedora:39"
+          # - "rockylinux:8"
+          # - "rockylinux:9"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v3
