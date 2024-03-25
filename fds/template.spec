@@ -1,5 +1,5 @@
 
-%global this_release 4
+%global this_release 5
 
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
@@ -221,6 +221,8 @@ install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?m
 %endif
 
 %changelog
+* Mon Mar 25 2024 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-5
+- Unpin intel package versions
 * Sun Dec 10 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-4
 - Unpin intel package versions
 * Mon Jul 17 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-3
