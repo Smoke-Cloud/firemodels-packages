@@ -90,7 +90,6 @@ elif [ "$USE_MPICH" = true ]; then
 else
         # Use Intel MPI by default. First we have to load the module files from
         # the OneAPI installations as they aren't loaded by default.
-        /opt/intel/oneapi/modulefiles-setup.sh --force
         module use ~/modulefiles
         # Load mpi, this will now load intel mpi first
         module load mpi
