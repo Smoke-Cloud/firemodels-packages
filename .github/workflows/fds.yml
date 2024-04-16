@@ -11,8 +11,8 @@ jobs:
         container:
           # - "fedora:36"
           # - "fedora:37"
-          # - "fedora:38"
-          - "fedora:39"
+          - "fedora:38"
+          # - "fedora:39"
           # - "rockylinux:8"
           # - "rockylinux:9"
         fds-version:
