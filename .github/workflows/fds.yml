@@ -67,7 +67,7 @@ jobs:
       - name: Install fedora procps
         run: dnf install -y procps || true
       - name: Install Intel OneAPI packages
-        run: dnf install -y intel-oneapi-compiler-fortran intel-oneapi-mkl-devel intel-oneapi-mpi-devel intel-oneapi-compiler-dpcpp-cpp intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic openmpi-devel mpich-devel
+        run: dnf install -y intel-oneapi-compiler-fortran-2024.1.0-963 intel-oneapi-mkl-devel-2024.1.0-691 intel-oneapi-mpi-devel-2021.12.0-534 intel-oneapi-compiler-dpcpp-cpp-2024.1.0-963 intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2023.2.1-16 openmpi-devel mpich-devel
       - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |
