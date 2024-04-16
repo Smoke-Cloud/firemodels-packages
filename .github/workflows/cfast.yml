@@ -9,7 +9,6 @@ jobs:
     strategy:
       matrix:
         container:
-          - "fedora:38"
           - "fedora:39"
           - "rockylinux:8"
           - "rockylinux:9"
