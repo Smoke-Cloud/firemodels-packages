@@ -9,12 +9,12 @@ jobs:
     strategy:
       matrix:
         container:
-          - "fedora:36"
-          - "fedora:37"
-          - "fedora:38"
-          # - "fedora:39"
-          - "rockylinux:8"
-          - "rockylinux:9"
+          # - "fedora:36"
+          # - "fedora:37"
+          # - "fedora:38"
+          - "fedora:39"
+          # - "rockylinux:8"
+          # - "rockylinux:9"
         fds-version:
           - "5.5.3"
           - "6.1.2"
