@@ -13,5 +13,5 @@
 %global intelmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
- make FCOMPL=mpiifort FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
+ make FCOMPL=mpiifx FOPENMPFLAGS="-qopenmp -qopenmp-link static -liomp5" VPATH="../../FDS_Source" -f ../makefile "$target"
 %global mpich_build_command ./make_fds.sh

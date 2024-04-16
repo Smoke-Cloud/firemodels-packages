@@ -43,3 +43,125 @@ index cb636a50f..b9319cae0 100644
    INTEGER, INTENT(OUT) :: NCHARS_OUT
  
    CHARACTER(LEN=1) :: MARK=CHAR(255),THISCHAR,LASTCHAR
+diff --git a/Build/gnu_linux_64_dv/make_fds.sh b/Build/gnu_linux_64_dv/make_fds.sh
+index 885bf5855..e8ff8c5b7 100755
+--- a/Build/gnu_linux_64_dv/make_fds.sh
++++ b/Build/gnu_linux_64_dv/make_fds.sh
+@@ -3,4 +3,4 @@ dir=`pwd`
+ target=${dir##*/}
+ 
+ echo Building $target
+-make -j4 VPATH="../../Source" -f ../makefile $target
++make -j4 VPATH="../../Source" INTEL_IFORT=ifx INTEL_MPI_IFORT=mpiifx -f ../makefile $target
+diff --git a/Build/makefile b/Build/makefile
+index 360b5bcdf..9d6bf22ea 100644
+--- a/Build/makefile
++++ b/Build/makefile
+@@ -12,6 +12,11 @@
+ VPATH = ../Source
+ MPIFORT=mpifort
+ 
++I_IFORT=ifort
++
++ifdef INTEL_IFORT
++  I_IFORT=$(INTEL_IFORT)
++endif
+ 
+ ifeq ($(shell echo "check_quotes"),"check_quotes")
+ # windows
+@@ -98,28 +103,28 @@ main.obj: FFLAGS += $(FOPENMPFLAGS)
+ #    ..\Scripts\ifortvars intel64
+ 
+ intel_win_64_ps : FFLAGS = -O2 /Qipo /traceback $(GITINFO)
+-intel_win_64_ps : FCOMPL = ifort
++intel_win_64_ps : FCOMPL = $(I_IFORT)
+ intel_win_64_ps : FOPENMPFLAGS = /Qopenmp
+ intel_win_64_ps : obj = fds_win_64_ps
+ intel_win_64_ps : setup_win $(objwin_serial)
+ 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_serial) /link /SUBSYSTEM:CONSOLE,5.02
+ 
+ intel_win_64 : FFLAGS = /O2 /Qipo /traceback $(GITINFO)
+-intel_win_64 : FCOMPL = ifort
++intel_win_64 : FCOMPL = $(I_IFORT)
+ intel_win_64 : FOPENMPFLAGS = /Qopenmp
+ intel_win_64 : obj = fds_win_64
+ intel_win_64 : setup_win $(objwin_serial)
+ 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_serial)
+ 
+ intel_win_64_dv : FFLAGS = /O1 /traceback $(GITINFO)
+-intel_win_64_dv : FCOMPL = ifort
++intel_win_64_dv : FCOMPL = $(I_IFORT)
+ intel_win_64_dv : FOPENMPFLAGS = /Qopenmp
+ intel_win_64_dv : obj = fds_win_64_dv
+ intel_win_64_dv : setup_win $(objwin_serial)
+ 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_serial)
+ 
+ intel_win_64_db : FFLAGS = /Od /nologo /debug:full /check /warn /extend_source:132 /traceback /stand:f08 /Z7 /MDd $(GITINFO)
+-intel_win_64_db : FCOMPL = ifort
++intel_win_64_db : FCOMPL = $(I_IFORT)
+ intel_win_64_db : FOPENMPFLAGS = /Qopenmp
+ intel_win_64_db : obj = fds_win_64_db
+ intel_win_64_db : setup_win $(objwin_serial)
+@@ -129,7 +134,7 @@ mpi_intel_win_64 : MPILIB = "$(I_MPI_ROOT)\intel64\lib\impi.lib"
+ mpi_intel_win_64 : MPIINCLUDE = "$(I_MPI_ROOT)\intel64\include"
+ mpi_intel_win_64 : FFLAGS = /Qipo /O2 /I$(MPIINCLUDE) /traceback $(GITINFO)
+ mpi_intel_win_64 : FOPENMPFLAGS = /Qopenmp
+-mpi_intel_win_64 : FCOMPL = ifort
++mpi_intel_win_64 : FCOMPL = $(I_IFORT)
+ mpi_intel_win_64 : obj = fds_mpi_win_64
+ mpi_intel_win_64 : setup_win $(objwin_mpi)
+ 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_mpi) $(MPILIB)
+@@ -138,7 +143,7 @@ mpi_intel_win_64_db : MPILIB = "$(I_MPI_ROOT)\intel64\lib\impi.lib"
+ mpi_intel_win_64_db : MPIINCLUDE = "$(I_MPI_ROOT)\intel64\include"
+ mpi_intel_win_64_db : FFLAGS = /Od /nologo /debug:all /I$(MPIINCLUDE) /Z7 /extend_source:132 /warn:unused /warn:nointerfaces /Qtrapuv /fp:strict /fp:except /traceback /check:all /stand:f08 $(GITINFO)
+ mpi_intel_win_64_db : FOPENMPFLAGS = /Qopenmp
+-mpi_intel_win_64_db : FCOMPL = ifort
++mpi_intel_win_64_db : FCOMPL = $(I_IFORT)
+ mpi_intel_win_64_db : obj = fds_mpi_win_64_db
+ mpi_intel_win_64_db : setup_win $(objwin_mpi)
+ 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_mpi) $(MPILIB)
+@@ -152,7 +157,7 @@ mpi_intel_win_64_db : setup_win $(objwin_mpi)
+ 
+ intel_linux_64_profile : FFLAGS = -m64 -O2 -p $(GITINFO)
+ intel_linux_64_profile : LFLAGS = -static-intel
+-intel_linux_64_profile : FCOMPL = ifort
++intel_linux_64_profile : FCOMPL = $(I_IFORT)
+ intel_linux_64_profile : FOPENMPFLAGS = -qopenmp -qopenmp-link static -liomp5
+ intel_linux_64_profile : obj = fds_intel_linux_64_profile
+ intel_linux_64_profile : setup $(obj_serial)
+@@ -160,7 +165,7 @@ intel_linux_64_profile : setup $(obj_serial)
+ 
+ intel_linux_64 : FFLAGS = -m64 -O2 -ipo -traceback $(GITINFO)
+ intel_linux_64 : LFLAGS = -static-intel
+-intel_linux_64 : FCOMPL = ifort
++intel_linux_64 : FCOMPL = $(I_IFORT)
+ intel_linux_64 : FOPENMPFLAGS = -qopenmp -qopenmp-link static -liomp5
+ intel_linux_64 : obj = fds_intel_linux_64
+ intel_linux_64 : setup $(obj_serial)
+@@ -168,7 +173,7 @@ intel_linux_64 : setup $(obj_serial)
+ 
+ intel_linux_64_dv : FFLAGS = -m64 -O1 -traceback $(GITINFO)
+ intel_linux_64_dv : LFLAGS = -static-intel
+-intel_linux_64_dv : FCOMPL = ifort
++intel_linux_64_dv : FCOMPL = $(I_IFORT)
+ intel_linux_64_dv : FOPENMPFLAGS = -qopenmp -qopenmp-link static -liomp5
+ intel_linux_64_dv : obj = fds_intel_linux_64_dv
+ intel_linux_64_dv : setup $(obj_serial)
+@@ -176,7 +181,7 @@ intel_linux_64_dv : setup $(obj_serial)
+ 
+ impi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo -mt_mpi -traceback $(GITINFO)
+ impi_intel_linux_64 : LFLAGS = -static-intel
+-impi_intel_linux_64 : FCOMPL = mpiifort
++impi_intel_linux_64 : FCOMPL = $(MPIFORT)
+ impi_intel_linux_64 : FOPENMPFLAGS = -qopenmp -qopenmp-link static -liomp5
+ impi_intel_linux_64 : obj = fds_impi_intel_linux_64
+ impi_intel_linux_64 : setup $(obj_mpi)
+@@ -184,7 +189,7 @@ impi_intel_linux_64 : setup $(obj_mpi)
+ 
+ impi_intel_linux_64_db : FFLAGS = -m64 -mt_mpi -check -warn all -O0 -auto -WB -traceback -g -fpe0 -fltconsistency $(GITINFO)
+ impi_intel_linux_64_db : LFLAGS = -static-intel
+-impi_intel_linux_64_db : FCOMPL = mpiifort
++impi_intel_linux_64_db : FCOMPL = $(MPIFORT)
+ impi_intel_linux_64_db : FOPENMPFLAGS = -qopenmp -qopenmp-link static -liomp5
+ impi_intel_linux_64_db : obj = fds_impi_intel_linux_64_db
+ impi_intel_linux_64_db : setup $(obj_mpi)

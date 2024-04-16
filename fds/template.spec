@@ -9,14 +9,12 @@
  module load mpi/latest; \
  module load compiler; \
  module load ifort; \
- module load icc; \
  module load mkl;
 %global _intelmpi_unload \
  export MODULES_AUTO_HANDLING=1; \
  . /etc/profile.d/modules.sh; \
  module use ~/modulefiles; \
  module unload mkl; \
- module unload icc; \
  module unload ifort; \
  module unload compiler; \
  module unload mpi/latest;
@@ -221,6 +219,8 @@ install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?m
 %endif
 
 %changelog
+* Wed Apr 17 2024 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-6
+- Switch to ifx and mpiifx
 * Mon Mar 25 2024 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-5
 - Unpin intel package versions
 * Sun Dec 10 2023 Jake O'Shannessy <joshannessy@smokecloud.io> - %{version}-4
