@@ -66,12 +66,8 @@ jobs:
         run: dnf install -y libxcrypt-compat || true
       - name: Install fedora procps
         run: dnf install -y procps || true
-      - run: dnf install -y intel-oneapi-compiler-fortran \
-              intel-oneapi-mkl-devel  \
-              intel-oneapi-mpi-devel \
-              intel-oneapi-compiler-dpcpp-cpp \
-              intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \
-              openmpi-devel mpich-devel
+      - name: Install Intel OneAPI packages
+        run: dnf install -y intel-oneapi-compiler-fortran intel-oneapi-mkl-devel intel-oneapi-mpi-devel intel-oneapi-compiler-dpcpp-cpp intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic openmpi-devel mpich-devel
       - run: /opt/intel/oneapi/modulefiles-setup.sh
       - name: Build RPM
         run: |
