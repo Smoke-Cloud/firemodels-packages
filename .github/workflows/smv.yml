@@ -15,7 +15,7 @@ jobs:
           - "rockylinux:9"
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: General update
         run: dnf update -y --refresh
       - name: Install prerequisites
@@ -25,7 +25,7 @@ jobs:
         run: |
           cd smv
           bash ./buildrpm.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: SMV-RPMs
           path: |
@@ -38,15 +38,15 @@ jobs:
         shell: bash
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Clone smv repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: firemodels/smv
           path: smv/build
           ref: 24bb184dacf75626399537772460477597d2443a
       - name: Clone bot repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: firemodels/bot
           path: smv/bot
@@ -85,7 +85,7 @@ jobs:
         run: |
           ctest -j10 -C Release --output-on-failure
       - name: Archive installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: SMV-MSIs
           path: smv/build/SMVLuaInstaller.msi
