@@ -83,6 +83,6 @@ jobs:
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: FDS-RPMs
+          name: FDS-RPM-${{ matrix.container }}-${{ matrix.fds-version }}
           path: |
             dist/*.rpm
