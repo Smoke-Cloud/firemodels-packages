@@ -80,3 +80,13 @@ jobs:
           name: CFAST-RPM-${{ steps.transform.outputs.var }}-${{ matrix.cfast-version }}
           path: |
             dist/*.rpm
+  merge:
+    runs-on: ubuntu-latest
+    needs: build-rpm
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: CFAST-RPMs
+          pattern: CFAST-RPM-*
+          delete-merged: true
