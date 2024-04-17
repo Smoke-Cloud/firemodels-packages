@@ -16,7 +16,7 @@
 %global intelmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
- make INTEL_IFORT=ifx MPIFORT=mpiifx VPATH="../../Source" -f ../makefile "$target"
+ make INTEL_IFORT=ifx FCOMPL=mpiifx VPATH="../../Source" -f ../makefile "$target"
 %global mpich_build_command \
  dir=$(pwd) \
  target=${dir##*/} \

@@ -1,95 +1,13 @@
-diff --git a/Build/impi_intel_linux_64/make_fds.sh b/Build/impi_intel_linux_64/make_fds.sh
-index 2317834e8..5e704f1c1 100755
---- a/Build/impi_intel_linux_64/make_fds.sh
-+++ b/Build/impi_intel_linux_64/make_fds.sh
-@@ -4,4 +4,4 @@ dir=`pwd`
- target=${dir##*/}
- 
- echo Building $target with Intel MPI
--make -j4 VPATH="../../Source" -f ../makefile $target
-+make -j4 VPATH="../../Source" INTEL_IFORT=ifx INTEL_MPI_IFORT=mpiifx -f ../makefile $target
 diff --git a/Build/makefile b/Build/makefile
-index 2e991ff35..058fc6ffe 100644
+index 2e991ff35..5fa8ba903 100644
 --- a/Build/makefile
 +++ b/Build/makefile
-@@ -11,6 +11,17 @@
- 
- VPATH = ../Source
- 
-+I_IFORT=ifort
-+MPI_I_IFORT=mpifort
-+
-+ifdef INTEL_IFORT
-+  I_IFORT=$(INTEL_IFORT)
-+endif
-+
-+ifdef INTEL_MPI_IFORT
-+  MPI_I_IFORT=$(INTEL_MPI_IFORT)
-+endif
-+
- ifeq ($(shell echo "check_quotes"),"check_quotes")
- # windows
-   GIT_HASH := $(shell ..\Scripts\githash)
-@@ -157,7 +168,7 @@ impi_intel_win_64 : MPILIB = "$(IMPI_RELEASE_ROOT)\impi.lib"
- impi_intel_win_64 : MPIINCLUDE = "$(IMPI_INCLUDE)"
- impi_intel_win_64 : FFLAGS = /Qipo /O2 /I$(MPIINCLUDE) /traceback /debug:full /wrap-margin- $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_win_64 : FOPENMPFLAGS = /Qopenmp
--impi_intel_win_64 : FCOMPL = ifort
-+impi_intel_win_64 : FCOMPL = $(I_IFORT)
- impi_intel_win_64 : obj = fds_impi_win_64
- impi_intel_win_64 : setup_win $(objwin_mpi)
- 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_mpi) $(MPILIB) $(LFLAGSMKL_INTEL)
-@@ -166,7 +177,7 @@ impi_intel_win_64_dv : MPILIB = "$(IMPI_RELEASE_ROOT)\impi.lib"
- impi_intel_win_64_dv : MPIINCLUDE = "$(IMPI_INCLUDE)"
- impi_intel_win_64_dv : FFLAGS = /O1 /I$(MPIINCLUDE) /traceback /debug:full /wrap-margin- $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_win_64_dv : FOPENMPFLAGS = /Qopenmp
--impi_intel_win_64_dv : FCOMPL = ifort
-+impi_intel_win_64_dv : FCOMPL = $(I_IFORT)
- impi_intel_win_64_dv : obj = fds_impi_win_64_dv
- impi_intel_win_64_dv : setup_win $(objwin_mpi)
- 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_mpi) $(MPILIB) $(LFLAGSMKL_INTEL)
-@@ -175,7 +186,7 @@ impi_intel_win_64_db : MPILIB = "$(IMPI_DEBUG_ROOT)\impi.lib"
- impi_intel_win_64_db : MPIINCLUDE = "$(IMPI_INCLUDE)"
- impi_intel_win_64_db : FFLAGS = /Od /nologo /debug:all /I$(MPIINCLUDE) /Z7 /extend-source:132 /warn:unused /warn:nointerfaces /Qtrapuv /fp:strict /fp:except /traceback /check:all /stand:f18 /wrap-margin- $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_win_64_db : FOPENMPFLAGS = /Qopenmp
--impi_intel_win_64_db : FCOMPL = ifort
-+impi_intel_win_64_db : FCOMPL = $(I_IFORT)
- impi_intel_win_64_db : obj = fds_impi_win_64_db
- impi_intel_win_64_db : setup_win $(objwin_mpi)
- 	$(FCOMPL) -o $(obj) $(FFLAGS) $(FOPENMPFLAGS) /F1000000000 $(objwin_mpi) $(MPILIB) $(LFLAGSMKL_INTEL)
-@@ -184,7 +195,7 @@ impi_intel_win_64_db : setup_win $(objwin_mpi)
- impi_intel_linux_64 : FFLAGS = -m64 -O2 -ipo -g -traceback -no-wrap-margin $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_linux_64 : LFLAGSMKL = $(LFLAGSMKL_INTEL)
- impi_intel_linux_64 : LFLAGS =
--impi_intel_linux_64 : FCOMPL = mpiifort
-+impi_intel_linux_64 : FCOMPL = $(MPI_I_IFORT)
- impi_intel_linux_64 : FOPENMPFLAGS = -qopenmp
- impi_intel_linux_64 : obj = fds_impi_intel_linux_64
- impi_intel_linux_64 : setup $(obj_mpi)
-@@ -193,7 +204,7 @@ impi_intel_linux_64 : setup $(obj_mpi)
- impi_intel_linux_64_db : FFLAGS = -m64 -check all -warn all -O0 -g -traceback -fpe0 -fltconsistency -stand:f18 -no-wrap-margin $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_linux_64_db : LFLAGSMKL = $(LFLAGSMKL_INTEL)
- impi_intel_linux_64_db : LFLAGS =
--impi_intel_linux_64_db : FCOMPL = mpiifort
-+impi_intel_linux_64_db : FCOMPL = $(MPI_I_IFORT)
- impi_intel_linux_64_db : FOPENMPFLAGS = -qopenmp
- impi_intel_linux_64_db : obj = fds_impi_intel_linux_64_db
- impi_intel_linux_64_db : setup $(obj_mpi)
-@@ -202,7 +213,7 @@ impi_intel_linux_64_db : setup $(obj_mpi)
- impi_intel_linux_64_dv : FFLAGS = -m64 -warn unused -O1 -g -traceback -no-wrap-margin $(GITINFO) $(INTELMPI_COMPINFO) $(FFLAGSMKL_INTEL)
- impi_intel_linux_64_dv : LFLAGSMKL = $(LFLAGSMKL_INTEL)
- impi_intel_linux_64_dv : LFLAGS =
--impi_intel_linux_64_dv : FCOMPL = mpiifort
-+impi_intel_linux_64_dv : FCOMPL = $(MPI_I_IFORT)
- impi_intel_linux_64_dv : FOPENMPFLAGS = -qopenmp
- impi_intel_linux_64_dv : obj = fds_impi_intel_linux_64_dv
- impi_intel_linux_64_dv : setup $(obj_mpi)
-@@ -413,7 +424,7 @@ read.obj : func.obj prec.obj cons.obj type.obj mesh.obj devc.obj ctrl.obj radi.o
- wall.obj : func.obj prec.obj cons.obj type.obj mesh.obj hvac.obj mass.obj soot.obj geom.obj ccib.obj
- fire.obj : func.obj prec.obj cons.obj type.obj mesh.obj mass.obj soot.obj radi.obj
- divg.obj : func.obj prec.obj cons.obj type.obj mesh.obj scrc.obj evac.obj mass.obj ccib.obj
--velo.obj : func.obj prec.obj cons.obj type.obj mesh.obj turb.obj geom.obj scrc.obj ccib.obj 
-+velo.obj : func.obj prec.obj cons.obj type.obj mesh.obj turb.obj geom.obj scrc.obj ccib.obj
- pres.obj : func.obj prec.obj cons.obj type.obj mesh.obj pois.obj velo.obj scrc.obj geom.obj ccib.obj
- init.obj : func.obj prec.obj cons.obj type.obj mesh.obj devc.obj pois.obj data.obj evac.obj pres.obj geom.obj
- main.obj : func.obj prec.obj cons.obj type.obj mesh.obj devc.obj smvv.obj mass.obj divg.obj velo.obj wall.obj fire.obj ieva.obj radi.obj evac.obj part.obj vege.obj dump.obj read.obj init.obj pres.obj pois.obj ctrl.obj turb.obj hvac.obj scrc.obj data.obj geom.obj ccib.obj soot.obj
+@@ -80,7 +80,7 @@ else
+ ifneq ("$(wildcard ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a)","")
+ # Use cluster_sparse_solver with intelmpi blacs
+   FFLAGSMKL_INTEL = -DWITH_MKL -I$(MKLROOT)/include
+-  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl
++  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -ldl
+ endif
+ ifneq ("$(wildcard ${MKLROOT}/lib/intel64/libmkl_blacs_openmpi_lp64.a)","")
+ # Use cluster_sparse_solver with openmpi blacs

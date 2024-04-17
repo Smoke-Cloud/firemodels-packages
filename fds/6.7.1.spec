@@ -10,7 +10,10 @@
 %global intel_string impi_intel_linux
 %global build_dir Build
 %global openmpi_build_command ./make_fds.sh
-%global intelmpi_build_command ./make_fds.sh
+%global intelmpi_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make INTEL_IFORT=ifx FCOMPL=mpiifx VPATH="../../Source" -f ../makefile "$target"
 %global mpich_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
