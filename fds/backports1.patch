@@ -20,13 +20,13 @@ index b9851c63c..c14f06020 100644
  
  END SUBROUTINE END_FDS
 diff --git a/Build/makefile b/Build/makefile
-index 5bda0941f..29a1c2dae 100644
+index 98ae0a3ba..79b1fb3ec 100644
 --- a/Build/makefile
 +++ b/Build/makefile
-@@ -75,7 +86,7 @@ else
+@@ -75,7 +75,7 @@ else
  ifneq ("$(wildcard ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a)","")
  # Use cluster_sparse_solver with intelmpi blacs
-   FFLAGSMKL_INTEL = -DWITH_MKL -I$(MKLROOT)/include
+   FFLAGSMKL_INTEL = -DWITH_CLUSTER_SPARSE_SOLVER -I$(MKLROOT)/include
 -  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl
 +  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -ldl
  endif

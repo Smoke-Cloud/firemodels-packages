@@ -43,16 +43,3 @@ index cb636a50f..b9319cae0 100644
    INTEGER, INTENT(OUT) :: NCHARS_OUT
  
    CHARACTER(LEN=1) :: MARK=CHAR(255),THISCHAR,LASTCHAR
-diff --git a/Build/makefile b/Build/makefile
-index 5bda0941f..29a1c2dae 100644
---- a/Build/makefile
-+++ b/Build/makefile
-@@ -75,7 +86,7 @@ else
- ifneq ("$(wildcard ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a)","")
- # Use cluster_sparse_solver with intelmpi blacs
-   FFLAGSMKL_INTEL = -DWITH_MKL -I$(MKLROOT)/include
--  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl
-+  LFLAGSMKL_INTEL = -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -ldl
- endif
- ifneq ("$(wildcard ${MKLROOT}/lib/intel64/libmkl_blacs_openmpi_lp64.a)","")
- # Use cluster_sparse_solver with openmpi blacs
