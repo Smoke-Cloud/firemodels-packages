@@ -81,8 +81,14 @@ jobs:
           else
             bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch
           fi
+      - name: String Transform container name
+        id: transform
+        uses: relab-services/string-transform@v1
+        with:
+            source: ${{ matrix.container }}
+            transform: replace(":", "_")
       - uses: actions/upload-artifact@v4
         with:
-          name: FDS-RPM-${{ matrix.container }}-${{ matrix.fds-version }}
+          name: FDS-RPM-${{ steps.transform.outputs.var }}-${{ matrix.fds-version }}
           path: |
             dist/*.rpm

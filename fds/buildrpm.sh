@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 export QA_RPATHS=7
-latest="6.8.0"
+latest="6.9.1"
 mkdir -p build/"$1"
 cd build/"$1"
 export version="$1"

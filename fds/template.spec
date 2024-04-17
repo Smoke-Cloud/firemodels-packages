@@ -104,8 +104,8 @@ Docs for FDS
 %setup -qc
 %setup -qc -a 1
 cd %{repo}-%{commit}
-%patch0 -p1
-%patch1 -p1
+%patch 0 -p1
+%patch 1 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
