@@ -5,7 +5,7 @@
 %{!?build_mpich:%global build_mpich 0}
 %{!?build_intelmpi:%global build_intelmpi 1}
 %{!?build_docs:%global build_docs 0}
-%global old_compilers BuildRequires: intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+%global old_compilers BuildRequires: intel-oneapi-compiler-dpcpp-cpp
 %global gnu_string mpi_gnu_linux
 %global mpich_string mpich_gnu_linux
 %global intel_string mpi_intel_linux
