@@ -7,7 +7,6 @@
  . /etc/profile.d/modules.sh; \
  module use ~/modulefiles; \
  module load mpi/latest; \
- module load compiler; \
  module load ifort; \
  module load mkl;
 %global _intelmpi_unload \
@@ -16,7 +15,6 @@
  module use ~/modulefiles; \
  module unload mkl; \
  module unload ifort; \
- module unload compiler; \
  module unload mpi/latest;
 
 Name:           fds%{?version_suffix}
