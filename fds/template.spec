@@ -1,5 +1,5 @@
 
-%global this_release 5
+%global this_release 6
 
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
