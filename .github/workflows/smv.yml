@@ -42,7 +42,7 @@ jobs:
       - id: setContainerSafeName
         run: |
           export test_version=$(echo ${{ matrix.container }} | sed 's/:/\-/g')
-          echo ::set-output name=containerSafe::$test_version
+          echo "containerSafe=$test_version" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@v4
         with:
           name: SMV-RPMs-${{ steps.setContainerSafeName.outputs.containerSafe }}
