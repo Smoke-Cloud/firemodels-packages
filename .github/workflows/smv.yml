@@ -19,8 +19,8 @@ jobs:
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
       - name: Install lib prerequisites
-        run: dnf install -y cmake gd-devel freeglut-devel \
-                bash gd freeglut libXmu-devel glew-devel \
+        run: dnf install -y cmake gd-devel freeglut-devel
+                bash gd freeglut libXmu-devel glew-devel
                 libXi-devel libX11-devel
       - name: Install json-c-devel
         run: |
