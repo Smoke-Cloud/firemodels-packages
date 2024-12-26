@@ -18,7 +18,12 @@ jobs:
         run: dnf update -y --refresh
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
-      - run: dnf install -y epel-release
+      - name: Enable EPEL
+        run: |
+          if [ "${{ matrix.container }}" = "rockylinux:9" ]
+          then
+            dnf install -y epel-release
+          fi
       - name: Install lib prerequisites
         run: dnf install -y cmake gd-devel freeglut-devel
                 bash gd freeglut libXmu-devel glew-devel
