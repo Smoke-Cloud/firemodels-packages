@@ -21,6 +21,7 @@ jobs:
       - name: Enable EPEL
         if: matrix.container == 'rockylinux:9'
         run: |
+            dnf install -y 'dnf-command(config-manager)'
             dnf config-manager --set-enabled crb
             dnf install -y epel-release
       - name: Install lib prerequisites
