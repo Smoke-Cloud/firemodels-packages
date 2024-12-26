@@ -1,3 +1,5 @@
+%bcond_with glui
+
 Name:           smokeview
 Version:        6.8.0
 Release:        1%{?dist}
@@ -12,14 +14,18 @@ Url:            https://github.com/JakeOShannessy/smv
 BuildRequires:  cmake
 BuildRequires:  gd-devel
 BuildRequires:  freeglut-devel
+%if %{with glui}
 BuildRequires:  glui-devel
+%endif
 BuildRequires:  libXmu-devel
 BuildRequires:  glew-devel
 BuildRequires:  json-c-devel
 
 Requires:       gd
 Requires:       freeglut
+%if %{with glui}
 Requires:       glui
+%endif
 Requires:       libXmu
 Requires:       json-c
 

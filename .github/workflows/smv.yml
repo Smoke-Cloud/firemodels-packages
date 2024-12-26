@@ -3,52 +3,33 @@ on: [push, pull_request]
 name: SMV
 
 jobs:
-  build-rpm-rocky:
-    name: Build RPM Rocky
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container:
-          - "rockylinux:9"
-          # - "fedora:39"
-    container: ${{ matrix.container }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: General update
-        run: dnf update -y --refresh
-      - name: Install prerequisites
-        run: dnf install -y git gcc g++ rpmdevtools make
-      - run: dnf install --enablerepo=devel -y json-c-devel
-      - run: dnf install -y cmake gd-devel freeglut-devel \
-                bash gd freeglut \
-                libXmu-devel glew-devel json-c-devel libXi-devel libX11-devel
-      - name: Build RPM
-        run: |
-          cd smv
-          bash ./buildrpm.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: SMV-RPMs
-          path: |
-            dist/*.rpm
-  build-rpm-fedora:
+  build-rpm:
     name: Build RPM Fedora
     runs-on: ubuntu-latest
     strategy:
       matrix:
         container:
-          # - "rockylinux:9"
+          - "rockylinux:9"
           - "fedora:39"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
       - name: General update
         run: dnf update -y --refresh
-      - name: Install prerequisites
+      - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
-      - run: dnf install -y cmake gd-devel freeglut-devel \
-                glui-devel bash gd freeglut glui \
-                libXmu-devel glew-devel json-c-devel libXi-devel libX11-devel
+      - name: Install lib prerequisites
+        run: dnf install -y cmake gd-devel freeglut-devel \
+                bash gd freeglut libXmu-devel glew-devel \
+                libXi-devel libX11-devel
+      - name: Install json-c-devel
+        run: |
+          if [ "${{ matrix.container }}" = "rockylinux:9" ]
+          then
+            dnf install --enablerepo=devel -y json-c-devel
+          else
+            dnf install -y json-c-devel
+          fi
       - name: Build RPM
         run: |
           cd smv
