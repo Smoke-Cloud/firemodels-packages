@@ -15,11 +15,13 @@ BuildRequires:  freeglut-devel
 BuildRequires:  glui-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  glew-devel
+BuildRequires:  json-c-devel
 
 Requires:       gd
 Requires:       freeglut
 Requires:       glui
 Requires:       libXmu
+Requires:       json-c
 
 %description
 A post-processor for FDS (Fire Dynamics Simulator).
