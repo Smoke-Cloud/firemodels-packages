@@ -18,6 +18,7 @@ jobs:
         run: dnf update -y --refresh
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
+      - run: dnf install -y epel-release
       - name: Install lib prerequisites
         run: dnf install -y cmake gd-devel freeglut-devel
                 bash gd freeglut libXmu-devel glew-devel
