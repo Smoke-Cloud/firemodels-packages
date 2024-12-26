@@ -38,7 +38,7 @@ jobs:
         run: |
           cd smv
           bash ./buildrpm.sh
-          ls dist/*.rpm
+          ls ../dist/*.rpm
       - uses: actions/upload-artifact@v4
         with:
           name: SMV-RPMs
