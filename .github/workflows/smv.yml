@@ -19,27 +19,25 @@ jobs:
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
       - name: Enable EPEL
+        if: matrix.container == 'rockylinux:9'
         run: |
-          if [ "${{ matrix.container }}" = "rockylinux:9" ]
-          then
+            dnf config-manager --set-enabled crb
             dnf install -y epel-release
-          fi
       - name: Install lib prerequisites
         run: dnf install -y cmake gd-devel freeglut-devel
                 bash gd freeglut libXmu-devel glew-devel
                 libXi-devel libX11-devel
       - name: Install json-c-devel
-        run: |
-          if [ "${{ matrix.container }}" = "rockylinux:9" ]
-          then
-            dnf install --enablerepo=devel -y json-c-devel
-          else
-            dnf install -y json-c-devel
-          fi
+        if: matrix.container == 'rockylinux:9'
+        run: dnf install --enablerepo=devel -y json-c-devel
+      - name: Install json-c-devel
+        if: matrix.container != 'rockylinux:9'
+        run: dnf install -y json-c-devel
       - name: Build RPM
         run: |
           cd smv
           bash ./buildrpm.sh
+          ls dist/*.rpm
       - uses: actions/upload-artifact@v4
         with:
           name: SMV-RPMs
