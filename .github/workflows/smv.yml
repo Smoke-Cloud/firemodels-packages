@@ -50,6 +50,7 @@ jobs:
           path: |
             dist/*.rpm
   build_windows_msvc:
+    if: false
     name: build windows-2022 msvc
     runs-on: windows-2022
     defaults:
