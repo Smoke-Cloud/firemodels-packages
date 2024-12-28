@@ -24,6 +24,9 @@ jobs:
             dnf install -y 'dnf-command(config-manager)'
             dnf config-manager --set-enabled crb
             dnf install -y epel-release
+      - name: Install rpmautospec-rpm-macros
+        if: matrix.container == 'rockylinux:9'
+        run: dnf install -y rpmautospec-rpm-macros
       - name: Install lib prerequisites
         run: dnf install -y rust cargo cargo-rpm-macros rust-clap+cargo-devel
           rust-serde+derive-devel rust-serde_json+default-devel
