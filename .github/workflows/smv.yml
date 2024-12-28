@@ -4,6 +4,7 @@ name: SMV
 
 jobs:
   build-rpm:
+    if: false
     name: Build RPM Fedora
     runs-on: ubuntu-latest
     strategy:

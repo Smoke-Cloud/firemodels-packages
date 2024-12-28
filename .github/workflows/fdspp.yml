@@ -35,7 +35,7 @@ jobs:
       - name: Build namelist RPMs
         run: |
           cd rust-namelist
-          dnf reinstall -u rust-clap_builder-devel
+          dnf reinstall -y rust-clap_builder-devel
           rpm -ql rust-clap_builder-devel
           ls /usr/share/cargo/registry/clap_builder-4.5.23
           bash ./buildrpm.sh
