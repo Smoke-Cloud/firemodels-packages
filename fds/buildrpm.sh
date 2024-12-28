@@ -62,7 +62,7 @@ if [ "$version" = "$latest" ]; then
         --define "revision_date ${revision_date}" \
         --define "version_patch ${version_patch}" \
         --define "backports_patch ${backports_patch}" \
-        "$@"
+        "$@" --noclean
     mkdir -p ../../../dist
     cp rpmbuild/RPMS/"$(rpmbuild --eval '%{_arch}')"/*.rpm ../../../dist/
 fi

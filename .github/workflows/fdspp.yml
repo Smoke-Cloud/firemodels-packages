@@ -1,0 +1,117 @@
+on: [push, pull_request]
+
+name: FDSPP
+
+jobs:
+  build-rpm:
+    name: Build RPM Fedora
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - "rockylinux:9"
+          - "fedora:39"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: General update
+        run: dnf update -y --refresh
+      - name: Install basic build prerequisites
+        run: dnf install -y git gcc g++ rpmdevtools make
+      - name: Enable EPEL
+        if: matrix.container == 'rockylinux:9'
+        run: |
+            dnf install -y 'dnf-command(config-manager)'
+            dnf config-manager --set-enabled crb
+            dnf install -y epel-release
+      - name: Install lib prerequisites
+        run: dnf install -y rust-clap+cargo-devel rust-serde+derive-devel \
+          rust-serde_json+default-devel rust-tempfile+default-devel \
+          rust-serde+default-devel rust-clap+default-devel rust-utf-8+default-devel
+      - name: Build namelist RPMs
+        run: |
+          cd rust-namelist
+          bash ./buildrpm.sh
+          dnf install -y rpmbuild/RPMS/noarch/rust-namelist*.rpm
+      - name: Build RPM
+        run: |
+          cd fdspp
+          bash ./buildrpm.sh
+          ls ../dist/*.rpm
+      - id: setContainerSafeName
+        run: |
+          export test_version=$(echo ${{ matrix.container }} | sed 's/:/\-/g')
+          echo "containerSafe=$test_version" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fdspp-RPMs-${{ steps.setContainerSafeName.outputs.containerSafe }}
+          path: |
+            dist/*.rpm
+  build_windows_msvc:
+    name: build windows-2022 msvc
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Clone smv repo
+        uses: actions/checkout@v4
+        with:
+          repository: firemodels/smv
+          path: smv/build
+          ref: 24bb184dacf75626399537772460477597d2443a
+      - name: Clone bot repo
+        uses: actions/checkout@v4
+        with:
+          repository: firemodels/bot
+          path: smv/bot
+          ref: 2cafc15b8a2797df0ff8fe3f64ab44c1719b5db5
+      - name: build smokeview
+        working-directory: ${{github.workspace}}/smv/build
+        shell: cmd
+        run: |
+          cmake --version
+          cd smv
+          cmake -B ${{github.workspace}}\cbuild -DCMAKE_BUILD_TYPE=Release -DLUA=ON -DLUA_BUILD_BINARY=ON -DLUA_UTIL_LIBS=ON  -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%/scripts/buildsystems/vcpkg.cmake
+          cmake --build ${{github.workspace}}\cbuild -j --config Release
+      - name: build installer
+        working-directory: ${{github.workspace}}/smv/build
+        shell: cmd
+        run: |
+          echo %PATH%
+          set PATH=%PATH%;C:\Program Files (x86)\WiX Toolset v3.11\bin
+          echo %PATH%
+          candle --version
+          cmake --install ${{github.workspace}}\cbuild --config Release --prefix dist
+          mkdir dist\config
+          cp ..\bot\Bundlebot\smv\for_bundle\smokeview.ini dist\config\smokeview.ini
+          cp ..\bot\Bundlebot\smv\for_bundle\objects.svo dist\config\objects.svo
+          cp ..\lua.cmd lua.cmd
+          cp ..\smvlua.cmd smvlua.cmd
+          candle "..\SMVLuaInstaller.wxs"
+          light "SMVLuaInstaller.wixobj"
+      - name: Download test data
+        working-directory: ${{github.workspace}}/smv/build/Tests
+        shell: pwsh
+        run: .\get_test_data.ps1
+      - name: Test
+        shell: bash
+        working-directory: ${{github.workspace}}/cbuild
+        run: |
+          ctest -j10 -C Release --output-on-failure
+      - name: Archive installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: SMV-MSIs
+          path: smv/build/SMVLuaInstaller.msi
+  merge:
+    runs-on: ubuntu-latest
+    needs: build-rpm
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: SMV-RPMs
+          pattern: SMV-RPMs-*
