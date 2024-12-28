@@ -4,7 +4,6 @@ name: CFAST
 
 jobs:
   build-rpm:
-    if: false
     name: Build RPM
     runs-on: ubuntu-latest
     strategy:

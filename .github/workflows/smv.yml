@@ -4,7 +4,6 @@ name: SMV
 
 jobs:
   build-rpm:
-    if: false
     name: Build RPM Fedora
     runs-on: ubuntu-latest
     strategy:
@@ -50,7 +49,6 @@ jobs:
           path: |
             dist/*.rpm
   build_windows_msvc:
-    if: false
     name: build windows-2022 msvc
     runs-on: windows-2022
     defaults:
