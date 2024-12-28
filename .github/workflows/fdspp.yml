@@ -25,9 +25,10 @@ jobs:
             dnf config-manager --set-enabled crb
             dnf install -y epel-release
       - name: Install lib prerequisites
-        run: dnf install -y rust-clap+cargo-devel rust-serde+derive-devel
-          rust-serde_json+default-devel rust-tempfile+default-devel
-          rust-serde+default-devel rust-clap+default-devel rust-utf-8+default-devel
+        run: dnf install -y rust cargo cargo-rpm-macros rust-clap+cargo-devel
+          rust-serde+derive-devel rust-serde_json+default-devel
+          rust-tempfile+default-devel rust-serde+default-devel
+          rust-clap+default-devel rust-utf-8+default-devel
       - name: Build namelist RPMs
         run: |
           cd rust-namelist
