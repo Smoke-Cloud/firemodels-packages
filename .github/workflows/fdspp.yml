@@ -31,7 +31,7 @@ jobs:
         run: dnf install -y rust cargo cargo-rpm-macros rust-clap+cargo-devel
           rust-serde+derive-devel rust-serde_json+default-devel
           rust-tempfile+default-devel rust-serde+default-devel
-          rust-clap+default-devel rust-utf-8+default-devel
+          rust-clap+default-devel rust-utf-8+default-devel rust-clap_builder-devel
       - name: Build namelist RPMs
         run: |
           cd rust-namelist
