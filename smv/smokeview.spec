@@ -28,6 +28,7 @@ Requires:       glui
 %endif
 Requires:       libXmu
 Requires:       json-c
+Requires:       libcsv
 
 %description
 A post-processor for FDS (Fire Dynamics Simulator).
