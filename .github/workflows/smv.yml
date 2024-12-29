@@ -27,7 +27,7 @@ jobs:
       - name: Install lib prerequisites
         run: dnf install -y cmake gd-devel freeglut-devel
                 bash gd freeglut libXmu-devel glew-devel
-                libXi-devel libX11-devel
+                libXi-devel libX11-devel libcsv-devel
       - name: Install json-c-devel
         if: matrix.container == 'rockylinux:9'
         run: dnf install --enablerepo=devel -y json-c-devel
