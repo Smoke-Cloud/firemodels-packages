@@ -9,8 +9,7 @@ jobs:
     strategy:
       matrix:
         container:
-          - "fedora:39"
-          - "rockylinux:8"
+          - "fedora:40"
           - "rockylinux:9"
         cfast-version:
           - "7.0.1"
