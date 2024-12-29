@@ -5,7 +5,7 @@ Version:        6.8.0
 Release:        1%{?dist}
 Summary:        Smokeview
 
-%global commit e528e8b0adced1be2dba4473a8a07bab3dd6ee9b
+%global commit cf28079c79ef79e7c75b74909801e2a6eadc1195
 
 License:        AllRightsReserved
 Source0:        https://github.com/JakeOShannessy/smv/archive/%{commit}.zip
