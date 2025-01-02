@@ -117,10 +117,12 @@ export FC=mpiifx
 %install
 %cmake_install
 %if %{build_openmpi}
+mkdir -p $RPM_BUILD_ROOT/%{_libdir}/openmpi/bin
 mv $RPM_BUILD_ROOT/%{_bindir}/fds $RPM_BUILD_ROOT/%{_libdir}/openmpi/bin/fds_openmpi
 %endif
 %if %{build_intelmpi}
-mv $RPM_BUILD_ROOT/%{_bindir}/fds $RPM_BUILD_ROOT/%{_libdir}/openmpi/bin/fds_intelmpi
+mkdir -p $RPM_BUILD_ROOT/%{_libdir}/intelmpi/bin
+mv $RPM_BUILD_ROOT/%{_bindir}/fds $RPM_BUILD_ROOT/%{_libdir}/intelmpi/bin/fds_intelmpi
 %endif
 
 %if %{build_openmpi}
