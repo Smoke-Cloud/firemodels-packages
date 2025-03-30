@@ -27,6 +27,10 @@ jobs:
       - name: Install rpmautospec-rpm-macros
         if: matrix.container == 'rockylinux:9'
         run: dnf install -y rpmautospec-rpm-macros
+      - name: Change DNF config
+        run: |
+          sed '/^tsflags=/d' /etc/dnf/dnf.conf
+          cat /etc/dnf/dnf.conf
       - name: Install lib prerequisites
         run: dnf install -y rust cargo cargo-rpm-macros rust-clap+cargo-devel
           rust-serde+derive-devel rust-serde_json+default-devel
@@ -42,8 +46,6 @@ jobs:
           dnf install -y rpmbuild/RPMS/noarch/rust-namelist*.rpm
       - name: Build RPM
         run: |
-          sed '/^tsflags=/d' /etc/dnf/dnf.conf
-          cat /etc/dnf/dnf.conf
           ls /usr/share/cargo/registry/*
           cd fdspp
           bash ./buildrpm.sh
