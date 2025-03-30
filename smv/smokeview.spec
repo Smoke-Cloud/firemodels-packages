@@ -2,7 +2,7 @@
 
 Name:           smokeview
 Version:        6.8.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Smokeview
 
 %global commit d5756045d85fc0a545af90f75492b3fc55d665a6
