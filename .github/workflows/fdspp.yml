@@ -42,6 +42,7 @@ jobs:
           dnf install -y rpmbuild/RPMS/noarch/rust-namelist*.rpm
       - name: Build RPM
         run: |
+          sed '/^tsflags=/d' /etc/dnf/dnf.conf
           cat /etc/dnf/dnf.conf
           ls /usr/share/cargo/registry/*
           cd fdspp
