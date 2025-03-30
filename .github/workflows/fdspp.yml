@@ -29,7 +29,9 @@ jobs:
         run: dnf install -y rpmautospec-rpm-macros
       - name: Change DNF config
         run: |
-          sed '/^tsflags=/d' /etc/dnf/dnf.conf
+          # the 'nodocs' configuration needs to be removed as rust packages
+          # depend on their docs
+          sed -i '/^tsflags=/d' /etc/dnf/dnf.conf
           cat /etc/dnf/dnf.conf
       - name: Install lib prerequisites
         run: dnf install -y rust cargo cargo-rpm-macros rust-clap+cargo-devel
