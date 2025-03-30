@@ -1,5 +1,6 @@
 version,repo,commit,date,version_patch,backports_patch
-latest,fds,d99f08746f2434ac216795e2f3dc8d1ed3926a73,1712523906,version00.patch,backports00.patch
+latest,fds,618ac072817cb4f287ea5b3d8360dda78339e3a1,1741367545,version00.patch,backports00.patch
+6.10.0,fds,618ac072817cb4f287ea5b3d8360dda78339e3a1,1741367545,version00.patch,backports00.patch
 6.9.1,fds,889da6ae08d08dae680f7c0d8de66a3ad1c65375,1712523906,version0.patch,backports0.patch
 6.9.0,fds,63395692607884566fdedb5db4b5b4d98d3bcafb,1710957557,version0.patch,backports0a.patch
 6.8.0,fds,886e0096535519b7358a3c4393c91da3caee5072,1681816000,version1.patch,backports0b.patch

@@ -6,7 +6,7 @@
 %{!?build_docs:%global build_docs 0}
 %global build_dir Build
 
-%global this_release 6
+%global this_release 7
 
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
@@ -14,14 +14,14 @@
  . /etc/profile.d/modules.sh; \
  module use ~/modulefiles; \
  module load mpi/latest; \
- module load ifort; \
+ module load compiler; \
  module load mkl;
 %global _intelmpi_unload \
  export MODULES_AUTO_HANDLING=1; \
  . /etc/profile.d/modules.sh; \
  module use ~/modulefiles; \
  module unload mkl; \
- module unload ifort; \
+ module unload compiler; \
  module unload mpi/latest;
 
 Name:           fds

@@ -13,6 +13,6 @@ else
     echo "empty"
 fi
 bash ./buildrpm.sh "$version" "$repo" "$commit" "$date" "$version_patch" "$backports_patch" \
-         --define 'build_openmpi 1' \
+         --define 'build_openmpi 0' \
          --define 'build_mpich 0' \
          --define 'build_intelmpi 1'
