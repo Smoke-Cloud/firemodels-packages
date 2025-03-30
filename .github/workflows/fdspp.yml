@@ -35,9 +35,6 @@ jobs:
       - name: Build namelist RPMs
         run: |
           cd rust-namelist
-          # TODO: This is an odd workaroud for a missing file
-          touch /usr/share/cargo/registry/clap_builder-4.5.23/README.md
-          ls /usr/share/cargo/registry/clap_builder-4.5.23
           bash ./buildrpm.sh
           dnf install -y rpmbuild/RPMS/noarch/rust-namelist*.rpm
       - name: Build RPM
