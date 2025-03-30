@@ -42,6 +42,7 @@ jobs:
           dnf install -y rpmbuild/RPMS/noarch/rust-namelist*.rpm
       - name: Build RPM
         run: |
+          ls /usr/share/cargo/registry/*
           cd fdspp
           bash ./buildrpm.sh
           ls ../dist/*.rpm
