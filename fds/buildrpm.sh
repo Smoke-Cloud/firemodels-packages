@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 export QA_RPATHS=7
-latest="6.9.1"
+latest="6.11.0"
 mkdir -p build/"$1"
 cd build/"$1"
 specname=$1
@@ -31,6 +31,7 @@ spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
     --define "version_patch ${version_patch}" \
+    --define "version_suffix ${version_suffix}" \
     --define "backports_patch ${backports_patch}"
 rpmbuild -ba fds.spec \
     --define "_topdir $(pwd)/rpmbuild" \
@@ -39,6 +40,7 @@ rpmbuild -ba fds.spec \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
     --define "version_patch ${version_patch}" \
+    --define "version_suffix ${version_suffix}" \
     --define "backports_patch ${backports_patch}" \
      "$@"  --noclean
 mkdir -p ../../../dist
