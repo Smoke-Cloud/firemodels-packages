@@ -1,11 +1,11 @@
 %bcond_with glui
 
 Name:           smokeview
-Version:        6.8.0
+Version:        6.10.1
 Release:        5%{?dist}
 Summary:        Smokeview
 
-%global commit d5756045d85fc0a545af90f75492b3fc55d665a6
+%global commit 298441b2b3d65fa733f98bb7063e2baa2a572949
 
 License:        AllRightsReserved
 Source0:        https://github.com/JakeOShannessy/smv/archive/%{commit}.zip
