@@ -11,6 +11,7 @@ jobs:
         container:
           - "fedora:40"
           - "rockylinux:9"
+          - "rockylinux:10"
         fds-version:
           - "5.5.3"
           - "6.1.2"
