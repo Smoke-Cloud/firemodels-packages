@@ -10,7 +10,7 @@ jobs:
       matrix:
         container:
           - "rockylinux:9"
-          - "rockylinux:10"
+          - "almalinux:10"
           - "fedora:40"
     container: ${{ matrix.container }}
     steps:
