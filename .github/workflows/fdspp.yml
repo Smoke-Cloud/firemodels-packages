@@ -20,7 +20,7 @@ jobs:
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
       - name: Enable EPEL
-        if: matrix.container == 'rockylinux:9'
+        if: matrix.container == 'rockylinux:9' || matrix.container == 'almalinux:10'
         run: |
             dnf install -y 'dnf-command(config-manager)'
             dnf config-manager --set-enabled crb
