@@ -43,6 +43,8 @@ jobs:
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
+        - name: Install prerequisites
+          run: dnf install -y git gcc kmod openssl-devel rpmdevtools make
         - name: Set up Spack
           uses: spack/setup-spack@v2
           with:
