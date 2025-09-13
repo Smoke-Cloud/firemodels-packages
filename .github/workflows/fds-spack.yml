@@ -1,7 +1,7 @@
 
 on: [push, pull_request]
 
-name: FDS
+name: FDS-Spack
 
 jobs:
   build-rpm:
@@ -44,7 +44,7 @@ jobs:
     steps:
         - uses: actions/checkout@v4
         - name: Install prerequisites
-          run: dnf install -y git gcc kmod openssl-devel rpmdevtools make
+          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran
         - name: Set up Spack
           uses: spack/setup-spack@v2
           with:
