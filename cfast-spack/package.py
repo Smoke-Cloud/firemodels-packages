@@ -54,6 +54,8 @@ class Cfastc(MakefilePackage):
         msg="CFAST builds only with GNU Fortran or Intel Fortran",
     )
 
+    parallel = False
+
     revision_dates = {
         "7.7.4": 1673642530,
         "7.7.3": 1652293105,
@@ -87,6 +89,10 @@ class Cfastc(MakefilePackage):
         env.set("GIT_DIRTY", "spack")
         # env.set("PREFIX", prefix)
         # env.set("BLASLIB", spec["blas"].libs.ld_flags)
+
+    def edit(self, spec, prefix):
+        makefile = FileFilter("Build/CFAST/makefile")
+        makefile.filter(r"\.\./Source", "./Source")
 
     @property
     def build_targets(self):
