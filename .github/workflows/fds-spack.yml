@@ -14,6 +14,9 @@ jobs:
           - "fedora:42"
           # - "rockylinux:9"
           # - "almalinux:10"
+        compiler:
+          - "oneapi"
+          - "gcc"
         fds-version:
         #   - "5.5.3"
           - "6.1.2"
@@ -59,7 +62,7 @@ jobs:
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
         - run: spack create --name fdsc --skip-editor
         - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
-        - run: spack install fdsc@${{matrix.fds-version}}%oneapi
+        - run: spack install fdsc@${{matrix.fds-version}}%${{matrix.fds-version}}
     #   - name: General update
     #     run: dnf update -y --refresh
     #   - name: Install environment-modules
