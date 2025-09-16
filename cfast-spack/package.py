@@ -95,6 +95,7 @@ class Cfastc(MakefilePackage):
     def edit(self, spec, prefix):
         makefile = FileFilter("Build/CFAST/makefile")
         makefile.filter(r"\.\./Source", "./Source")
+        makefile.filter("ifort", "ifx")
 
     @property
     def build_targets(self):
