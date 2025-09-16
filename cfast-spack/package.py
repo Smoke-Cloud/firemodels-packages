@@ -80,6 +80,11 @@ class Cfastc(MakefilePackage):
         "7.0.1": 1449673035,
     }
 
+    # arch_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
+    compiler_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
+    platform_mapping = {"linux": "linux", "darwin": "osx"}
+    # arch_suffix = arch_mapping[self.spec["mpi"].name]
+
     def setup_build_environment(self, env) -> None:
         env.set("FFLAGS", '-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace  -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""')
         env.set("GIT_DATE", time.strftime("%a, %d %b %Y %H:%M:%S +0000",
@@ -96,22 +101,21 @@ class Cfastc(MakefilePackage):
 
     @property
     def build_targets(self):
-        # arch_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
-        compiler_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
-        platform_mapping = {"linux": "linux", "darwin": "osx"}
-        # arch_suffix = arch_mapping[self.spec["mpi"].name]
         arch_suffix = "64"
-        compiler_suffix = compiler_mapping[self.spec.compiler.name]
-        platform_suffix = platform_mapping[self.spec.architecture.platform]
+        compiler_suffix = self.compiler_mapping[self.spec.compiler.name]
+        platform_suffix = self.platform_mapping[self.spec.architecture.platform]
         return [f"{compiler_suffix}_{platform_suffix}_{arch_suffix}"]
 
     def install(self, spec, prefix):
+        arch_suffix = "64"
+        platform_suffix = self.platform_mapping[self.spec.architecture.platform]
         mkdirp(prefix.bin)
         with working_dir(self.build_directory):
             # install("*.mod", prefix.bin)
             # install("*.o", prefix.bin)
             # install("cfast7_" + self.build_targets[0], join_path(prefix.bin, "cfast"))
-            install("cfast7_linux_64", join_path(prefix.bin, "cfast"))
+            install(f"cfast7_{platform_suffix}_{arch_suffix}",
+                    join_path(prefix.bin, "cfast"))
 
     # def cmake_args(self):
     #     args = [
