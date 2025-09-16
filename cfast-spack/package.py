@@ -88,6 +88,27 @@ class Cfastc(MakefilePackage):
         # env.set("PREFIX", prefix)
         # env.set("BLASLIB", spec["blas"].libs.ld_flags)
 
+    @property
+    def build_targets(self):
+        # spec = self.spec
+        # mpi_mapping = {"openmpi": "ompi", "intel-oneapi-mpi": "impi"}
+        # compiler_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
+        # platform_mapping = {"linux": "linux", "darwin": "osx"}
+        # mpi_prefix = mpi_mapping[spec["mpi"].name]
+        # compiler_prefix = compiler_mapping[spec.compiler.name]
+        # platform_prefix = platform_mapping[spec.architecture.platform]
+        # openmp_prefix = "_openmp" if "+openmp" in spec else ""
+        # return [f"{mpi_prefix}_{compiler_prefix}_{platform_prefix}{openmp_prefix}"]
+        return "gnu_linux_64"
+
+    def install(self, spec, prefix):
+        mkdirp(prefix.bin)
+        with working_dir(self.build_directory):
+            # install("*.mod", prefix.bin)
+            # install("*.o", prefix.bin)
+            # install("cfast7_" + self.build_targets[0], join_path(prefix.bin, "cfast"))
+            install("cfast7_linux_64", join_path(prefix.bin, "cfast"))
+
     # def cmake_args(self):
     #     args = [
     #         "-DGIT_DATE={0}".format(time.strftime("%a, %d %b %Y %H:%M:%S +0000",
