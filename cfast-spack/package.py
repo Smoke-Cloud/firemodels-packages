@@ -80,7 +80,8 @@ class Cfastc(MakefilePackage):
         "7.0.1": 1449673035,
     }
 
-    compiler_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
+    compiler_mapping = {"gcc": "gnu", "oneapi": "intel",
+                        "intel-oneapi-compilers": "intel", "intel": "intel"}
     platform_mapping = {"linux": "linux", "darwin": "osx"}
 
     def setup_build_environment(self, env) -> None:

@@ -57,8 +57,8 @@ class Fdsc(CMakePackage):
             description="Enable SUNDIALS")
     variant("hypre", default=False, when="@6.10:", description="Enable HYPRE")
 
-    conflicts("%gcc", when="+openmp",
-              msg="GCC already provides OpenMP support")
+    # conflicts("%gcc", when="+openmp",
+    #           msg="GCC already provides OpenMP support")
 
     depends_on("fortran", type="build")
 
