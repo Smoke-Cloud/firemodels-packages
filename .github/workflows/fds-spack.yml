@@ -53,6 +53,7 @@ jobs:
             buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
             color: true       # Force color output (SPACK_COLOR=always)
             path: spack       # Where to clone Spack
+        - run: spack install intel-oneapi-compilers
         - run: spack compiler find
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
