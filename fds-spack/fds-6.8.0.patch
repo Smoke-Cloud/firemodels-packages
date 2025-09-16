@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a5f36e5190..8b97725517 100644
+index 792aabd307..25eef73a10 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -36,10 +36,10 @@ add_executable(fds
@@ -11,6 +11,6 @@ index a5f36e5190..8b97725517 100644
      Source/rcal.f90
      Source/read.f90
 -    Source/scrc.f90
-     Source/smvv.f90
      Source/soot.f90
+     Source/smvv.f90
      Source/turb.f90
