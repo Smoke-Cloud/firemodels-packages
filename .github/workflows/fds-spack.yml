@@ -54,7 +54,7 @@ jobs:
             path: spack       # Where to clone Spack
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
-        - run: spack create --name fdsc
+        - run: spack create --name fdsc --skip-editor
         - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/fdsc
         - run: spack install fds@${{matrix.fds-version}}%oneapi
     #   - name: General update
