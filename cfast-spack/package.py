@@ -18,7 +18,7 @@ class Cfastc(MakefilePackage):
     maintainers("JakeOShannessy")
     homepage = "https://pages.nist.gov/fds-smv"
     url = "https://github.com/firemodels/cfast/archive/refs/tags/CFAST-7.7.5.tar.gz"
-    git = "https://github.com/firemodels/cfast.git0"
+    git = "https://github.com/firemodels/cfast.git"
 
     build_directory = "Build"
 

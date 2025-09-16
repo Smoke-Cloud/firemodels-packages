@@ -43,7 +43,6 @@ jobs:
           - "6.9.0"
           - "6.9.1"
           - "6.10.0"
-       #   - "latest"
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
