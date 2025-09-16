@@ -54,20 +54,6 @@ class Cfastc(MakefilePackage):
         msg="CFAST builds only with GNU Fortran or Intel Fortran",
     )
 
-    patch("fds-5.5.3.patch", when="@5.5.3:6.9.1")
-    patch("fds-6.1.2.patch", when="@6.1.2:6.9.1")
-    patch("fds-6.2.0.patch", when="@6.2.0:6.9.1")
-    patch("fds-6.5.3.patch", when="@6.5.3:6.9.1")
-    patch("fds-6.6.0.patch", when="@6.6.0:6.9.1")
-    patch("fds-6.7.5.patch", when="@6.7.5:6.9.1")
-    patch("fds-6.7.6.patch", when="@6.7.6:6.9.1")
-    patch("fds-6.7.7.patch", when="@6.7.7:6.9.1")
-    patch("fds-6.7.8.patch", when="@6.7.8:6.9.1")
-    patch("fds-6.8.0.patch", when="@6.8.0:6.9.1")
-    patch("fds-6.10.0.patch", when="@6.10.0:")
-
-    sanity_check_is_dir = ["bin"]
-
     revision_dates = {
         "7.7.4": 1673642530,
         "7.7.3": 1652293105,
