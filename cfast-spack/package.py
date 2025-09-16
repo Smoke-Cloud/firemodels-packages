@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack_repo.builtin.build_systems.make import MakefilePackage
-
 from spack.package import *
 
 import time
@@ -19,7 +17,6 @@ class Cfastc(MakefilePackage):
     homepage = "https://pages.nist.gov/fds-smv"
     url = "https://github.com/firemodels/cfast/archive/refs/tags/CFAST-7.7.5.tar.gz"
     git = "https://github.com/firemodels/cfast.git0"
-
 
     build_directory = "Build"
 
@@ -94,7 +91,12 @@ class Cfastc(MakefilePackage):
     }
 
     def setup_build_environment(self, env) -> None:
-        env.set("FFLAGS",'-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace  -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""')
+        env.set("FFLAGS", '-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace  -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""')
+        env.set("GIT_DATE", time.strftime("%a, %d %b %Y %H:%M:%S +0000",
+                time.gmtime(self.revision_dates[self.spec.version.dotted_numeric_string])))
+        env.set("GIT_BRANCH", "release")
+        env.set("GIT_HASH", self.spec.version.dotted_numeric_string)
+        env.set("GIT_DIRTY", "spack")
         # env.set("PREFIX", prefix)
         # env.set("BLASLIB", spec["blas"].libs.ld_flags)
 
