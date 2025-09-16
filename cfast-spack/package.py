@@ -99,7 +99,7 @@ class Cfastc(MakefilePackage):
         # platform_prefix = platform_mapping[spec.architecture.platform]
         # openmp_prefix = "_openmp" if "+openmp" in spec else ""
         # return [f"{mpi_prefix}_{compiler_prefix}_{platform_prefix}{openmp_prefix}"]
-        return "gnu_linux_64"
+        return ["gnu_linux_64"]
 
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
