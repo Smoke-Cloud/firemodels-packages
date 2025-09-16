@@ -91,6 +91,12 @@ class Fdsc(CMakePackage):
     #     msg="OpenMP can only be used with GNU Fortran on Linux platform",
     # )
 
+    conflicts(
+        "~openmp",
+        when="@6.7.6:6.7.7",
+        msg="versions 6.7.6 and 6.7.7 only builds correctly with OpenMP enabled",
+    )
+
     requires(
         "^intel-oneapi-mpi^intel-oneapi-mkl",
         when="platform=linux %oneapi",

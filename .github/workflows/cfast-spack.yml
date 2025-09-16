@@ -15,7 +15,7 @@ jobs:
           # - "rockylinux:9"
           # - "almalinux:10"
         compiler:
-          # - "oneapi"
+          - "oneapi"
           - "gcc"
         fds-version:
           - "7.7.4"

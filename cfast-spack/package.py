@@ -80,10 +80,8 @@ class Cfastc(MakefilePackage):
         "7.0.1": 1449673035,
     }
 
-    # arch_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
     compiler_mapping = {"gcc": "gnu", "oneapi": "intel", "intel": "intel"}
     platform_mapping = {"linux": "linux", "darwin": "osx"}
-    # arch_suffix = arch_mapping[self.spec["mpi"].name]
 
     def setup_build_environment(self, env) -> None:
         env.set("FFLAGS", '-finit-local-zero -ffpe-trap=invalid,zero,overflow -fbacktrace  -cpp -DGITHASH_PP=\"$(build_version)+g$(commit)\" -DGITDATE_PP=\""$(GIT_DATE)\"" -DBUILDDATE_PP=\""$(BUILD_DATE)\""')
@@ -92,8 +90,6 @@ class Cfastc(MakefilePackage):
         env.set("GIT_BRANCH", "release")
         env.set("GIT_HASH", self.spec.version.dotted_numeric_string)
         env.set("GIT_DIRTY", "spack")
-        # env.set("PREFIX", prefix)
-        # env.set("BLASLIB", spec["blas"].libs.ld_flags)
 
     def edit(self, spec, prefix):
         makefile = FileFilter("Build/CFAST/makefile")
@@ -111,18 +107,5 @@ class Cfastc(MakefilePackage):
         platform_suffix = self.platform_mapping[self.spec.architecture.platform]
         mkdirp(prefix.bin)
         with working_dir(self.build_directory):
-            # install("*.mod", prefix.bin)
-            # install("*.o", prefix.bin)
-            # install("cfast7_" + self.build_targets[0], join_path(prefix.bin, "cfast"))
             install(f"cfast7_{platform_suffix}_{arch_suffix}",
                     join_path(prefix.bin, "cfast"))
-
-    # def cmake_args(self):
-    #     args = [
-    #         "-DGIT_DATE={0}".format(time.strftime("%a, %d %b %Y %H:%M:%S +0000",
-    #                                 time.gmtime(self.revision_dates[self.spec.version.dotted_numeric_string]))),
-    #         "-DGIT_BRANCH=release",
-    #         "-DGIT_HASH={0}".format(self.spec.version),
-    #         "-DGIT_DIRTY=spack",
-    #     ]
-    #     return args
