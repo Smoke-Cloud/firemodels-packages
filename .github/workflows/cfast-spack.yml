@@ -1,7 +1,7 @@
 
 on: [push, pull_request]
 
-name: FDS-Spack
+name: CFAST-Spack
 
 jobs:
   build-rpm:
@@ -57,9 +57,9 @@ jobs:
         - run: spack compiler find
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
-        - run: spack create --name fdsc --skip-editor
-        - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
-        - run: spack install fdsc@${{matrix.fds-version}}%oneapi
+        - run: spack create --name cfastc --skip-editor
+        - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
+        - run: spack install cfastc@${{matrix.fds-version}}%oneapi
     #   - name: General update
     #     run: dnf update -y --refresh
     #   - name: Install environment-modules
