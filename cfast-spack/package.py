@@ -20,7 +20,7 @@ class Cfastc(MakefilePackage):
     url = "https://github.com/firemodels/cfast/archive/refs/tags/CFAST-7.7.5.tar.gz"
     git = "https://github.com/firemodels/cfast.git"
 
-    build_directory = "Build"
+    build_directory = "Build/CFAST"
 
     version("7.7.4", commit="6b52d0c33bd3760782782ad156e992f0196ca2d9")
     version("7.7.3", commit="80af8c65a8a9d54ec1823cc043f8e278f9804269")
