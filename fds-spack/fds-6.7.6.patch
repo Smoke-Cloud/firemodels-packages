@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8c69b60a3d..a1c9cfbe5e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,6 +15,7 @@ set(MKL_LINK static CACHE STRING "Linking method for MKL (static or dynamic)")
+ set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
+ 
+ add_executable(fds
++    Source/ccib.f90
+     Source/cons.f90
+     Source/ctrl.f90
+     Source/data.f90

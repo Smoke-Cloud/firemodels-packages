@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ef212b09f1..b8444efd24 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -31,7 +31,6 @@ add_executable(fds
+     Source/main.f90
+     Source/mass.f90
+     Source/mesh.f90
+-    Source/mpip.f90
+     Source/part.f90
+     Source/pois.f90
+     Source/prec.f90
