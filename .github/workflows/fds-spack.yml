@@ -16,9 +16,9 @@ jobs:
           # - "almalinux:10"
         compiler:
           - "oneapi"
-          - "gcc"
+          # - "gcc"
         fds-version:
-        #   - "5.5.3"
+          - "5.5.3"
           - "6.1.2"
           - "6.2.0"
           - "6.3.0"

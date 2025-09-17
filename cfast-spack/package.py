@@ -54,6 +54,8 @@ class Cfastc(MakefilePackage):
         msg="CFAST builds only with GNU Fortran or Intel Fortran",
     )
 
+    # The CFAST makefile doesn't specify dependencies explicitly but relies on
+    # the build order. This means it can't be build in parallel.
     parallel = False
 
     revision_dates = {
