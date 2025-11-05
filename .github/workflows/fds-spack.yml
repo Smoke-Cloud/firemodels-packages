@@ -43,6 +43,7 @@ jobs:
           - "6.9.0"
           - "6.9.1"
           - "6.10.0"
+          - "6.10.1"
         exclude:
           - compiler: "gcc"
             fds-version: "6.3.1"
