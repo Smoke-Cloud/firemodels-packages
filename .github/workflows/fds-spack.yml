@@ -11,7 +11,6 @@ jobs:
       matrix:
         container:
           - "fedora:42"
-          # - "rockylinux:9"
           # - "almalinux:10"
         fds-version:
           - "5.5.3%intel"

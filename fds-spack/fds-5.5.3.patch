@@ -131,7 +131,7 @@ index 0000000000..03d21c4cb4
 +# If we are using the old Intel Fortran compiler (ifort) suppress the warning
 +# that this is an old compiler.
 +if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" )
-+    target_compile_options(fds PRIVATE /Qdiag-disable:10448)
++    #target_compile_options(fds PRIVATE /Qdiag-disable:10448)
 +endif()
 +
 +if(WIN32)
