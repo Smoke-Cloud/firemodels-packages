@@ -16,7 +16,7 @@ jobs:
           # - "almalinux:10"
         compiler:
           - "oneapi"
-          # - "gcc"
+          - "gcc@11.5.0"
         fds-version:
           # - "5.5.3"
           - "6.1.2"
@@ -44,9 +44,13 @@ jobs:
           - "6.9.1"
           - "6.10.0"
           - "6.10.1"
-        exclude:
-          - compiler: "gcc"
-            fds-version: "6.3.1"
+        # exclude:
+        #   - compiler: "gcc"
+        #     fds-version: "6.3.1"
+        #   - compiler: "gcc"
+        #     fds-version:
+        #       - "6.5.1"
+        #       - "6.7.5"
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
