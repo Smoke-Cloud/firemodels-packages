@@ -48,9 +48,23 @@ jobs:
           - compiler: "gcc"
             fds-version: "6.3.1"
           - compiler: "gcc"
-            fds-version:
-              - "6.5.1"
-              - "6.7.5"
+            fds-version: "6.5.1"
+          - compiler: "gcc"
+            fds-version: "6.5.2"
+          - compiler: "gcc"
+            fds-version: "6.5.3"
+          - compiler: "gcc"
+            fds-version: "6.6.0"
+          - compiler: "gcc"
+            fds-version: "6.7.0"
+          - compiler: "gcc"
+            fds-version: "6.7.1"
+          - compiler: "gcc"
+            fds-version: "6.7.3"
+          - compiler: "gcc"
+            fds-version: "6.7.4"
+          - compiler: "gcc"
+            fds-version: "6.7.5"
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
