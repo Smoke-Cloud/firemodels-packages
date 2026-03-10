@@ -17,7 +17,7 @@
  module unload compiler; \
  module unload mpi/latest;
 
-Name:           fds%{?version_suffix}
+Name:           fds-verify%{?version_suffix}
 Version:        %{this_version}
 Release:        %{this_release}%{?dist}
 Summary:        Fire Dynamics Simulator

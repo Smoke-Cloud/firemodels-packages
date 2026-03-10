@@ -23,6 +23,7 @@ rm rpmbuild/SOURCES/fds.sh.zip || true
 zip rpmbuild/SOURCES/fds.sh.zip ../../fds.sh
 cp ../../"$backports_patch" rpmbuild/SOURCES || true
 cp ../../"$version_patch"  rpmbuild/SOURCES || true
+cp ../../"fds-$version.patch"  rpmbuild/SOURCES
 cat ../../"$specname".spec ../../template.spec > fds.spec
 spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "_topdir $(pwd)/rpmbuild" \

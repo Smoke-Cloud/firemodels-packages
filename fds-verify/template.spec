@@ -24,9 +24,10 @@ Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
-Source1:        fds.sh.zip
+#Source1:        fds.sh.zip
 Patch0:         %{version_patch}
 Patch1:         %{backports_patch}
+Patch2:         fds-%{this_version}.patch
 Url:            https://pages.nist.gov/fds-smv
 
 Requires: %{name}-common = %{version}-%{release}
@@ -99,11 +100,12 @@ Docs for FDS
 %endif
 
 %prep
-%setup -qc
-%setup -qc -a 1
-cd %{repo}-%{commit}
-%patch0 -p1
-%patch1 -p1
+%setup -q -n %{repo}-%{commit}
+%patch 0 -p1
+%patch 1 -p1
+%patch 2 -p1
+#%setup -qc -a 1
+
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
@@ -111,25 +113,24 @@ cd %{repo}-%{commit}
 %build
 
 # Build common files
-{
-    echo "#!/bin/sh"
-    echo "FDS_VERSION=%{version}"
-    echo "VERSION_SUFFIX=%{version_suffix}"
-    cat fds.sh
-} > ./fds-script
+#{
+#    echo "#!/bin/sh"
+#    echo "FDS_VERSION=%{version}"
+#    echo "VERSION_SUFFIX=%{version_suffix}"
+#    cat fds.sh
+#} > ./fds-script
 
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-mkdir -p %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
-pushd %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}
 export full_commit=%{commit}
 export mpi=.openmpi
 export compiler=.gnu
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
-%{openmpi_build_command}
-popd
+
+%cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=ON
+%cmake_build
 %{_openmpi_unload}
 %endif
 
@@ -171,39 +172,30 @@ popd
 %endif
 
 %install
+#%cmake_install
 rm -rf %{buildroot}
 echo %{buildroot}/%{_bindir}
 
 # Install common
-install -D fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
+#install -D fds-script %{buildroot}/%{_bindir}/fds-verify%{?script_suffix}
 
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
-install -D %{repo}-%{commit}/%{build_dir}/%{gnu_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
+install -D redhat-linux-build/fds %{buildroot}%{_libdir}/openmpi/bin/fds-verify%{version_suffix}_openmpi
 %{_openmpi_unload}
 %endif
 
-# Install MPICH version
-%if %{build_mpich}
-%{_mpich_load}
-install -D %{repo}-%{commit}/%{build_dir}/%{mpich_string}%{?arch_suffix}/fds%{?major_suffix}_%{gnu_string}%{?arch_suffix} %{buildroot}%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
-%{_mpich_unload}
-%endif
-
-# Install Intel MPI
-%if %{build_intelmpi}
-%{_intelmpi_load}
-install -D %{repo}-%{commit}/%{build_dir}/%{intel_string}%{?arch_suffix}/fds%{?major_suffix}_%{intel_string}%{?arch_suffix} %{buildroot}%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
-%{_intelmpi_unload}
-%endif
+%check
+%ctest
+#ctest -V %{?_smp_mflags}
 
 %files common
-%{_bindir}/fds%{?script_suffix}
+#%{_bindir}/fds%{?script_suffix}
 
 %if %{build_openmpi}
 %files openmpi
-%{_libdir}/openmpi/bin/fds%{version_suffix}_openmpi
+%{_libdir}/openmpi/bin/fds-verify%{version_suffix}_openmpi
 %endif
 
 %if %{build_mpich}

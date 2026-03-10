@@ -9,7 +9,7 @@
 %global mpich_string mpich_gnu_linux
 %global intel_string impi_intel_linux_openmp
 %global build_dir Build
-%global openmpi_build_command ./make_fds.sh
+%global openmpi_build_command just build
 %global intelmpi_build_command \
  dir=$(pwd) \
  target=${dir##*/} \
