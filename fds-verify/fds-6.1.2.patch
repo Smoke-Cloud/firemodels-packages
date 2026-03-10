@@ -1,0 +1,33 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 03d21c4cb..89dd7346e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,17 +17,19 @@ set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
+ add_executable(fds
+     FDS_Source/cons.f90
+     FDS_Source/ctrl.f90
++    FDS_Source/data.f90
+     FDS_Source/devc.f90
+     FDS_Source/divg.f90
+     FDS_Source/dump.f90
+     FDS_Source/evac.f90
+     FDS_Source/fire.f90
+     FDS_Source/func.f90
++    FDS_Source/geom.f90
++    FDS_Source/gsmv.f90
+     FDS_Source/hvac.f90
+     FDS_Source/ieva.f90
+     FDS_Source/init.f90
+     FDS_Source/irad.f90
+-    FDS_Source/isob.c
+     FDS_Source/main.f90
+     FDS_Source/mass.f90
+     FDS_Source/mesh.f90
+@@ -38,6 +40,7 @@ add_executable(fds
+     FDS_Source/pres.f90
+     FDS_Source/radi.f90
+     FDS_Source/read.f90
++    FDS_Source/samr.f90
+     FDS_Source/scrc.f90
+     FDS_Source/smvv.f90
+     FDS_Source/turb.f90

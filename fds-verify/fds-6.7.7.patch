@@ -1,0 +1,20 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8c69b60a3d..a1c9cfbe5e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -27,6 +28,7 @@ add_executable(fds
+     Source/geom.f90
+     Source/gsmv.f90
+     Source/hvac.f90
++    Source/imkl.f90
+     Source/ieva.f90
+     Source/init.f90
+     Source/main.f90
+@@ -39,7 +41,6 @@ add_executable(fds
+     Source/radi.f90
+     Source/rcal.f90
+     Source/read.f90
+-    Source/samr.f90
+     Source/scrc.f90
+     Source/smvv.f90
+     Source/soot.f90

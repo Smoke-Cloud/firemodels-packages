@@ -1,0 +1,79 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a4df3d4a65..65595a907b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,40 +15,40 @@ set(MKL_LINK static CACHE STRING "Linking method for MKL (static or dynamic)")
+ set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
+ 
+ add_executable(fds
+-    FDS_Source/cons.f90
+-    FDS_Source/ctrl.f90
+-    FDS_Source/data.f90
+-    FDS_Source/devc.f90
+-    FDS_Source/divg.f90
+-    FDS_Source/dump.f90
+-    FDS_Source/evac.f90
+-    FDS_Source/fire.f90
+-    FDS_Source/func.f90
+-    FDS_Source/geom.f90
+-    FDS_Source/gsmv.f90
+-    FDS_Source/hvac.f90
+-    FDS_Source/ieva.f90
+-    FDS_Source/init.f90
+-    FDS_Source/irad.f90
+-    FDS_Source/main.f90
+-    FDS_Source/mass.f90
+-    FDS_Source/mesh.f90
+-    FDS_Source/mpip.f90
+-    FDS_Source/part.f90
+-    FDS_Source/pois.f90
+-    FDS_Source/prec.f90
+-    FDS_Source/pres.f90
+-    FDS_Source/radi.f90
+-    FDS_Source/read.f90
+-    FDS_Source/samr.f90
+-    FDS_Source/scrc.f90
+-    FDS_Source/soot.f90
+-    FDS_Source/smvv.f90
+-    FDS_Source/turb.f90
+-    FDS_Source/type.f90
+-    FDS_Source/vege.f90
+-    FDS_Source/velo.f90
+-    FDS_Source/wall.f90
++    Source/cons.f90
++    Source/ctrl.f90
++    Source/data.f90
++    Source/devc.f90
++    Source/divg.f90
++    Source/dump.f90
++    Source/evac.f90
++    Source/fire.f90
++    Source/func.f90
++    Source/geom.f90
++    Source/gsmv.f90
++    Source/hvac.f90
++    Source/ieva.f90
++    Source/init.f90
++    Source/irad.f90
++    Source/main.f90
++    Source/mass.f90
++    Source/mesh.f90
++    Source/mpip.f90
++    Source/part.f90
++    Source/pois.f90
++    Source/prec.f90
++    Source/pres.f90
++    Source/radi.f90
++    Source/read.f90
++    Source/samr.f90
++    Source/scrc.f90
++    Source/soot.f90
++    Source/smvv.f90
++    Source/turb.f90
++    Source/type.f90
++    Source/vege.f90
++    Source/velo.f90
++    Source/wall.f90
+ )
+ target_include_directories(fds PRIVATE .)
+ 
