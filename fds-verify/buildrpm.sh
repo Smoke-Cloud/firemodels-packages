@@ -2,6 +2,7 @@
 set -euxo pipefail
 export QA_RPATHS=7
 latest="6.11.0"
+zip fds.sh.zip fds.sh
 mkdir -p build/"$1"
 cd build/"$1"
 specname=$1
@@ -20,7 +21,7 @@ export backports_patch="$6"
 shift 6
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 rm rpmbuild/SOURCES/fds.sh.zip || true
-zip rpmbuild/SOURCES/fds.sh.zip ../../fds.sh
+cp ../../fds.sh.zip rpmbuild/SOURCES/fds.sh.zip
 cp ../../"$backports_patch" rpmbuild/SOURCES || true
 cp ../../"$version_patch"  rpmbuild/SOURCES || true
 cp ../../"fds-$version.patch"  rpmbuild/SOURCES

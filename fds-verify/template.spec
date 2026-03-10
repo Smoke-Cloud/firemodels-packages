@@ -24,7 +24,7 @@ Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
-#Source1:        fds.sh.zip
+Source1:        fds.sh.zip
 Patch0:         %{version_patch}
 Patch1:         %{backports_patch}
 Patch2:         fds-%{this_version}.patch
@@ -100,11 +100,10 @@ Docs for FDS
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{commit} -a 1
 %patch 0 -p1
 %patch 1 -p1
 %patch 2 -p1
-#%setup -qc -a 1
 
 
 %global __brp_check_rpaths %{nil}
