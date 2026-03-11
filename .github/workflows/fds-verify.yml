@@ -38,7 +38,7 @@ jobs:
       - name: Build RPM
         run: |
           cd fds-verify
-          bash ./buildrpm.sh 6.9.1
+          bash ./build_version.sh 6.9.1
           ls ../dist/*.rpm
       - id: setContainerSafeName
         run: |
