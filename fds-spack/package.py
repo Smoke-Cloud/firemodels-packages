@@ -25,6 +25,7 @@ class Fdsc(CMakePackage):
     git = "https://github.com/firemodels/fds.git"
     old_git = "https://github.com/firemodels/fds-smv_deprecated.git"
 
+    # version("7.0.0",  commit="df174f2a9cf2fafecaba809b913c571895941486", git=git)
     version("6.10.1", commit="12efa168d7c96257065a0a4dab3f68b3af8aa072", git=git)
     version("6.10.0", commit="618ac072817cb4f287ea5b3d8360dda78339e3a1", git=git)
     version("6.9.1",  commit="889da6ae08d08dae680f7c0d8de66a3ad1c65375", git=git)
@@ -61,12 +62,23 @@ class Fdsc(CMakePackage):
     #           msg="GCC already provides OpenMP support")
 
     depends_on("fortran", type="build")
+    depends_on("c", type="build", when="+sundials")
+    depends_on("c", type="build", when="+hypre")
 
     depends_on("mpi")
     depends_on("mkl")
-    depends_on("sundials@6.7.0+mpi", when="+sundials")
-    depends_on("hypre@2.33.0+mpi", when="+hypre")
 
+    # TODO: handle some version conflicts
+    # with when("+sundials"):
+    #     depends_on("umpire+c+cuda", when="@3:")
+    #     requires("+umpire", when="@3:")
+
+    # 6.10.*
+    # HYPRE_VERSION=v2.32.0
+    # SUNDIALS_VERSION=v6.7.0
+
+    depends_on("sundials+mpi+f2003+hypre", when="+sundials")
+    depends_on("hypre+mpi", when="+hypre")
     requires(
         "%gcc",
         "%intel",
@@ -119,11 +131,12 @@ class Fdsc(CMakePackage):
     patch("fds-6.7.7.patch", when="@6.7.7:6.9.1")
     patch("fds-6.7.8.patch", when="@6.7.8:6.9.1")
     patch("fds-6.8.0.patch", when="@6.8.0:6.9.1")
-    patch("fds-6.10.0.patch", when="@6.10.0:")
+    patch("fds-6.10.0.patch", when="@6.10.0:6.11.0")
 
     sanity_check_is_dir = ["bin"]
 
     revision_dates = {
+        # "7.0.0": 1773265234,
         "6.10.1": 1743629938,
         "6.10.0": 1741367545,
         "6.9.1": 1712523906,
@@ -164,6 +177,9 @@ class Fdsc(CMakePackage):
             "-DGIT_HASH={0}".format(self.spec.version),
             "-DGIT_DIRTY=spack",
         ]
+        # args.append(self.define_from_variant("USE_HYPRE","+hypre"))
+        # args.append(self.define_from_variant("USE_OPENMP","+openmp"))
+        # args.append(self.define_from_variant("USE_SUNDIALS","+sundials"))
         # if self.spec.satsifies("@6.10.0:"):
         args.append("-DUSE_SYSTEM_SUNDIALS=ON")
         args.append("-DUSE_SYSTEM_HYPRE=ON")
