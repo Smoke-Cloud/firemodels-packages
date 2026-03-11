@@ -68,7 +68,8 @@ class Fdsc(CMakePackage):
     depends_on("mpi")
     depends_on("mkl")
 
-    # TODO: handle some version conflicts
+    # TODO: handle some version conflicts, also whe using hypre 2.32.0, it doesn't
+    # use cmake so there's still some work to do there.
     # with when("+sundials"):
     #     depends_on("umpire+c+cuda", when="@3:")
     #     requires("+umpire", when="@3:")
@@ -167,19 +168,19 @@ class Fdsc(CMakePackage):
 
     def cmake_args(self):
         args = [
-            "-DUSE_HYPRE={0}".format("ON" if "+hypre" in self.spec else "OFF"),
-            "-DUSE_OPENMP={0}".format("ON" if "+openmp" in self.spec else "OFF"),
-            "-DUSE_SUNDIALS={0}".format(
-                "ON" if "+sundials" in self.spec else "OFF"),
+            # "-DUSE_HYPRE={0}".format("ON" if "+hypre" in self.spec else "OFF"),
+            # "-DUSE_OPENMP={0}".format("ON" if "+openmp" in self.spec else "OFF"),
+            # "-DUSE_SUNDIALS={0}".format(
+            #     "ON" if "+sundials" in self.spec else "OFF"),
             "-DGIT_DATE={0}".format(time.strftime("%a, %d %b %Y %H:%M:%S +0000",
                                     time.gmtime(self.revision_dates[self.spec.version.dotted_numeric_string]))),
             "-DGIT_BRANCH=release",
             "-DGIT_HASH={0}".format(self.spec.version),
             "-DGIT_DIRTY=spack",
         ]
-        # args.append(self.define_from_variant("USE_HYPRE","+hypre"))
-        # args.append(self.define_from_variant("USE_OPENMP","+openmp"))
-        # args.append(self.define_from_variant("USE_SUNDIALS","+sundials"))
+        args.append(self.define_from_variant("USE_HYPRE","+hypre"))
+        args.append(self.define_from_variant("USE_OPENMP","+openmp"))
+        args.append(self.define_from_variant("USE_SUNDIALS","+sundials"))
         # if self.spec.satsifies("@6.10.0:"):
         args.append("-DUSE_SYSTEM_SUNDIALS=ON")
         args.append("-DUSE_SYSTEM_HYPRE=ON")
