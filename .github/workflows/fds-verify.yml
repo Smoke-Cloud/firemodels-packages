@@ -12,6 +12,8 @@ jobs:
           # - "rockylinux:9"
           # - "almalinux:10"
           - "fedora:43"
+        fds-version:
+          - "6.9.1"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
@@ -19,26 +21,12 @@ jobs:
         run: dnf update -y --refresh
       - name: Install basic build prerequisites
         run: dnf install -y git gcc g++ rpmdevtools make
-      - name: Enable EPEL
-        if: matrix.container == 'rockylinux:9' || matrix.container == 'almalinux:10'
-        run: |
-            dnf install -y 'dnf-command(config-manager)'
-            dnf config-manager --set-enabled crb
-            dnf install -y epel-release
       - name: Install lib prerequisites
-        run: dnf install -y cmake gd-devel freeglut-devel
-                bash gd freeglut libXmu-devel glew-devel
-                libXi-devel libX11-devel libcsv-devel openmpi-devel
-      - name: Install json-c-devel
-        if: matrix.container == 'rockylinux:9'
-        run: dnf install --enablerepo=devel -y json-c-devel
-      - name: Install json-c-devel
-        if: matrix.container != 'rockylinux:9'
-        run: dnf install -y json-c-devel
+        run: dnf install -y cmake bash openmpi-devel
       - name: Build RPM
         run: |
           cd fds-verify
-          bash ./build_version.sh 6.9.1
+          bash ./build_version.sh ${{ matrix.fds-version }}
           ls ../dist/*.rpm
       - id: setContainerSafeName
         run: |

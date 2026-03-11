@@ -1,6 +1,8 @@
 
 %global this_release 7
 
+%undefine _hardened_linker_errors
+
 #TODO: this isn't as clean as the openmpi version
 %global _intelmpi_load \
  export MODULES_AUTO_HANDLING=1; \
