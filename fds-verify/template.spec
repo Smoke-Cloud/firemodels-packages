@@ -128,7 +128,7 @@ export compiler=.gnu
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 
-%cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=ON
+%cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=OFF
 %cmake_build
 %{_openmpi_unload}
 %endif
