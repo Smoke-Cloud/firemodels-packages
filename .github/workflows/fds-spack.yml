@@ -13,32 +13,32 @@ jobs:
           - "fedora:42"
           # - "almalinux:10"
         fds-version:
-          # - "5.5.3%intel"
-          # - "6.1.2%oneapi"
-          # - "6.2.0%oneapi"
-          # - "6.3.0%oneapi"
-          # - "6.3.1%oneapi"
-          # - "6.3.2%oneapi"
-          # - "6.4.0%oneapi"
-          # - "6.5.0%oneapi"
-          # - "6.5.1%oneapi"
-          # - "6.5.2%oneapi"
-          # - "6.5.3%oneapi"
-          # - "6.6.0%oneapi"
-          # - "6.7.0%oneapi"
-          # - "6.7.1%oneapi"
-          # - "6.7.3%oneapi"
-          # - "6.7.4%oneapi"
-          # - "6.7.5%oneapi"
-          # - "6.7.6+openmp%oneapi"
-          # - "6.7.7+openmp%oneapi"
-          # - "6.7.8%oneapi"
-          # - "6.7.9%oneapi"
-          # - "6.8.0%oneapi"
-          # - "6.9.0%oneapi"
-          # - "6.9.1%oneapi"
-          # - "6.10.0%oneapi"
-          # - "6.10.1%oneapi"
+          - "5.5.3%intel"
+          - "6.1.2%oneapi"
+          - "6.2.0%oneapi"
+          - "6.3.0%oneapi"
+          - "6.3.1%oneapi"
+          - "6.3.2%oneapi"
+          - "6.4.0%oneapi"
+          - "6.5.0%oneapi"
+          - "6.5.1%oneapi"
+          - "6.5.2%oneapi"
+          - "6.5.3%oneapi"
+          - "6.6.0%oneapi"
+          - "6.7.0%oneapi"
+          - "6.7.1%oneapi"
+          - "6.7.3%oneapi"
+          - "6.7.4%oneapi"
+          - "6.7.5%oneapi"
+          - "6.7.6+openmp%oneapi"
+          - "6.7.7+openmp%oneapi"
+          - "6.7.8%oneapi"
+          - "6.7.9%oneapi"
+          - "6.8.0%oneapi"
+          - "6.9.0%oneapi"
+          - "6.9.1%oneapi"
+          - "6.10.0%oneapi"
+          - "6.10.1%oneapi"
 
           - "6.7.6+openmp%gcc"
           - "6.7.7+openmp%gcc"
@@ -57,12 +57,12 @@ jobs:
         - name: Set up Spack
           uses: spack/setup-spack@v2
           with:
-            ref: develop      # Spack version (examples: develop, releases/v0.23)
+            ref: releases/v1.1      # Spack version (examples: develop, releases/v0.23)
             buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
             color: true       # Force color output (SPACK_COLOR=always)
             path: spack       # Where to clone Spack
-        # - run: spack install intel-oneapi-compilers
-        # - run: spack install intel-oneapi-compilers-classic
+        - run: spack install intel-oneapi-compilers
+        - run: spack install intel-oneapi-compilers-classic
         - run: spack compiler find
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
