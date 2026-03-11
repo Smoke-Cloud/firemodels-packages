@@ -17,7 +17,7 @@
  module unload compiler; \
  module unload mpi/latest;
 
-Name:           fds%{?version_suffix}
+Name:           fds-verify%{?version_suffix}
 Version:        %{this_version}
 Release:        %{this_release}%{?dist}
 Summary:        Fire Dynamics Simulator
@@ -105,19 +105,18 @@ Docs for FDS
 %patch 1 -p1
 %patch 2 -p1
 
-
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
 
 %build
 
 # Build common files
-#{
-#    echo "#!/bin/sh"
-#    echo "FDS_VERSION=%{version}"
-#    echo "VERSION_SUFFIX=%{version_suffix}"
-#    cat fds.sh
-#} > ./fds-script
+{
+    echo "#!/bin/sh"
+    echo "FDS_VERSION=%{version}"
+    echo "VERSION_SUFFIX=%{version_suffix}"
+    cat fds.sh
+} > ./fds-script
 
 # Build OpenMPI version
 %if %{build_openmpi}
@@ -176,7 +175,7 @@ rm -rf %{buildroot}
 echo %{buildroot}/%{_bindir}
 
 # Install common
-#install -D fds-script %{buildroot}/%{_bindir}/fds-verify%{?script_suffix}
+install -D fds-script %{buildroot}/%{_bindir}/fds-verify%{?script_suffix}
 
 # Install OpenMPI version
 %if %{build_openmpi}
@@ -190,7 +189,7 @@ install -D redhat-linux-build/fds %{buildroot}%{_libdir}/openmpi/bin/fds-verify%
 #ctest -V %{?_smp_mflags}
 
 %files common
-#%{_bindir}/fds%{?script_suffix}
+%{_bindir}/fds-verify%{?script_suffix}
 
 %if %{build_openmpi}
 %files openmpi

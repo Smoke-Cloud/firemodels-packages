@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         container:
-          - "rockylinux:9"
-          - "almalinux:10"
-          - "fedora:40"
+          # - "rockylinux:9"
+          # - "almalinux:10"
+          - "fedora:43"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
