@@ -1,37 +1,22 @@
-spack install fdsc@5.5.3%oneapi
-spack install fdsc@6.1.2%oneapi
-spack install fdsc@6.2.0%oneapi
-spack install fdsc@6.3.0%oneapi
-spack install fdsc@6.3.1%oneapi
-spack install fdsc@6.3.2%oneapi
-spack install fdsc@6.4.0%oneapi
-spack install fdsc@6.5.0%oneapi
-spack install fdsc@6.5.1%oneapi
-spack install fdsc@6.5.2%oneapi
-spack install fdsc@6.5.3%oneapi
-spack install fdsc@6.6.0%oneapi
-spack install fdsc@6.7.0%oneapi
-spack install fdsc@6.7.1%oneapi
-spack install fdsc@6.7.3%oneapi
-spack install fdsc@6.7.4%oneapi
-spack install fdsc@6.7.5%oneapi
-spack install fdsc@6.7.6+openmp%oneapi
-spack install fdsc@6.7.7+openmp%oneapi
-spack install fdsc@6.7.8%oneapi
-spack install fdsc@6.7.9%oneapi
-spack install fdsc@6.8.0%oneapi
-spack install fdsc@6.9.0%oneapi
-spack install fdsc@6.9.1%oneapi
-spack install fdsc@6.10.0+hypre+sundials%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0+int64%hypre@2.32.0%oneapi
-spack install fdsc@6.10.1+hypre+sundials%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0+int64%hypre@2.32.0%oneapi
-# spack install fdsc@7.0.0+hypre+sundials%oneapi^hypre@3.0.0+int64^sundials@7.5.0+int64
-
-# spack install fdsc@6.7.6+openmp%gcc
-# spack install fdsc@6.7.7+openmp%gcc
-# spack install fdsc@6.7.8%gcc
-# spack install fdsc@6.7.9%gcc
-# spack install fdsc@6.8.0%gcc
-# spack install fdsc@6.9.0%gcc
-# spack install fdsc@6.9.1%gcc
-# spack install fdsc@6.10.0%gcc
-# spack install fdsc@6.10.1%gcc
+spack install cfastc@7.7.4%oneapi
+spack install cfastc@7.7.4%oneapi
+spack install cfastc@7.7.3%oneapi
+spack install cfastc@7.7.2%oneapi
+spack install cfastc@7.7.1%oneapi
+spack install cfastc@7.7.0%oneapi
+spack install cfastc@7.5.2%oneapi
+spack install cfastc@7.5.1%oneapi
+spack install cfastc@7.4.3%oneapi
+spack install cfastc@7.4.2%oneapi
+spack install cfastc@7.4.0%oneapi
+spack install cfastc@7.3.1%oneapi
+spack install cfastc@7.3.0%oneapi
+spack install cfastc@7.2.4%oneapi
+spack install cfastc@7.2.3%oneapi
+spack install cfastc@7.2.2%oneapi
+spack install cfastc@7.2.1%oneapi
+spack install cfastc@7.2.0%oneapi
+spack install cfastc@7.1.2%oneapi
+spack install cfastc@7.1.1%oneapi
+spack install cfastc@7.1.0%oneapi
+spack install cfastc@7.0.1%oneapi
