@@ -2,6 +2,15 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index a4df3d4a65..65595a907b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
+ 
+ project(
+     fds
+-    VERSION 6.2.0
++    VERSION 6.5.3
+     LANGUAGES Fortran
+ )
+ enable_language(Fortran)
 @@ -15,40 +15,40 @@ set(MKL_LINK static CACHE STRING "Linking method for MKL (static or dynamic)")
  set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
  

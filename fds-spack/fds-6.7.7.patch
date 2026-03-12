@@ -2,6 +2,15 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 8c69b60a3d..a1c9cfbe5e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
+ 
+ project(
+     fds
+-    VERSION 6.7.6
++    VERSION 6.7.7
+     LANGUAGES Fortran
+ )
+ enable_language(Fortran)
 @@ -27,6 +28,7 @@ add_executable(fds
      Source/geom.f90
      Source/gsmv.f90

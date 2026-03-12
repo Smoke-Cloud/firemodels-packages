@@ -2,6 +2,15 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index a1c9cfbe5e..a5f36e5190 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
+ 
+ project(
+     fds
+-    VERSION 6.7.7
++    VERSION 6.7.8
+     LANGUAGES Fortran
+ )
+ enable_language(Fortran)
 @@ -22,14 +22,12 @@ add_executable(fds
      Source/devc.f90
      Source/divg.f90

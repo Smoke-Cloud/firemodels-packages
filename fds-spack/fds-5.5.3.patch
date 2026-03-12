@@ -1,6 +1,6 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000000..03d21c4cb4
+index 0000000000..3568161ee3
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,140 @@
@@ -9,9 +9,9 @@ index 0000000000..03d21c4cb4
 +project(
 +    fds
 +    VERSION 6.9.1
-+    LANGUAGES Fortran
++    LANGUAGES Fortran C
 +)
-+enable_language(Fortran)
++enable_language(Fortran C)
 +
 +option(USE_OPENMP          "Use OpenMP"                               ON)
 +
@@ -120,7 +120,7 @@ index 0000000000..03d21c4cb4
 +    target_compile_options(fds PRIVATE -fpp )
 +    # When compiling with Intel on Linux, enable the IFPORT library
 +    if (LINUX)
-+        target_compile_definitions(fds PRIVATE USE_IFPORT)
++        target_compile_definitions(fds PRIVATE USE_IFPORT pp_noappend)
 +    endif()
 +    # When compiling with Intel and not on Windows apply -no-wrap-margin.
 +    if (NOT(WIN32))
