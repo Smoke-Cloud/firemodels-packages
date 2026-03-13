@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -euxo pipefail
+
 spack install cfastc@7.7.4%oneapi
 spack install cfastc@7.7.4%oneapi
 spack install cfastc@7.7.3%oneapi
@@ -18,5 +22,5 @@ spack install cfastc@7.2.1%oneapi
 spack install cfastc@7.2.0%oneapi
 spack install cfastc@7.1.2%oneapi
 spack install cfastc@7.1.1%oneapi
-spack install cfastc@7.1.0%oneapi
-spack install cfastc@7.0.1%oneapi
+# spack install cfastc@7.1.0%oneapi
+# spack install cfastc@7.0.1%oneapi

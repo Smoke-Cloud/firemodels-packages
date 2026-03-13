@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -euxo pipefail
+
 spack install fdsc@5.5.3%oneapi
 spack install fdsc@6.1.2%oneapi
 spack install fdsc@6.2.0%oneapi
