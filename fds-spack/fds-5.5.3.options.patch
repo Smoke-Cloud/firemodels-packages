@@ -1,0 +1,20 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2d0f9e7765..7e1cd5a52e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -115,15 +115,10 @@ endif()
+ if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+     target_compile_options(fds PRIVATE -cpp -std=f2018 -frecursive -ffpe-summary=none -fall-intrinsics)
+ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" OR CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
+-    target_compile_options(fds PRIVATE -fpp )
+     # When compiling with Intel on Linux, enable the IFPORT library
+     if (LINUX)
+         target_compile_definitions(fds PRIVATE USE_IFPORT pp_noappend)
+     endif()
+-    # When compiling with Intel and not on Windows apply -no-wrap-margin.
+-    if (NOT(WIN32))
+-        target_compile_options(fds PRIVATE -no-wrap-margin)
+-    endif()
+ endif()
+ 
+ # If we are using the old Intel Fortran compiler (ifort) suppress the warning
