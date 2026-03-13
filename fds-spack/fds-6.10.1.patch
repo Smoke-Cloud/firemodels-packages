@@ -6,7 +6,7 @@ index 06173b9274..9b4d5ea35e 100644
  
  project(
      fds
--    VERSION 6.10.0
+-    VERSION 6.9.1
 +    VERSION 6.10.1
      LANGUAGES Fortran
  )
