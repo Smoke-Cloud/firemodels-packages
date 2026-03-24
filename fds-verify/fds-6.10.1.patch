@@ -1,263 +1,33 @@
-diff --git a/.gitignore b/.gitignore
-index f76a2496f1..ee87af52a6 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -99,3 +99,6 @@ Validation/*/FDS_Output_Files/*.csv
- 
- # Verification script generated fds files
- Verification/Timing_Benchmarks/t*.fds
-+
-+Build/cmakeb/
-+cbuild/
-diff --git a/.vscode/env.ps1 b/.vscode/env.ps1
-new file mode 100644
-index 0000000000..1a7ce09bb1
---- /dev/null
-+++ b/.vscode/env.ps1
-@@ -0,0 +1,3 @@
-+$env:JUST_JUSTFILE=".vscode/justfile"
-+$env:JUST_WORKING_DIRECTORY="."
-+cmd.exe "/K" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && powershell'
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-new file mode 100644
-index 0000000000..0b5d6e179c
---- /dev/null
+index 06173b9274..2926546218 100644
+--- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -0,0 +1,265 @@
-+cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
-+
-+project(
-+    fds
-+    VERSION 6.9.1
-+    LANGUAGES Fortran
-+)
-+enable_language(Fortran)
-+
+@@ -7,6 +7,9 @@ project(
+ )
+ enable_language(Fortran)
+ 
 +option(DUMP_JSON           "Add the option to dump info to JSON"      OFF)
 +option(USE_SYSTEM_JSON     "Use the json library from the system"     OFF)
 +
-+option(USE_HYPRE           "Use the hypre library"                    ON)
-+option(USE_SYSTEM_HYPRE    "Use the hypre library from the system"    OFF)
-+
-+option(USE_SUNDIALS        "Use the sundials library"                 ON)
-+option(USE_SYSTEM_SUNDIALS "Use the sundials library from the system" OFF)
-+
-+option(USE_OPENMP          "Use OpenMP"                               ON)
-+
-+# The existing FDS makefile links MKL statically, but this is optional and can
-+# be changed to dynamic
-+set(MKL_LINK static CACHE STRING "Linking method for MKL (static or dynamic)")
-+set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
-+
-+add_executable(fds
-+    Source/main.f90
-+    Source/prec.f90
-+    Source/cons.f90
-+    Source/prop.f90
-+    Source/devc.f90
-+    Source/type.f90
-+    Source/data.f90
-+    Source/mesh.f90
-+    Source/func.f90
-+    Source/gsmv.f90
-+    Source/smvv.f90
-+    Source/rcal.f90
-+    Source/turb.f90
-+    Source/soot.f90
-+    Source/pois.f90
-+    Source/geom.f90
-+    Source/ccib.f90
-+    Source/radi.f90
-+    Source/part.f90
-+    Source/vege.f90
-+    Source/ctrl.f90
-+    Source/hvac.f90
-+    Source/mass.f90
-+    Source/imkl.f90
-+    Source/wall.f90
-+    Source/fire.f90
-+    Source/velo.f90
-+    Source/pres.f90
-+    Source/init.f90
-+    Source/dump.f90
-+    Source/read.f90
-+    Source/divg.f90
-+)
+ option(USE_HYPRE           "Use the hypre library"                    ON)
+ option(USE_SYSTEM_HYPRE    "Use the hypre library from the system"    OFF)
+ 
+@@ -55,6 +58,11 @@ add_executable(fds
+     Source/read.f90
+     Source/divg.f90
+ )
 +
 +if (DUMP_JSON)
 +    target_sources(fds PRIVATE Source/json.f90)
 +endif()
 +
-+target_include_directories(fds PRIVATE .)
-+
-+# Get various properties about the time and git revision. These can be
-+# overridden which is important for building in situations where we don't have
-+# the git repo.
-+if (NOT(WIN32) AND NOT(BUILD_DATE_XLF))
-+    string(TIMESTAMP BUILD_DATE_XLF "%b %d\\, %Y  %H:%M:%S")
-+endif()
-+if (NOT(BUILD_DATE))
-+    string(TIMESTAMP BUILD_DATE "%b %d, %Y  %H:%M:%S ")
-+endif()
-+if (NOT(GIT_DATE))
-+    execute_process(COMMAND git log -1 --format=%cd          OUTPUT_VARIABLE GIT_DATE       OUTPUT_STRIP_TRAILING_WHITESPACE)
-+endif()
-+if (NOT(GIT_BRANCH))
-+    execute_process(COMMAND git rev-parse --abbrev-ref HEAD  OUTPUT_VARIABLE GIT_BRANCH     OUTPUT_STRIP_TRAILING_WHITESPACE)
-+endif()
-+if (NOT(GIT_HASH))
-+    execute_process(COMMAND git describe --long --abbrev=7   OUTPUT_VARIABLE GIT_HASH       OUTPUT_STRIP_TRAILING_WHITESPACE)
-+endif()
-+if (NOT(GIT_DIRTY))
-+    execute_process(COMMAND git diff --shortstat Source/*.f90 OUTPUT_VARIABLE GIT_DIRTY)
-+endif()
-+if (GIT_DIRTY STREQUAL "")
-+    set(GIT_STAT "")
-+else()
-+    set(GIT_STAT "-dirty")
-+endif()
-+
-+target_compile_definitions(fds PRIVATE BUILDDATE_PP="${BUILD_DATE}")
-+target_compile_definitions(fds PRIVATE GITHASH_PP="${GIT_HASH}${GIT_STAT}-${GIT_BRANCH}")
-+target_compile_definitions(fds PRIVATE GITDATE_PP="${GIT_DATE}")
-+
-+# Use MPI (mandatory)
-+find_package(MPI REQUIRED)
-+target_link_libraries(fds PRIVATE MPI::MPI_Fortran)
-+
-+# FDS use lp64 (4-byte integer), MKL often defaults to ilp64 (8-byte integer)
-+set(MKL_INTERFACE lp64)
-+# Turn on BLACS
-+set(ENABLE_BLACS ON)
-+# We don't need ScaLAPACK
-+set(ENABLE_SCALAPACK OFF)
-+# Use MKL if found
-+find_package(MKL CONFIG)
-+if (MKL_FOUND)
-+    message(STATUS "${MKL_IMPORTED_TARGETS}")
-+    get_target_property(MKLS MKL::MKL INTERFACE_COMPILE_OPTIONS)
-+    message(STATUS "MKL Compile Options: ${MKLS}")
-+    get_target_property(MKLS MKL::MKL INTERFACE_INCLUDE_DIRECTORIES)
-+    message(STATUS "MKL Include Directories: ${MKLS}")
-+    target_compile_definitions(fds PRIVATE WITH_MKL)
-+    target_link_libraries(fds PRIVATE MKL::MKL)
-+endif()
-+
-+if (USE_OPENMP)
-+    # Use OpenMP
-+    find_package(OpenMP REQUIRED)
-+    target_link_libraries(fds PUBLIC OpenMP::OpenMP_Fortran)
-+endif()
-+
-+# Set compiler flags for various compilers
-+if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-+    target_compile_options(fds PRIVATE -cpp -std=f2018 -frecursive -ffpe-summary=none -fall-intrinsics)
-+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" OR CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
-+    target_compile_options(fds PRIVATE -fpp )
-+    # When compiling with Intel on Linux, enable the IFPORT library
-+    if (LINUX)
-+        target_compile_definitions(fds PRIVATE USE_IFPORT)
-+    endif()
-+    # When compiling with Intel and not on Windows apply -no-wrap-margin.
-+    if (NOT(WIN32))
-+        target_compile_options(fds PRIVATE -no-wrap-margin)
-+    endif()
-+endif()
-+
-+# If we are using the old Intel Fortran compiler (ifort) suppress the warning
-+# that this is an old compiler.
-+if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" )
-+    target_compile_options(fds PRIVATE /Qdiag-disable:10448)
-+endif()
-+
-+if(WIN32)
-+    set(BUILD_SHARED_LIBS OFF)
-+endif()
-+
-+# Find or build hypre if the option is set to use it
-+if(USE_HYPRE)
-+    # Unless forced to use the system version, download and build hypre
-+    if(NOT(USE_SYSTEM_HYPRE))
-+        include(FetchContent)
-+        # As we are not using the system hypre, we need to choose the version we
-+        # want
-+        set(HYPRE_GIT_VERSION "3.0.0" )
-+        FetchContent_Declare(
-+            HYPRE
-+            GIT_REPOSITORY https://github.com/hypre-space/hypre.git
-+            # Currently we need to refer directly to a commit which contains a
-+            # patch to handle HYPRE_FMANGLE
-+            GIT_TAG        6d01417697aa84d118eb1e1eb91315df42575be5 # v${HYPRE_GIT_VERSION}
-+            SOURCE_SUBDIR  src
-+            OVERRIDE_FIND_PACKAGE
-+        )
-+        # Set some options for building hypre
-+        if (WIN32)
-+            set(HYPRE_ENABLE_FMANGLE CAPS)
-+        endif()
-+        FetchContent_MakeAvailable(HYPRE)
-+    endif()
-+
-+    # Use hypre if found
-+    find_package(HYPRE)
-+    if(HYPRE_FOUND)
-+        if(NOT(HYPRE_VERSION))
-+            # We aren't using the system version so we'll revert to the git
-+            # version
-+            set(HYPRE_VERSION "${HYPRE_GIT_VERSION}")
-+        endif()
-+        target_link_libraries(fds PRIVATE HYPRE)
-+        target_compile_definitions(fds PRIVATE WITH_HYPRE)
-+        target_compile_definitions(fds PRIVATE HYPRE_PP="${HYPRE_VERSION}")
-+    endif()
-+endif()
-+
-+# Find or build sundials if the option is set to use it
-+if(USE_SUNDIALS)
-+    # Unless forced to use the system version, download and build sundials
-+    if(NOT(USE_SYSTEM_SUNDIALS))
-+        include(FetchContent)
-+        # As we are not using the system sundials, we need to choose the version
-+        # we want
-+        set(SUNDIALS_GIT_VERSION "7.5.0")
-+        FetchContent_Declare(
-+            SUNDIALS
-+            GIT_REPOSITORY https://github.com/LLNL/sundials.git
-+            GIT_TAG        v${SUNDIALS_GIT_VERSION}
-+            OVERRIDE_FIND_PACKAGE
-+        )
-+        # Set some options for building sundials
-+        set(ENABLE_MPI ON CACHE BOOL "" FORCE)
-+        set(BUILD_FORTRAN_MODULE_INTERFACE ON CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_C OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_CXX OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_F2003 OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_INSTALL OFF CACHE BOOL "" FORCE)
-+        set(ENABLE_OPENMP ON CACHE BOOL "" FORCE)
-+        set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-+        # if(HYPRE_FOUND)
-+        #     set(ENABLE_HYPRE ON CACHE BOOL "" FORCE)
-+        #     FetchContent_MakeAvailable(HYPRE SUNDIALS)
-+        # else()
-+            FetchContent_MakeAvailable(SUNDIALS)
-+        # endif()
-+    endif()
-+
-+    # Use sundials if found
-+    find_package(SUNDIALS)
-+    if(SUNDIALS_FOUND)
-+        if(NOT(SUNDIALS_VERSION))
-+            # We aren't using the system version so we'll revert to the git
-+            # version
-+            set(SUNDIALS_VERSION "${SUNDIALS_GIT_VERSION}")
-+        endif()
-+        target_link_libraries(fds PRIVATE SUNDIALS::fcvode_mod)
-+        target_link_libraries(fds PRIVATE SUNDIALS::fnvecserial_mod)
-+        target_compile_definitions(fds PRIVATE WITH_SUNDIALS)
-+        target_compile_definitions(fds PRIVATE SUNDIALS_PP="${SUNDIALS_VERSION}")
-+    endif()
-+endif()
-+
+ target_include_directories(fds PRIVATE .)
+ 
+ # Get various properties about the time and git revision. These can be
+@@ -225,9 +233,34 @@ if(USE_SUNDIALS)
+     endif()
+ endif()
+ 
 +if (DUMP_JSON)
 +    target_compile_definitions(fds PRIVATE DUMP_JSON)
 +    if (NOT WIN32 AND USE_SYSTEM_JSON)
@@ -284,10 +54,12 @@ index 0000000000..0b5d6e179c
 +    endif()
 +endif()
 +
-+install(TARGETS fds)
-+
-+include(CTest)
-+enable_testing()
+ install(TARGETS fds)
+ 
+ include(CTest)
+ enable_testing()
+-add_test(NAME "FDS Executes"
+-    COMMAND fds)
 +add_subdirectory(Tests)
 diff --git a/Source/json.f90 b/Source/json.f90
 new file mode 100644
@@ -746,7 +518,7 @@ index 0000000000..d43352b905
 +
 +END MODULE JSON_FORMAT
 diff --git a/Source/main.f90 b/Source/main.f90
-index 17af871eb6..3186ba1c78 100644
+index 9cc0e81502..778f45372b 100644
 --- a/Source/main.f90
 +++ b/Source/main.f90
 @@ -44,6 +44,10 @@ USE GLOBMAT_SOLVER, ONLY : GLMAT_SOLVER_SETUP, GLMAT_SOLVER, COPY_H_OMESH_TO_MES
@@ -760,9 +532,9 @@ index 17af871eb6..3186ba1c78 100644
  IMPLICIT NONE (TYPE,EXTERNAL)
  
  ! Miscellaneous declarations
-@@ -75,6 +79,26 @@ LOGICAL, ALLOCATABLE, DIMENSION(:)        :: LOGICAL_BUFFER_EXTERNAL
+@@ -74,6 +78,26 @@ LOGICAL, ALLOCATABLE, DIMENSION(:)        :: LOGICAL_BUFFER_EXTERNAL
  REAL(EB), ALLOCATABLE, DIMENSION(:)       :: REAL_BUFFER_DUCT,REAL_BUFFER_EXTERNAL
- REAL(EB), ALLOCATABLE, DIMENSION(:,:)     :: REAL_BUFFER_10,REAL_BUFFER_MASS,REAL_BUFFER_HVAC,REAL_BUFFER_QM,REAL_BUFFER_20
+ REAL(EB), ALLOCATABLE, DIMENSION(:,:)     :: REAL_BUFFER_10,REAL_BUFFER_20
  
 +#ifdef DUMP_JSON
 +INTEGER :: NUM_ARGS, IX, JSON_OUT_I
@@ -787,9 +559,9 @@ index 17af871eb6..3186ba1c78 100644
  ! Initialize OpenMP
  
  CALL OPENMP_INIT
-@@ -117,6 +141,17 @@ CALL GET_INFO (REVISION,REVISION_DATE,COMPILE_DATE)
- CALL READ_DATA(DT)
- CALL STOP_CHECK(1)
+@@ -116,6 +140,17 @@ CALL GET_INFO(REVISION,REVISION_DATE,COMPILE_DATE)
+ 
+ CALL READ_DATA(DT) ; CALL STOP_CHECK(1)
  
 +#ifdef DUMP_JSON
 +! If requested, output input information to JSON, either to a file or stdout
@@ -833,61 +605,3 @@ index 0000000000..d00a147e79
 +
 +add_test(NAME "Execute fds" COMMAND fds )
 +add_test(NAME "Execute fds JSON" COMMAND fds --json - ${FIG_DIR}/smv/Tests/test_model_small )
-diff --git a/env.ps1 b/env.ps1
-new file mode 100644
-index 0000000000..c87044c52f
---- /dev/null
-+++ b/env.ps1
-@@ -0,0 +1 @@
-+cmd.exe "/K" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && powershell'
-diff --git a/justfile b/justfile
-new file mode 100644
-index 0000000000..b656aae272
---- /dev/null
-+++ b/justfile
-@@ -0,0 +1,45 @@
-+# set windows-powershell := true
-+# set shell := ["cmd.exe", "/c"]
-+alias b := build
-+alias br := build-release
-+
-+_default:
-+    @just --list
-+
-+# Run the tests
-+test:
-+    ctest --test-dir cbuild
-+
-+# Build the debug binaries
-+build:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=ON
-+    cmake --build cbuild -j6 --verbose --config Debug
-+    cmake --install cbuild --prefix dist-debug --config Debug
-+
-+build-intel:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON
-+    cmake --build cbuild -j6 --verbose --config Debug
-+    cmake --install cbuild --prefix dist-debug --config Debug
-+
-+build-release-intel:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON
-+    cmake --build cbuild -v -j6 --config Release
-+    cmake --install cbuild --prefix dist --config Release
-+
-+# Build the release binaries
-+build-release:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Release
-+    cmake --build cbuild -v -j6 --config Release
-+    cmake --install cbuild --prefix dist --config Release
-+
-+# Build release and create MSI package
-+package-windows: build-release-intel
-+    wix build .\FdsVerifyInstaller.wxs  -out FdsVerifyInstaller_unsigned.msi
-+
-+# Build release and create RPM package
-+package-rpm:
-+    ./buildrpm.sh
-+
-+# Clean everything
-+clean:
-+    cmake -E rm -rf cbuild

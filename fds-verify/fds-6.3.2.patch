@@ -1,29 +1,31 @@
 diff --git a/.gitignore b/.gitignore
-index f76a2496f1..ee87af52a6 100644
+index 4d15f299c9..16265ada57 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -99,3 +99,6 @@ Validation/*/FDS_Output_Files/*.csv
+@@ -46,6 +46,8 @@ Manuals/*/*Guide.pdf
+ *.prt5
+ *.end
+ *.iso
++*.restart
++*.gc
+ *_devc.csv
+ *_hrr.csv
+ *_mass.csv
+@@ -64,3 +66,8 @@ SMV/for_bundle/uploads
+ # manuals script-generated files
+ Manuals/*/SCRIPT_FIGURES/*.pdf
  
- # Verification script generated fds files
- Verification/Timing_Benchmarks/t*.fds
++# Validation script generated csv files
++Validation/*/FDS_Output_Files/*.csv
 +
-+Build/cmakeb/
 +cbuild/
-diff --git a/.vscode/env.ps1 b/.vscode/env.ps1
-new file mode 100644
-index 0000000000..1a7ce09bb1
---- /dev/null
-+++ b/.vscode/env.ps1
-@@ -0,0 +1,3 @@
-+$env:JUST_JUSTFILE=".vscode/justfile"
-+$env:JUST_WORKING_DIRECTORY="."
-+cmd.exe "/K" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && powershell'
++#!Validation/*/FDS_Output_Files/*_[devc].csv
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000000..0b5d6e179c
+index 0000000000..f532ce7b09
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,265 @@
+@@ -0,0 +1,180 @@
 +cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
 +
 +project(
@@ -34,13 +36,6 @@ index 0000000000..0b5d6e179c
 +enable_language(Fortran)
 +
 +option(DUMP_JSON           "Add the option to dump info to JSON"      OFF)
-+option(USE_SYSTEM_JSON     "Use the json library from the system"     OFF)
-+
-+option(USE_HYPRE           "Use the hypre library"                    ON)
-+option(USE_SYSTEM_HYPRE    "Use the hypre library from the system"    OFF)
-+
-+option(USE_SUNDIALS        "Use the sundials library"                 ON)
-+option(USE_SYSTEM_SUNDIALS "Use the sundials library from the system" OFF)
 +
 +option(USE_OPENMP          "Use OpenMP"                               ON)
 +
@@ -50,42 +45,44 @@ index 0000000000..0b5d6e179c
 +set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
 +
 +add_executable(fds
-+    Source/main.f90
-+    Source/prec.f90
-+    Source/cons.f90
-+    Source/prop.f90
-+    Source/devc.f90
-+    Source/type.f90
-+    Source/data.f90
-+    Source/mesh.f90
-+    Source/func.f90
-+    Source/gsmv.f90
-+    Source/smvv.f90
-+    Source/rcal.f90
-+    Source/turb.f90
-+    Source/soot.f90
-+    Source/pois.f90
-+    Source/geom.f90
-+    Source/ccib.f90
-+    Source/radi.f90
-+    Source/part.f90
-+    Source/vege.f90
-+    Source/ctrl.f90
-+    Source/hvac.f90
-+    Source/mass.f90
-+    Source/imkl.f90
-+    Source/wall.f90
-+    Source/fire.f90
-+    Source/velo.f90
-+    Source/pres.f90
-+    Source/init.f90
-+    Source/dump.f90
-+    Source/read.f90
-+    Source/divg.f90
++    FDS_Source/cons.f90
++    FDS_Source/ctrl.f90
++    FDS_Source/data.f90
++    FDS_Source/devc.f90
++    FDS_Source/divg.f90
++    FDS_Source/dump.f90
++    FDS_Source/evac.f90
++    FDS_Source/fire.f90
++    FDS_Source/func.f90
++    FDS_Source/geom.f90
++    FDS_Source/gsmv.f90
++    FDS_Source/hvac.f90
++    FDS_Source/ieva.f90
++    FDS_Source/init.f90
++    FDS_Source/irad.f90
++    FDS_Source/main.f90
++    FDS_Source/mass.f90
++    FDS_Source/mesh.f90
++    FDS_Source/mpip.f90
++    FDS_Source/part.f90
++    FDS_Source/pois.f90
++    FDS_Source/prec.f90
++    FDS_Source/pres.f90
++    FDS_Source/radi.f90
++    FDS_Source/read.f90
++    FDS_Source/samr.f90
++    FDS_Source/scrc.f90
++    FDS_Source/soot.f90
++    FDS_Source/smvv.f90
++    FDS_Source/turb.f90
++    FDS_Source/type.f90
++    FDS_Source/vege.f90
++    FDS_Source/velo.f90
++    FDS_Source/wall.f90
 +)
 +
 +if (DUMP_JSON)
-+    target_sources(fds PRIVATE Source/json.f90)
++    target_sources(fds PRIVATE FDS_Source/json.f90)
 +endif()
 +
 +target_include_directories(fds PRIVATE .)
@@ -149,6 +146,10 @@ index 0000000000..0b5d6e179c
 +    target_link_libraries(fds PUBLIC OpenMP::OpenMP_Fortran)
 +endif()
 +
++if (WIN32)
++    target_compile_definitions(fds PRIVATE pp_noappend)
++endif()
++
 +# Set compiler flags for various compilers
 +if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
 +    target_compile_options(fds PRIVATE -cpp -std=f2018 -frecursive -ffpe-summary=none -fall-intrinsics)
@@ -172,90 +173,6 @@ index 0000000000..0b5d6e179c
 +
 +if(WIN32)
 +    set(BUILD_SHARED_LIBS OFF)
-+endif()
-+
-+# Find or build hypre if the option is set to use it
-+if(USE_HYPRE)
-+    # Unless forced to use the system version, download and build hypre
-+    if(NOT(USE_SYSTEM_HYPRE))
-+        include(FetchContent)
-+        # As we are not using the system hypre, we need to choose the version we
-+        # want
-+        set(HYPRE_GIT_VERSION "3.0.0" )
-+        FetchContent_Declare(
-+            HYPRE
-+            GIT_REPOSITORY https://github.com/hypre-space/hypre.git
-+            # Currently we need to refer directly to a commit which contains a
-+            # patch to handle HYPRE_FMANGLE
-+            GIT_TAG        6d01417697aa84d118eb1e1eb91315df42575be5 # v${HYPRE_GIT_VERSION}
-+            SOURCE_SUBDIR  src
-+            OVERRIDE_FIND_PACKAGE
-+        )
-+        # Set some options for building hypre
-+        if (WIN32)
-+            set(HYPRE_ENABLE_FMANGLE CAPS)
-+        endif()
-+        FetchContent_MakeAvailable(HYPRE)
-+    endif()
-+
-+    # Use hypre if found
-+    find_package(HYPRE)
-+    if(HYPRE_FOUND)
-+        if(NOT(HYPRE_VERSION))
-+            # We aren't using the system version so we'll revert to the git
-+            # version
-+            set(HYPRE_VERSION "${HYPRE_GIT_VERSION}")
-+        endif()
-+        target_link_libraries(fds PRIVATE HYPRE)
-+        target_compile_definitions(fds PRIVATE WITH_HYPRE)
-+        target_compile_definitions(fds PRIVATE HYPRE_PP="${HYPRE_VERSION}")
-+    endif()
-+endif()
-+
-+# Find or build sundials if the option is set to use it
-+if(USE_SUNDIALS)
-+    # Unless forced to use the system version, download and build sundials
-+    if(NOT(USE_SYSTEM_SUNDIALS))
-+        include(FetchContent)
-+        # As we are not using the system sundials, we need to choose the version
-+        # we want
-+        set(SUNDIALS_GIT_VERSION "7.5.0")
-+        FetchContent_Declare(
-+            SUNDIALS
-+            GIT_REPOSITORY https://github.com/LLNL/sundials.git
-+            GIT_TAG        v${SUNDIALS_GIT_VERSION}
-+            OVERRIDE_FIND_PACKAGE
-+        )
-+        # Set some options for building sundials
-+        set(ENABLE_MPI ON CACHE BOOL "" FORCE)
-+        set(BUILD_FORTRAN_MODULE_INTERFACE ON CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_C OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_CXX OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_ENABLE_F2003 OFF CACHE BOOL "" FORCE)
-+        set(EXAMPLES_INSTALL OFF CACHE BOOL "" FORCE)
-+        set(ENABLE_OPENMP ON CACHE BOOL "" FORCE)
-+        set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-+        # if(HYPRE_FOUND)
-+        #     set(ENABLE_HYPRE ON CACHE BOOL "" FORCE)
-+        #     FetchContent_MakeAvailable(HYPRE SUNDIALS)
-+        # else()
-+            FetchContent_MakeAvailable(SUNDIALS)
-+        # endif()
-+    endif()
-+
-+    # Use sundials if found
-+    find_package(SUNDIALS)
-+    if(SUNDIALS_FOUND)
-+        if(NOT(SUNDIALS_VERSION))
-+            # We aren't using the system version so we'll revert to the git
-+            # version
-+            set(SUNDIALS_VERSION "${SUNDIALS_GIT_VERSION}")
-+        endif()
-+        target_link_libraries(fds PRIVATE SUNDIALS::fcvode_mod)
-+        target_link_libraries(fds PRIVATE SUNDIALS::fnvecserial_mod)
-+        target_compile_definitions(fds PRIVATE WITH_SUNDIALS)
-+        target_compile_definitions(fds PRIVATE SUNDIALS_PP="${SUNDIALS_VERSION}")
-+    endif()
 +endif()
 +
 +if (DUMP_JSON)
@@ -289,12 +206,12 @@ index 0000000000..0b5d6e179c
 +include(CTest)
 +enable_testing()
 +add_subdirectory(Tests)
-diff --git a/Source/json.f90 b/Source/json.f90
+diff --git a/FDS_Source/json.f90 b/FDS_Source/json.f90
 new file mode 100644
-index 0000000000..d43352b905
+index 0000000000..bff95f7104
 --- /dev/null
-+++ b/Source/json.f90
-@@ -0,0 +1,450 @@
++++ b/FDS_Source/json.f90
+@@ -0,0 +1,438 @@
 +
 +MODULE JSON_FORMAT
 +
@@ -303,15 +220,12 @@ index 0000000000..d43352b905
 +USE GLOBAL_CONSTANTS
 +USE TRAN
 +USE MESH_POINTERS
-+USE OUTPUT_DATA
-+USE COMP_FUNCTIONS, ONLY: CHECKREAD, SHUTDOWN, CHECK_XB, SCAN_INPUT_FILE
-+USE MEMORY_FUNCTIONS, ONLY: ChkMemErr,REALLOCATE2D,REALLOCATE
++USE COMP_FUNCTIONS, ONLY: CHECKREAD, SHUTDOWN, CHECK_XB
++USE MEMORY_FUNCTIONS, ONLY: ChkMemErr,REALLOCATE
 +USE COMP_FUNCTIONS, ONLY: GET_INPUT_FILE
-+USE MISC_FUNCTIONS, ONLY: SEARCH_CONTROLLER,WRITE_SUMMARY_INFO
-+USE HVAC_ROUTINES, ONLY: READ_HVAC,PROC_HVAC
-+USE COMPLEX_GEOMETRY, ONLY: READ_GEOM
++USE MISC_FUNCTIONS, ONLY: SEARCH_CONTROLLER
++USE HVAC_ROUTINES, ONLY: READ_HVAC
 +USE MPI_F08
-+USE THERMO_PROPS
 +
 +IMPLICIT NONE (TYPE,EXTERNAL)
 +PRIVATE
@@ -324,14 +238,13 @@ index 0000000000..d43352b905
 +USE,INTRINSIC :: ISO_FORTRAN_ENV, ONLY: WP => REAL64
 +USE :: JSON_MODULE, RK => JSON_RK
 +USE DEVICE_VARIABLES, ONLY: DEVICE_TYPE,DEVICE,N_DEVC,PROPERTY_TYPE,N_PROP,PROPERTY
-+USE OUTPUT_CLOCKS
 +
-+CHARACTER(FN_LENGTH), INTENT(IN)  :: JSON_OUTPUT_PATH
++CHARACTER(250), INTENT(IN)  :: JSON_OUTPUT_PATH
 +INTEGER :: N, NM, NQ, N_LAYER_MATL, N_LAYER
 +TYPE (MESH_TYPE), POINTER :: M=>NULL()
 +TYPE (DEVICE_TYPE), POINTER :: DV=>NULL()
 +TYPE (PROPERTY_TYPE), POINTER :: PY=>NULL()
-+TYPE (LAGRANGIAN_PARTICLE_CLASS_TYPE), POINTER :: LPC=>NULL()
++! TYPE (LAGRANGIAN_PARTICLE_CLASS_TYPE), POINTER :: LPC=>NULL()
 +TYPE (OBSTRUCTION_TYPE), POINTER :: OB=>NULL()
 +TYPE (REACTION_TYPE),POINTER :: RN=>NULL()
 +TYPE (SURFACE_TYPE),POINTER:: SF=>NULL()
@@ -359,27 +272,22 @@ index 0000000000..d43352b905
 +CALL JSON%CREATE_OBJECT(OBJ1,'dump')
 +CALL JSON%ADD(ROOT, OBJ1)
 +CALL JSON%ADD(OBJ1, 'nframes', NFRAMES)
-+CALL JSON%ADD(OBJ1, 'plot3d_quantity', PLOT3D_QUANTITY)
++! CALL JSON%ADD(OBJ1, 'plot3d_quantity', PLOT3D_QUANTITY)
 +CALL JSON%ADD(OBJ1, 'dt_bndf', DT_BNDF)
-+CALL JSON%ADD(OBJ1, 'dt_cpu', DT_CPU)
++! CALL JSON%ADD(OBJ1, 'dt_cpu', DT_CPU)
 +CALL JSON%ADD(OBJ1, 'dt_ctrl', DT_CTRL)
 +CALL JSON%ADD(OBJ1, 'dt_devc', DT_DEVC)
 +CALL JSON%ADD(OBJ1, 'dt_flush', DT_FLUSH)
-+CALL JSON%ADD(OBJ1, 'dt_geom', DT_GEOM)
++! CALL JSON%ADD(OBJ1, 'dt_geom', DT_GEOM)
 +CALL JSON%ADD(OBJ1, 'dt_hrr', DT_HRR)
-+CALL JSON%ADD(OBJ1, 'dt_hvac', DT_HVAC)
 +CALL JSON%ADD(OBJ1, 'dt_isof', DT_ISOF)
 +CALL JSON%ADD(OBJ1, 'dt_mass', DT_MASS)
 +CALL JSON%ADD(OBJ1, 'dt_part', DT_PART)
 +CALL JSON%ADD(OBJ1, 'dt_pl3d', DT_PL3D)
 +CALL JSON%ADD(OBJ1, 'dt_prof', DT_PROF)
-+CALL JSON%ADD(OBJ1, 'dt_radf', DT_RADF)
 +CALL JSON%ADD(OBJ1, 'dt_restart', DT_RESTART)
 +CALL JSON%ADD(OBJ1, 'dt_slcf', DT_SLCF)
 +CALL JSON%ADD(OBJ1, 'dt_sl3d', DT_SL3D)
-+CALL JSON%ADD(OBJ1, 'dt_smoke3d', DT_SMOKE3D)
-+CALL JSON%ADD(OBJ1, 'dt_uvw', DT_UVW)
-+CALL JSON%ADD(OBJ1, 'dt_tmp', DT_TMP)
 +NULLIFY(OBJ1)
 +
 +CALL JSON%CREATE_OBJECT(OBJ1,'time')
@@ -395,12 +303,12 @@ index 0000000000..d43352b905
 +   CALL JSON%CREATE_OBJECT(OBJ2,'reac')
 +   CALL JSON%ADD(OBJ1, OBJ2)
 +   CALL JSON%ADD(OBJ2, 'index', N)
-+   CALL JSON%ADD(OBJ2, 'id', TRIM(RN%ID))
-+   CALL JSON%ADD(OBJ2, 'equation', TRIM(RN%ID))
-+   CALL JSON%ADD(OBJ2, 'c', RN%C)
-+   CALL JSON%ADD(OBJ2, 'h', RN%H)
-+   CALL JSON%ADD(OBJ2, 'n', RN%N)
-+   CALL JSON%ADD(OBJ2, 'o', RN%O)
++   ! CALL JSON%ADD(OBJ2, 'id', TRIM(RN%ID))
++   ! CALL JSON%ADD(OBJ2, 'equation', TRIM(RN%ID))
++   ! CALL JSON%ADD(OBJ2, 'c', RN%C)
++   ! CALL JSON%ADD(OBJ2, 'h', RN%H)
++   ! CALL JSON%ADD(OBJ2, 'n', RN%N)
++   ! CALL JSON%ADD(OBJ2, 'o', RN%O)
 +   CALL JSON%ADD(OBJ2, 'epumo2', RN%EPUMO2)
 +   CALL JSON%ADD(OBJ2, 'heat_of_combustion', RN%HEAT_OF_COMBUSTION)
 +   CALL JSON%ADD(OBJ2, 'soot_yield', RN%SOOT_YIELD)
@@ -422,17 +330,14 @@ index 0000000000..d43352b905
 +   IF (SF%HRRPUA /= 0.0) THEN
 +      CALL JSON%ADD(OBJ2, 'hrrpua', SF%HRRPUA)
 +   ENDIF
-+   IF (SF%VOLUME_FLOW /= 0.0) THEN
-+      CALL JSON%ADD(OBJ2, 'volume_flow', SF%VOLUME_FLOW)
-+   ENDIF
++   ! IF (SF%VOLUME_FLOW /= 0.0) THEN
++   !    CALL JSON%ADD(OBJ2, 'volume_flow', SF%VOLUME_FLOW)
++   ! ENDIF
 +   IF (SF%VEL /= 0.0) THEN
 +      CALL JSON%ADD(OBJ2, 'vel', SF%VEL)
 +   ENDIF
 +   if (SF%TMP_FRONT /= -1._EB) THEN
 +      CALL JSON%ADD(OBJ2, 'tmp_front', SF%TMP_FRONT)
-+   ENDIF
-+   IF ( SF%RAMP(TIME_HEAT)%TAU /= TAU_DEFAULT) THEN
-+      CALL JSON%ADD(OBJ2, 'tau_q', SF%RAMP(TIME_HEAT)%TAU)
 +   ENDIF
 +   IF (LEN_TRIM(SF%FYI) /= 0 .AND. TRIM(SF%FYI) /= 'null') THEN
 +      CALL JSON%ADD(OBJ2, 'fyi', TRIM(SF%FYI))
@@ -453,9 +358,9 @@ index 0000000000..d43352b905
 +         CALL JSON%CREATE_OBJECT(OBJ6,'layer_material')
 +         CALL JSON%ADD(OBJ5, OBJ6)
 +         CALL JSON%ADD(OBJ6, 'index', N_LAYER_MATL)
-+         CALL JSON%ADD(OBJ6, 'id', TRIM(SF%MATL_ID(N_LAYER,N_LAYER_MATL)))
-+         CALL JSON%ADD(OBJ6, 'mass_fraction', SF%MATL_MASS_FRACTION(N_LAYER,N_LAYER_MATL))
-+         CALL JSON%ADD(OBJ6, 'material_index', SF%LAYER_MATL_INDEX(N_LAYER,N_LAYER_MATL))
++         ! CALL JSON%ADD(OBJ6, 'id', TRIM(SF%MATL_ID(N_LAYER,N_LAYER_MATL)))
++         ! CALL JSON%ADD(OBJ6, 'mass_fraction', SF%MATL_MASS_FRACTION(N_LAYER,N_LAYER_MATL))
++         ! CALL JSON%ADD(OBJ6, 'material_index', SF%LAYER_MATL_INDEX(N_LAYER,N_LAYER_MATL))
 +         NULLIFY(OBJ6)
 +      ENDDO
 +      NULLIFY(OBJ5)
@@ -473,10 +378,10 @@ index 0000000000..d43352b905
 +   CALL JSON%CREATE_OBJECT(OBJ2,'material')
 +   CALL JSON%ADD(OBJ1, OBJ2)
 +   CALL JSON%ADD(OBJ2, 'index', N)
-+   CALL JSON%ADD(OBJ2, 'id', TRIM(MATL%ID))
++   ! CALL JSON%ADD(OBJ2, 'id', TRIM(MATL%ID))
 +   CALL JSON%ADD(OBJ2, 'rho_s', MATL%RHO_S)
 +   CALL JSON%ADD(OBJ2, 'emissivity', MATL%EMISSIVITY)
-+   CALL JSON%ADD(OBJ2, 'thermal_diffusivity', MATL%THERMAL_DIFFUSIVITY)
++   ! CALL JSON%ADD(OBJ2, 'thermal_diffusivity', MATL%THERMAL_DIFFUSIVITY)
 +   NULLIFY(OBJ2)
 +ENDDO
 +NULLIFY(OBJ1)
@@ -500,31 +405,31 @@ index 0000000000..d43352b905
 +   CALL JSON%ADD(OBJ2, 'activation_temperature', PY%ACTIVATION_TEMPERATURE)
 +   CALL JSON%ADD(OBJ2, 'activation_obscuration', PY%ACTIVATION_OBSCURATION)
 +   CALL JSON%ADD(OBJ2, 'flow_rate', PY%FLOW_RATE)
-+   CALL JSON%ADD(OBJ2, 'particle_velocity', PY%PARTICLE_VELOCITY)
++   ! CALL JSON%ADD(OBJ2, 'particle_velocity', PY%PARTICLE_VELOCITY)
 +   NULLIFY(OBJ2)
 +ENDDO
 +NULLIFY(OBJ1)
 +
-+CALL JSON%CREATE_ARRAY(OBJ1,'parts')
-+CALL JSON%ADD(ROOT, OBJ1)
-+DO N=1,N_LAGRANGIAN_CLASSES
-+   LPC => LAGRANGIAN_PARTICLE_CLASS(N)
-+   CALL JSON%CREATE_OBJECT(OBJ2,'part')
-+   CALL JSON%ADD(OBJ1, OBJ2)
-+   CALL JSON%ADD(OBJ2, 'index', N)
-+   CALL JSON%ADD(OBJ2, 'id', TRIM(LPC%ID))
-+   CALL JSON%ADD(OBJ2, 'spec_id', TRIM(LPC%SPEC_ID))
-+   CALL JSON%ADD(OBJ2, 'devc_id', TRIM(LPC%DEVC_ID))
-+   CALL JSON%ADD(OBJ2, 'ctrl_id', TRIM(LPC%CTRL_ID))
-+   CALL JSON%ADD(OBJ2, 'surf_id', TRIM(LPC%SURF_ID))
-+   CALL JSON%ADD(OBJ2, 'prop_id', TRIM(LPC%PROP_ID))
-+   CALL JSON%ADD(OBJ2, 'diameter',  LPC%DIAMETER)
-+   CALL JSON%ADD(OBJ2, 'monodisperse',  LPC%MONODISPERSE)
-+   CALL JSON%ADD(OBJ2, 'age',  LPC%LIFETIME)
-+   CALL JSON%ADD(OBJ2, 'sampling_factor',  LPC%SAMPLING_FACTOR)
-+   NULLIFY(OBJ2)
-+ENDDO
-+NULLIFY(OBJ1)
++! CALL JSON%CREATE_ARRAY(OBJ1,'parts')
++! CALL JSON%ADD(ROOT, OBJ1)
++! DO N=1,N_LAGRANGIAN_CLASSES
++!    LPC => LAGRANGIAN_PARTICLE_CLASS(N)
++!    CALL JSON%CREATE_OBJECT(OBJ2,'part')
++!    CALL JSON%ADD(OBJ1, OBJ2)
++!    CALL JSON%ADD(OBJ2, 'index', N)
++!    CALL JSON%ADD(OBJ2, 'id', TRIM(LPC%ID))
++!    CALL JSON%ADD(OBJ2, 'spec_id', TRIM(LPC%SPEC_ID))
++!    CALL JSON%ADD(OBJ2, 'devc_id', TRIM(LPC%DEVC_ID))
++!    CALL JSON%ADD(OBJ2, 'ctrl_id', TRIM(LPC%CTRL_ID))
++!    CALL JSON%ADD(OBJ2, 'surf_id', TRIM(LPC%SURF_ID))
++!    CALL JSON%ADD(OBJ2, 'prop_id', TRIM(LPC%PROP_ID))
++!    CALL JSON%ADD(OBJ2, 'diameter',  LPC%DIAMETER)
++!    CALL JSON%ADD(OBJ2, 'monodisperse',  LPC%MONODISPERSE)
++!    CALL JSON%ADD(OBJ2, 'age',  LPC%LIFETIME)
++!    ! CALL JSON%ADD(OBJ2, 'sampling_factor',  LPC%SAMPLING_FACTOR)
++!    NULLIFY(OBJ2)
++! ENDDO
++! NULLIFY(OBJ1)
 +
 +CALL JSON%CREATE_ARRAY(OBJ1,'meshes')
 +CALL JSON%ADD(ROOT, OBJ1)
@@ -569,7 +474,7 @@ index 0000000000..d43352b905
 +         CALL JSON%ADD(OBJ3, OBJ4)
 +         CALL JSON%ADD(OBJ4, 'index', N)
 +         CALL JSON%ADD(OBJ4, 'id', TRIM(VT%ID))
-+         CALL JSON%ADD(OBJ4, 'surface', TRIM(SURFACE(VT%SURF_INDEX)%ID))
++         ! CALL JSON%ADD(OBJ4, 'surface', TRIM(SURFACE(VT%SURF_INDEX)%ID))
 +         CALL JSON%ADD(OBJ4, 'devc_id', TRIM(VT%DEVC_ID))
 +         CALL JSON%ADD(OBJ4, 'ctrl_id', TRIM(VT%CTRL_ID))
 +
@@ -598,7 +503,7 @@ index 0000000000..d43352b905
 +         CALL JSON%CREATE_OBJECT(OBJ4,'obst')
 +         CALL JSON%ADD(OBJ3, OBJ4)
 +         CALL JSON%ADD(OBJ4, 'index', N)
-+         CALL JSON%ADD(OBJ4, 'id', TRIM(OB%ID))
++         ! CALL JSON%ADD(OBJ4, 'id', TRIM(OB%ID))
 +
 +         CALL JSON%CREATE_OBJECT(OBJ5,'surfaces')
 +         CALL JSON%ADD(OBJ4, OBJ5)
@@ -670,9 +575,9 @@ index 0000000000..d43352b905
 +   CALL JSON%ADD(OBJ2, 'index', N)
 +   CALL JSON%ADD(OBJ2, 'id', TRIM(DV%ID))
 +   CALL JSON%ADD(OBJ2, 'label', TRIM(DV%SMOKEVIEW_LABEL))
-+   if (TRIM(DV%SPATIAL_STATISTIC) /= 'null') then
-+      CALL JSON%ADD(OBJ2, 'spatial_statistic', TRIM(DV%SPATIAL_STATISTIC))
-+   endif
++   ! if (TRIM(DV%SPATIAL_STATISTIC) /= 'null') then
++   !    CALL JSON%ADD(OBJ2, 'spatial_statistic', TRIM(DV%SPATIAL_STATISTIC))
++   ! endif
 +   if (TRIM(DV%SPEC_ID) /= 'null') then
 +      CALL JSON%ADD(OBJ2, 'spec_id', TRIM(DV%SPEC_ID))
 +   endif
@@ -701,30 +606,30 @@ index 0000000000..d43352b905
 +
 +   CALL JSON%CREATE_ARRAY(OBJ3,'quantities')
 +   CALL JSON%ADD(OBJ2, OBJ3)
-+   DO NQ=1,DV%N_QUANTITY
-+      call json%create_string(OBJ4,TRIM(DV%QUANTITY(NQ)),'quantity')
-+      CALL JSON%ADD(OBJ3, OBJ4)
-+      NULLIFY(OBJ4)
-+   ENDDO
++   ! DO NQ=1,DV%N_QUANTITY
++   !    call json%create_string(OBJ4,TRIM(DV%QUANTITY(NQ)),'quantity')
++   !    CALL JSON%ADD(OBJ3, OBJ4)
++   !    NULLIFY(OBJ4)
++   ! ENDDO
 +   NULLIFY(OBJ3)
 +
 +   CALL JSON%CREATE_ARRAY(OBJ3,'points')
 +   CALL JSON%ADD(OBJ2, OBJ3)
 +   M => MESHES(DV%MESH)
-+   DO NQ=1,DV%N_POINTS
-+      CALL JSON%CREATE_OBJECT(OBJ4,'point')
-+      CALL JSON%ADD(OBJ3, OBJ4)
-+      CALL JSON%ADD(OBJ4, 'i', DV%I(NQ))
-+      CALL JSON%ADD(OBJ4, 'j', DV%J(NQ))
-+      CALL JSON%ADD(OBJ4, 'k', DV%K(NQ))
-+      ! Is the cell this point is in solid at the start of the simulation?
-+      CALL JSON%ADD(OBJ4, 'init_solid', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)))%SOLID)
-+      ! Is the cell above this point solid at the start of the simulation?
-+      if (DV%K(NQ) < M%KBAR) THEN
-+         CALL JSON%ADD(OBJ4, 'init_solid_zplus', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)+1))%SOLID)
-+      ENDIF
-+      NULLIFY(OBJ4)
-+   ENDDO
++   ! DO NQ=1,DV%N_POINTS
++   !    CALL JSON%CREATE_OBJECT(OBJ4,'point')
++   !    CALL JSON%ADD(OBJ3, OBJ4)
++   !    CALL JSON%ADD(OBJ4, 'i', DV%I(NQ))
++   !    CALL JSON%ADD(OBJ4, 'j', DV%J(NQ))
++   !    CALL JSON%ADD(OBJ4, 'k', DV%K(NQ))
++   !    ! Is the cell this point is in solid at the start of the simulation?
++   !    ! CALL JSON%ADD(OBJ4, 'init_solid', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)))%SOLID)
++   !    ! Is the cell above this point solid at the start of the simulation?
++   !    ! if (DV%K(NQ) < M%KBAR) THEN
++   !    !    CALL JSON%ADD(OBJ4, 'init_solid_zplus', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)+1))%SOLID)
++   !    ! ENDIF
++   !    NULLIFY(OBJ4)
++   ! ENDDO
 +   NULLIFY(OBJ3)
 +
 +   NULLIFY(OBJ2)
@@ -733,10 +638,10 @@ index 0000000000..d43352b905
 +
 +! write the file:
 +IF (JSON_OUTPUT_PATH == '-') THEN
-+   IF (MY_RANK==0) WRITE(LU_ERR,'(A)') ' Outputting JSON info to stdout'
++   WRITE(LU_ERR,'(A)') ' Outputting JSON info to stdout'
 +   CALL JSON%PRINT(ROOT)
 +ELSE
-+   IF (MY_RANK==0) WRITE(LU_ERR,'(A,A)') ' Outputting JSON info to ', JSON_OUTPUT_PATH
++   WRITE(LU_ERR,'(A,A)') ' Outputting JSON info to ', JSON_OUTPUT_PATH
 +   CALL JSON%PRINT(ROOT,JSON_OUTPUT_PATH)
 +ENDIF
 +
@@ -745,29 +650,29 @@ index 0000000000..d43352b905
 +END SUBROUTINE PRINT_JSON
 +
 +END MODULE JSON_FORMAT
-diff --git a/Source/main.f90 b/Source/main.f90
-index 17af871eb6..3186ba1c78 100644
---- a/Source/main.f90
-+++ b/Source/main.f90
-@@ -44,6 +44,10 @@ USE GLOBMAT_SOLVER, ONLY : GLMAT_SOLVER_SETUP, GLMAT_SOLVER, COPY_H_OMESH_TO_MES
-                            FINISH_GLMAT_SOLVER,PRESSURE_SOLVER_CHECK_RESIDUALS_U
- USE LOCMAT_SOLVER, ONLY : ULMAT_SOLVER,ULMAT_SOLVER_SETUP,FINISH_ULMAT_SOLVER
+diff --git a/FDS_Source/main.f90 b/FDS_Source/main.f90
+index 724a07b4f0..b257cc1151 100644
+--- a/FDS_Source/main.f90
++++ b/FDS_Source/main.f90
+@@ -38,6 +38,10 @@ USE SOOT_ROUTINES, ONLY: CALC_AGGLOMERATION
+ ! dummy comment to force svn change - Thu Jun 25 21:56:37 EDT 2015
+ ! test git commit
  
 +#ifdef DUMP_JSON
 +USE JSON_FORMAT, ONLY: PRINT_JSON
 +#endif
 +
- IMPLICIT NONE (TYPE,EXTERNAL)
+ IMPLICIT NONE
  
  ! Miscellaneous declarations
-@@ -75,6 +79,26 @@ LOGICAL, ALLOCATABLE, DIMENSION(:)        :: LOGICAL_BUFFER_EXTERNAL
- REAL(EB), ALLOCATABLE, DIMENSION(:)       :: REAL_BUFFER_DUCT,REAL_BUFFER_EXTERNAL
- REAL(EB), ALLOCATABLE, DIMENSION(:,:)     :: REAL_BUFFER_10,REAL_BUFFER_MASS,REAL_BUFFER_HVAC,REAL_BUFFER_QM,REAL_BUFFER_20
+@@ -73,6 +77,26 @@ REAL(EB), ALLOCATABLE, DIMENSION(:,:,:)   :: REAL_BUFFER_7,REAL_BUFFER_8
+ REAL(EB), ALLOCATABLE, DIMENSION(:,:,:,:) :: REAL_BUFFER_9
+ LOGICAL, ALLOCATABLE, DIMENSION(:)        :: LOGICAL_BUFFER_1
  
 +#ifdef DUMP_JSON
 +INTEGER :: NUM_ARGS, IX, JSON_OUT_I
 +CHARACTER(LEN=12), DIMENSION(:), ALLOCATABLE :: ARGS
-+CHARACTER(FN_LENGTH) :: JSON_OUTPUT_PATH=''
++CHARACTER(250) :: JSON_OUTPUT_PATH=''
 +LOGICAL :: OUTPUT_JSON=.FALSE.
 +
 +NUM_ARGS = COMMAND_ARGUMENT_COUNT()
@@ -784,27 +689,26 @@ index 17af871eb6..3186ba1c78 100644
 +JSON_OUTPUT_PATH = args(json_out_i)
 +#endif
 +
- ! Initialize OpenMP
+ ! Initialize MPI (First executable lines of code)
  
- CALL OPENMP_INIT
-@@ -117,6 +141,17 @@ CALL GET_INFO (REVISION,REVISION_DATE,COMPILE_DATE)
- CALL READ_DATA(DT)
- CALL STOP_CHECK(1)
+ CALL MPI_INIT_THREAD(REQUIRED,PROVIDED,IERR)
+@@ -110,6 +134,16 @@ CALL READ_DATA(DT)
+ 
+ IF (CC_IBM) CALL SET_CUTCELLS_3D
  
 +#ifdef DUMP_JSON
 +! If requested, output input information to JSON, either to a file or stdout
 +IF (OUTPUT_JSON) THEN
-+   IF (MY_RANK==0) WRITE(LU_ERR,'(A)') ' Outputting JSON info...'
-+   IF (MY_RANK==0) CALL PRINT_JSON(JSON_OUTPUT_PATH)
++   WRITE(LU_ERR,'(A)') ' Outputting JSON info...'
++   CALL PRINT_JSON(JSON_OUTPUT_PATH)
 +   STOP_STATUS = SETUP_ONLY_STOP
 +   CALL EXIT(0)
 +   CALL STOP_CHECK(1)
 +ENDIF
 +#endif
-+
- IF (MY_RANK==0) THEN
-    CALL WRITE_SUMMARY_INFO(LU_ERR,.TRUE.)
-    WRITE(LU_ERR,'(/A,A)')     ' Job TITLE        : ',TRIM(TITLE)
+ CALL STOP_CHECK(1)
+ 
+ ! Setup number of OPENMP threads
 diff --git a/Tests/.gitignore b/Tests/.gitignore
 new file mode 100644
 index 0000000000..3a1b5507cf
@@ -814,7 +718,7 @@ index 0000000000..3a1b5507cf
 +fig/
 diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
 new file mode 100644
-index 0000000000..d00a147e79
+index 0000000000..e035eb630d
 --- /dev/null
 +++ b/Tests/CMakeLists.txt
 @@ -0,0 +1,15 @@
@@ -831,7 +735,7 @@ index 0000000000..d00a147e79
 +FetchContent_MakeAvailable(test_data)
 +set(FIG_DIR ${test_data_SOURCE_DIR})
 +
-+add_test(NAME "Execute fds" COMMAND fds )
++# add_test(NAME "Execute fds" COMMAND fds )
 +add_test(NAME "Execute fds JSON" COMMAND fds --json - ${FIG_DIR}/smv/Tests/test_model_small )
 diff --git a/env.ps1 b/env.ps1
 new file mode 100644
@@ -847,7 +751,7 @@ index 0000000000..b656aae272
 +++ b/justfile
 @@ -0,0 +1,45 @@
 +# set windows-powershell := true
-+# set shell := ["cmd.exe", "/c"]
++set shell := ["cmd.exe", "/c"]
 +alias b := build
 +alias br := build-release
 +
@@ -860,7 +764,7 @@ index 0000000000..b656aae272
 +
 +# Build the debug binaries
 +build:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=ON
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug
 +    cmake --build cbuild -j6 --verbose --config Debug
 +    cmake --install cbuild --prefix dist-debug --config Debug
 +

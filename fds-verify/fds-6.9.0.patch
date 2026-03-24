@@ -1,23 +1,3 @@
-diff --git a/.gitignore b/.gitignore
-index f76a2496f1..ee87af52a6 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -99,3 +99,6 @@ Validation/*/FDS_Output_Files/*.csv
- 
- # Verification script generated fds files
- Verification/Timing_Benchmarks/t*.fds
-+
-+Build/cmakeb/
-+cbuild/
-diff --git a/.vscode/env.ps1 b/.vscode/env.ps1
-new file mode 100644
-index 0000000000..1a7ce09bb1
---- /dev/null
-+++ b/.vscode/env.ps1
-@@ -0,0 +1,3 @@
-+$env:JUST_JUSTFILE=".vscode/justfile"
-+$env:JUST_WORKING_DIRECTORY="."
-+cmd.exe "/K" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && powershell'
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000000..0b5d6e179c
@@ -746,7 +726,7 @@ index 0000000000..d43352b905
 +
 +END MODULE JSON_FORMAT
 diff --git a/Source/main.f90 b/Source/main.f90
-index 17af871eb6..3186ba1c78 100644
+index c82d8f5e4e..30b63c8edc 100644
 --- a/Source/main.f90
 +++ b/Source/main.f90
 @@ -44,6 +44,10 @@ USE GLOBMAT_SOLVER, ONLY : GLMAT_SOLVER_SETUP, GLMAT_SOLVER, COPY_H_OMESH_TO_MES
@@ -847,7 +827,7 @@ index 0000000000..b656aae272
 +++ b/justfile
 @@ -0,0 +1,45 @@
 +# set windows-powershell := true
-+# set shell := ["cmd.exe", "/c"]
++set shell := ["cmd.exe", "/c"]
 +alias b := build
 +alias br := build-release
 +
@@ -860,7 +840,7 @@ index 0000000000..b656aae272
 +
 +# Build the debug binaries
 +build:
-+    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=ON
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug
 +    cmake --build cbuild -j6 --verbose --config Debug
 +    cmake --install cbuild --prefix dist-debug --config Debug
 +

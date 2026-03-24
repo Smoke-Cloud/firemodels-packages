@@ -1,16 +1,872 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 792aabd307..25eef73a10 100644
---- a/CMakeLists.txt
+new file mode 100644
+index 0000000000..0b5d6e179c
+--- /dev/null
 +++ b/CMakeLists.txt
-@@ -36,10 +36,10 @@ add_executable(fds
-     Source/pois.f90
-     Source/prec.f90
-     Source/pres.f90
+@@ -0,0 +1,265 @@
++cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
++
++project(
++    fds
++    VERSION 6.9.1
++    LANGUAGES Fortran
++)
++enable_language(Fortran)
++
++option(DUMP_JSON           "Add the option to dump info to JSON"      OFF)
++option(USE_SYSTEM_JSON     "Use the json library from the system"     OFF)
++
++option(USE_HYPRE           "Use the hypre library"                    ON)
++option(USE_SYSTEM_HYPRE    "Use the hypre library from the system"    OFF)
++
++option(USE_SUNDIALS        "Use the sundials library"                 ON)
++option(USE_SYSTEM_SUNDIALS "Use the sundials library from the system" OFF)
++
++option(USE_OPENMP          "Use OpenMP"                               ON)
++
++# The existing FDS makefile links MKL statically, but this is optional and can
++# be changed to dynamic
++set(MKL_LINK static CACHE STRING "Linking method for MKL (static or dynamic)")
++set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
++
++add_executable(fds
++    Source/main.f90
++    Source/prec.f90
++    Source/cons.f90
 +    Source/prop.f90
-     Source/radi.f90
-     Source/rcal.f90
-     Source/read.f90
--    Source/scrc.f90
-     Source/soot.f90
-     Source/smvv.f90
-     Source/turb.f90
++    Source/devc.f90
++    Source/type.f90
++    Source/data.f90
++    Source/mesh.f90
++    Source/func.f90
++    Source/gsmv.f90
++    Source/smvv.f90
++    Source/rcal.f90
++    Source/turb.f90
++    Source/soot.f90
++    Source/pois.f90
++    Source/geom.f90
++    Source/ccib.f90
++    Source/radi.f90
++    Source/part.f90
++    Source/vege.f90
++    Source/ctrl.f90
++    Source/hvac.f90
++    Source/mass.f90
++    Source/imkl.f90
++    Source/wall.f90
++    Source/fire.f90
++    Source/velo.f90
++    Source/pres.f90
++    Source/init.f90
++    Source/dump.f90
++    Source/read.f90
++    Source/divg.f90
++)
++
++if (DUMP_JSON)
++    target_sources(fds PRIVATE Source/json.f90)
++endif()
++
++target_include_directories(fds PRIVATE .)
++
++# Get various properties about the time and git revision. These can be
++# overridden which is important for building in situations where we don't have
++# the git repo.
++if (NOT(WIN32) AND NOT(BUILD_DATE_XLF))
++    string(TIMESTAMP BUILD_DATE_XLF "%b %d\\, %Y  %H:%M:%S")
++endif()
++if (NOT(BUILD_DATE))
++    string(TIMESTAMP BUILD_DATE "%b %d, %Y  %H:%M:%S ")
++endif()
++if (NOT(GIT_DATE))
++    execute_process(COMMAND git log -1 --format=%cd          OUTPUT_VARIABLE GIT_DATE       OUTPUT_STRIP_TRAILING_WHITESPACE)
++endif()
++if (NOT(GIT_BRANCH))
++    execute_process(COMMAND git rev-parse --abbrev-ref HEAD  OUTPUT_VARIABLE GIT_BRANCH     OUTPUT_STRIP_TRAILING_WHITESPACE)
++endif()
++if (NOT(GIT_HASH))
++    execute_process(COMMAND git describe --long --abbrev=7   OUTPUT_VARIABLE GIT_HASH       OUTPUT_STRIP_TRAILING_WHITESPACE)
++endif()
++if (NOT(GIT_DIRTY))
++    execute_process(COMMAND git diff --shortstat Source/*.f90 OUTPUT_VARIABLE GIT_DIRTY)
++endif()
++if (GIT_DIRTY STREQUAL "")
++    set(GIT_STAT "")
++else()
++    set(GIT_STAT "-dirty")
++endif()
++
++target_compile_definitions(fds PRIVATE BUILDDATE_PP="${BUILD_DATE}")
++target_compile_definitions(fds PRIVATE GITHASH_PP="${GIT_HASH}${GIT_STAT}-${GIT_BRANCH}")
++target_compile_definitions(fds PRIVATE GITDATE_PP="${GIT_DATE}")
++
++# Use MPI (mandatory)
++find_package(MPI REQUIRED)
++target_link_libraries(fds PRIVATE MPI::MPI_Fortran)
++
++# FDS use lp64 (4-byte integer), MKL often defaults to ilp64 (8-byte integer)
++set(MKL_INTERFACE lp64)
++# Turn on BLACS
++set(ENABLE_BLACS ON)
++# We don't need ScaLAPACK
++set(ENABLE_SCALAPACK OFF)
++# Use MKL if found
++find_package(MKL CONFIG)
++if (MKL_FOUND)
++    message(STATUS "${MKL_IMPORTED_TARGETS}")
++    get_target_property(MKLS MKL::MKL INTERFACE_COMPILE_OPTIONS)
++    message(STATUS "MKL Compile Options: ${MKLS}")
++    get_target_property(MKLS MKL::MKL INTERFACE_INCLUDE_DIRECTORIES)
++    message(STATUS "MKL Include Directories: ${MKLS}")
++    target_compile_definitions(fds PRIVATE WITH_MKL)
++    target_link_libraries(fds PRIVATE MKL::MKL)
++endif()
++
++if (USE_OPENMP)
++    # Use OpenMP
++    find_package(OpenMP REQUIRED)
++    target_link_libraries(fds PUBLIC OpenMP::OpenMP_Fortran)
++endif()
++
++# Set compiler flags for various compilers
++if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
++    target_compile_options(fds PRIVATE -cpp -std=f2018 -frecursive -ffpe-summary=none -fall-intrinsics)
++elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" OR CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
++    target_compile_options(fds PRIVATE -fpp )
++    # When compiling with Intel on Linux, enable the IFPORT library
++    if (LINUX)
++        target_compile_definitions(fds PRIVATE USE_IFPORT)
++    endif()
++    # When compiling with Intel and not on Windows apply -no-wrap-margin.
++    if (NOT(WIN32))
++        target_compile_options(fds PRIVATE -no-wrap-margin)
++    endif()
++endif()
++
++# If we are using the old Intel Fortran compiler (ifort) suppress the warning
++# that this is an old compiler.
++if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" )
++    target_compile_options(fds PRIVATE /Qdiag-disable:10448)
++endif()
++
++if(WIN32)
++    set(BUILD_SHARED_LIBS OFF)
++endif()
++
++# Find or build hypre if the option is set to use it
++if(USE_HYPRE)
++    # Unless forced to use the system version, download and build hypre
++    if(NOT(USE_SYSTEM_HYPRE))
++        include(FetchContent)
++        # As we are not using the system hypre, we need to choose the version we
++        # want
++        set(HYPRE_GIT_VERSION "3.0.0" )
++        FetchContent_Declare(
++            HYPRE
++            GIT_REPOSITORY https://github.com/hypre-space/hypre.git
++            # Currently we need to refer directly to a commit which contains a
++            # patch to handle HYPRE_FMANGLE
++            GIT_TAG        6d01417697aa84d118eb1e1eb91315df42575be5 # v${HYPRE_GIT_VERSION}
++            SOURCE_SUBDIR  src
++            OVERRIDE_FIND_PACKAGE
++        )
++        # Set some options for building hypre
++        if (WIN32)
++            set(HYPRE_ENABLE_FMANGLE CAPS)
++        endif()
++        FetchContent_MakeAvailable(HYPRE)
++    endif()
++
++    # Use hypre if found
++    find_package(HYPRE)
++    if(HYPRE_FOUND)
++        if(NOT(HYPRE_VERSION))
++            # We aren't using the system version so we'll revert to the git
++            # version
++            set(HYPRE_VERSION "${HYPRE_GIT_VERSION}")
++        endif()
++        target_link_libraries(fds PRIVATE HYPRE)
++        target_compile_definitions(fds PRIVATE WITH_HYPRE)
++        target_compile_definitions(fds PRIVATE HYPRE_PP="${HYPRE_VERSION}")
++    endif()
++endif()
++
++# Find or build sundials if the option is set to use it
++if(USE_SUNDIALS)
++    # Unless forced to use the system version, download and build sundials
++    if(NOT(USE_SYSTEM_SUNDIALS))
++        include(FetchContent)
++        # As we are not using the system sundials, we need to choose the version
++        # we want
++        set(SUNDIALS_GIT_VERSION "7.5.0")
++        FetchContent_Declare(
++            SUNDIALS
++            GIT_REPOSITORY https://github.com/LLNL/sundials.git
++            GIT_TAG        v${SUNDIALS_GIT_VERSION}
++            OVERRIDE_FIND_PACKAGE
++        )
++        # Set some options for building sundials
++        set(ENABLE_MPI ON CACHE BOOL "" FORCE)
++        set(BUILD_FORTRAN_MODULE_INTERFACE ON CACHE BOOL "" FORCE)
++        set(EXAMPLES_ENABLE_C OFF CACHE BOOL "" FORCE)
++        set(EXAMPLES_ENABLE_CXX OFF CACHE BOOL "" FORCE)
++        set(EXAMPLES_ENABLE_F2003 OFF CACHE BOOL "" FORCE)
++        set(EXAMPLES_INSTALL OFF CACHE BOOL "" FORCE)
++        set(ENABLE_OPENMP ON CACHE BOOL "" FORCE)
++        set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
++        # if(HYPRE_FOUND)
++        #     set(ENABLE_HYPRE ON CACHE BOOL "" FORCE)
++        #     FetchContent_MakeAvailable(HYPRE SUNDIALS)
++        # else()
++            FetchContent_MakeAvailable(SUNDIALS)
++        # endif()
++    endif()
++
++    # Use sundials if found
++    find_package(SUNDIALS)
++    if(SUNDIALS_FOUND)
++        if(NOT(SUNDIALS_VERSION))
++            # We aren't using the system version so we'll revert to the git
++            # version
++            set(SUNDIALS_VERSION "${SUNDIALS_GIT_VERSION}")
++        endif()
++        target_link_libraries(fds PRIVATE SUNDIALS::fcvode_mod)
++        target_link_libraries(fds PRIVATE SUNDIALS::fnvecserial_mod)
++        target_compile_definitions(fds PRIVATE WITH_SUNDIALS)
++        target_compile_definitions(fds PRIVATE SUNDIALS_PP="${SUNDIALS_VERSION}")
++    endif()
++endif()
++
++if (DUMP_JSON)
++    target_compile_definitions(fds PRIVATE DUMP_JSON)
++    if (NOT WIN32 AND USE_SYSTEM_JSON)
++        # On non-Windows platforms use the system version of json-fortran
++        find_package(PkgConfig REQUIRED)
++        pkg_check_modules(json-fortran REQUIRED IMPORTED_TARGET json-fortran)
++        target_link_libraries(fds PRIVATE PkgConfig::json-fortran)
++        target_include_directories(fds PRIVATE /usr/lib64/gfortran/modules)
++    else()
++        include(FetchContent)
++        # There are currently issues with the version of json-fortran provided by
++        # vcpkg, therefore we fetch and build json-fortran ourselves.
++        FetchContent_Declare(
++            jsonfortran
++            GIT_REPOSITORY https://github.com/jacobwilliams/json-fortran.git
++            GIT_TAG        a012a4dc5c6f69b736157d70e45ba7820c5bd23f
++        )
++        set(ENABLE_TESTS OFF CACHE INTERNAL "Turn off json-fortran tests")
++        FetchContent_MakeAvailable(jsonfortran)
++        add_dependencies(fds jsonfortran-static)
++        target_link_libraries(fds PRIVATE jsonfortran-static)
++        # This is a workaround due to where json-fortran places its module files
++        target_include_directories(fds PRIVATE ${jsonfortran_BINARY_DIR})
++    endif()
++endif()
++
++install(TARGETS fds)
++
++include(CTest)
++enable_testing()
++add_subdirectory(Tests)
+diff --git a/Source/json.f90 b/Source/json.f90
+new file mode 100644
+index 0000000000..85664a4021
+--- /dev/null
++++ b/Source/json.f90
+@@ -0,0 +1,449 @@
++
++MODULE JSON_FORMAT
++
++USE PRECISION_PARAMETERS
++USE MESH_VARIABLES
++USE GLOBAL_CONSTANTS
++USE TRAN
++USE MESH_POINTERS
++USE OUTPUT_DATA
++USE COMP_FUNCTIONS, ONLY: CHECKREAD, SHUTDOWN, CHECK_XB, SCAN_INPUT_FILE
++USE MEMORY_FUNCTIONS, ONLY: ChkMemErr,REALLOCATE2D,REALLOCATE
++USE COMP_FUNCTIONS, ONLY: GET_INPUT_FILE
++USE MISC_FUNCTIONS, ONLY: SEARCH_CONTROLLER,WRITE_SUMMARY_INFO
++USE HVAC_ROUTINES, ONLY: READ_HVAC,PROC_HVAC
++USE COMPLEX_GEOMETRY, ONLY: READ_GEOM
++USE MPI_F08
++USE THERMO_PROPS
++
++IMPLICIT NONE (TYPE,EXTERNAL)
++PRIVATE
++
++PUBLIC PRINT_JSON
++
++CONTAINS
++
++SUBROUTINE PRINT_JSON(JSON_OUTPUT_PATH)
++USE,INTRINSIC :: ISO_FORTRAN_ENV, ONLY: WP => REAL64
++USE :: JSON_MODULE, RK => JSON_RK
++USE DEVICE_VARIABLES, ONLY: DEVICE_TYPE,DEVICE,N_DEVC,PROPERTY_TYPE,N_PROP,PROPERTY
++USE OUTPUT_CLOCKS
++
++CHARACTER(250), INTENT(IN)  :: JSON_OUTPUT_PATH
++INTEGER :: N, NM, NQ, N_LAYER_MATL, N_LAYER
++TYPE (MESH_TYPE), POINTER :: M=>NULL()
++TYPE (DEVICE_TYPE), POINTER :: DV=>NULL()
++TYPE (PROPERTY_TYPE), POINTER :: PY=>NULL()
++TYPE (LAGRANGIAN_PARTICLE_CLASS_TYPE), POINTER :: LPC=>NULL()
++TYPE (OBSTRUCTION_TYPE), POINTER :: OB=>NULL()
++TYPE (REACTION_TYPE),POINTER :: RN=>NULL()
++TYPE (SURFACE_TYPE),POINTER:: SF=>NULL()
++TYPE (MATERIAL_TYPE),POINTER:: MATL=>NULL()
++TYPE (VENTS_TYPE), POINTER :: VT=>NULL()
++
++
++TYPE(JSON_CORE) :: JSON
++TYPE(JSON_VALUE),POINTER :: ROOT  !< The root JSON object
++TYPE(JSON_VALUE),POINTER :: OBJ1,OBJ2,OBJ3,OBJ4,OBJ5,OBJ6   !< The objects of various depth in the tree
++
++! initialize the class
++call json%initialize()
++
++! initialize the structure:
++CALL JSON%CREATE_OBJECT(ROOT,'')
++
++CALL JSON%ADD(ROOT, 'version', '0.1.0')
++
++CALL JSON%ADD(ROOT, 'chid', TRIM(CHID))
++
++CALL JSON%ADD(ROOT, 'ec_ll', EC_LL)
++CALL JSON%ADD(ROOT, 'visibility_factor', VISIBILITY_FACTOR)
++
++CALL JSON%CREATE_OBJECT(OBJ1,'dump')
++CALL JSON%ADD(ROOT, OBJ1)
++CALL JSON%ADD(OBJ1, 'nframes', NFRAMES)
++CALL JSON%ADD(OBJ1, 'plot3d_quantity', PLOT3D_QUANTITY)
++CALL JSON%ADD(OBJ1, 'dt_bndf', DT_BNDF)
++CALL JSON%ADD(OBJ1, 'dt_cpu', DT_CPU)
++CALL JSON%ADD(OBJ1, 'dt_ctrl', DT_CTRL)
++CALL JSON%ADD(OBJ1, 'dt_devc', DT_DEVC)
++CALL JSON%ADD(OBJ1, 'dt_flush', DT_FLUSH)
++CALL JSON%ADD(OBJ1, 'dt_geom', DT_GEOM)
++CALL JSON%ADD(OBJ1, 'dt_hrr', DT_HRR)
++CALL JSON%ADD(OBJ1, 'dt_hvac', DT_HVAC)
++CALL JSON%ADD(OBJ1, 'dt_isof', DT_ISOF)
++CALL JSON%ADD(OBJ1, 'dt_mass', DT_MASS)
++CALL JSON%ADD(OBJ1, 'dt_part', DT_PART)
++CALL JSON%ADD(OBJ1, 'dt_pl3d', DT_PL3D)
++CALL JSON%ADD(OBJ1, 'dt_prof', DT_PROF)
++CALL JSON%ADD(OBJ1, 'dt_radf', DT_RADF)
++CALL JSON%ADD(OBJ1, 'dt_restart', DT_RESTART)
++CALL JSON%ADD(OBJ1, 'dt_slcf', DT_SLCF)
++CALL JSON%ADD(OBJ1, 'dt_sl3d', DT_SL3D)
++CALL JSON%ADD(OBJ1, 'dt_smoke3d', DT_SMOKE3D)
++CALL JSON%ADD(OBJ1, 'dt_uvw', DT_UVW)
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_OBJECT(OBJ1,'time')
++CALL JSON%ADD(ROOT, OBJ1)
++CALL JSON%ADD(OBJ1, 'begin', T_BEGIN)
++CALL JSON%ADD(OBJ1, 'end', T_END)
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_ARRAY(OBJ1,'reacs')
++CALL JSON%ADD(ROOT, OBJ1)
++DO N=1,N_REACTIONS
++   RN => REACTION(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'reac')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(RN%ID))
++   CALL JSON%ADD(OBJ2, 'equation', TRIM(RN%ID))
++   CALL JSON%ADD(OBJ2, 'c', RN%C)
++   CALL JSON%ADD(OBJ2, 'h', RN%H)
++   CALL JSON%ADD(OBJ2, 'n', RN%N)
++   CALL JSON%ADD(OBJ2, 'o', RN%O)
++   CALL JSON%ADD(OBJ2, 'epumo2', RN%EPUMO2)
++   CALL JSON%ADD(OBJ2, 'heat_of_combustion', RN%HEAT_OF_COMBUSTION)
++   CALL JSON%ADD(OBJ2, 'soot_yield', RN%SOOT_YIELD)
++   CALL JSON%ADD(OBJ2, 'co_yield', RN%CO_YIELD)
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++! add an "surfaces" object to the structure:
++CALL JSON%CREATE_ARRAY(OBJ1,'surfaces')
++CALL JSON%ADD(ROOT, OBJ1)
++! surfaces start from zero as the special INERT surface is 0
++DO N=0,N_SURF
++   SF => SURFACE(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'surface')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(SF%ID))
++   IF (SF%HRRPUA /= 0.0) THEN
++      CALL JSON%ADD(OBJ2, 'hrrpua', SF%HRRPUA)
++   ENDIF
++   IF (SF%VOLUME_FLOW /= 0.0) THEN
++      CALL JSON%ADD(OBJ2, 'volume_flow', SF%VOLUME_FLOW)
++   ENDIF
++   IF (SF%VEL /= 0.0) THEN
++      CALL JSON%ADD(OBJ2, 'vel', SF%VEL)
++   ENDIF
++   if (SF%TMP_FRONT /= -1._EB) THEN
++      CALL JSON%ADD(OBJ2, 'tmp_front', SF%TMP_FRONT)
++   ENDIF
++   IF ( SF%RAMP(TIME_HEAT)%TAU /= TAU_DEFAULT) THEN
++      CALL JSON%ADD(OBJ2, 'tau_q', SF%RAMP(TIME_HEAT)%TAU)
++   ENDIF
++   IF (LEN_TRIM(SF%FYI) /= 0 .AND. TRIM(SF%FYI) /= 'null') THEN
++      CALL JSON%ADD(OBJ2, 'fyi', TRIM(SF%FYI))
++   ENDIF
++   CALL JSON%ADD(OBJ2, 'n_layers', SF%N_LAYERS)
++   CALL JSON%CREATE_ARRAY(OBJ3,'layers')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   DO N_LAYER=1,SF%N_LAYERS
++      CALL JSON%CREATE_OBJECT(OBJ4,'layer')
++      CALL JSON%ADD(OBJ3, OBJ4)
++      CALL JSON%ADD(OBJ4, 'index', N_LAYER)
++      CALL JSON%ADD(OBJ4, 'density', SF%LAYER_DENSITY(N_LAYER))
++      CALL JSON%ADD(OBJ4, 'n_matls', SF%N_LAYER_MATL(N_LAYER))
++      CALL JSON%ADD(OBJ4, 'thickness', SF%LAYER_THICKNESS(N_LAYER))
++      CALL JSON%CREATE_ARRAY(OBJ5,'materials')
++      CALL JSON%ADD(OBJ4, OBJ5)
++      DO N_LAYER_MATL=1,SF%N_LAYER_MATL(N_LAYER)
++         CALL JSON%CREATE_OBJECT(OBJ6,'layer_material')
++         CALL JSON%ADD(OBJ5, OBJ6)
++         CALL JSON%ADD(OBJ6, 'index', N_LAYER_MATL)
++         ! CALL JSON%ADD(OBJ6, 'id', TRIM(SF%MATL_ID(N_LAYER,N_LAYER_MATL)))
++         ! CALL JSON%ADD(OBJ6, 'mass_fraction', SF%MATL_MASS_FRACTION(N_LAYER,N_LAYER_MATL))
++         ! CALL JSON%ADD(OBJ6, 'material_index', SF%LAYER_MATL_INDEX(N_LAYER,N_LAYER_MATL))
++         NULLIFY(OBJ6)
++      ENDDO
++      NULLIFY(OBJ5)
++      NULLIFY(OBJ4)
++   ENDDO
++   NULLIFY(OBJ3)
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_ARRAY(OBJ1,'materials')
++CALL JSON%ADD(ROOT, OBJ1)
++DO N=1,N_MATL
++   MATL => MATERIAL(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'material')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(MATL%ID))
++   CALL JSON%ADD(OBJ2, 'rho_s', MATL%RHO_S)
++   CALL JSON%ADD(OBJ2, 'emissivity', MATL%EMISSIVITY)
++   CALL JSON%ADD(OBJ2, 'thermal_diffusivity', MATL%THERMAL_DIFFUSIVITY)
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++
++CALL JSON%CREATE_ARRAY(OBJ1,'props')
++CALL JSON%ADD(ROOT, OBJ1)
++DO N=1,N_PROP
++   PY => PROPERTY(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'prop')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(PY%ID))
++   if (TRIM(PY%SPEC_ID) /= 'null') then
++      CALL JSON%ADD(OBJ2, 'part_id', TRIM(PY%PART_ID))
++   endif
++   if (TRIM(PY%SPEC_ID) /= 'null') then
++      CALL JSON%ADD(OBJ2, 'spec_id', TRIM(PY%SPEC_ID))
++   endif
++   CALL JSON%ADD(OBJ2, 'quantity', TRIM(PY%QUANTITY))
++   CALL JSON%ADD(OBJ2, 'activation_temperature', PY%ACTIVATION_TEMPERATURE)
++   CALL JSON%ADD(OBJ2, 'activation_obscuration', PY%ACTIVATION_OBSCURATION)
++   CALL JSON%ADD(OBJ2, 'flow_rate', PY%FLOW_RATE)
++   CALL JSON%ADD(OBJ2, 'particle_velocity', PY%PARTICLE_VELOCITY)
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_ARRAY(OBJ1,'parts')
++CALL JSON%ADD(ROOT, OBJ1)
++DO N=1,N_LAGRANGIAN_CLASSES
++   LPC => LAGRANGIAN_PARTICLE_CLASS(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'part')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(LPC%ID))
++   CALL JSON%ADD(OBJ2, 'spec_id', TRIM(LPC%SPEC_ID))
++   CALL JSON%ADD(OBJ2, 'devc_id', TRIM(LPC%DEVC_ID))
++   CALL JSON%ADD(OBJ2, 'ctrl_id', TRIM(LPC%CTRL_ID))
++   CALL JSON%ADD(OBJ2, 'surf_id', TRIM(LPC%SURF_ID))
++   CALL JSON%ADD(OBJ2, 'prop_id', TRIM(LPC%PROP_ID))
++   CALL JSON%ADD(OBJ2, 'diameter',  LPC%DIAMETER)
++   CALL JSON%ADD(OBJ2, 'monodisperse',  LPC%MONODISPERSE)
++   CALL JSON%ADD(OBJ2, 'age',  LPC%LIFETIME)
++   CALL JSON%ADD(OBJ2, 'sampling_factor',  LPC%SAMPLING_FACTOR)
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_ARRAY(OBJ1,'meshes')
++CALL JSON%ADD(ROOT, OBJ1)
++
++DO NM=1,NMESHES
++   M => MESHES(NM)
++   CALL JSON%CREATE_OBJECT(OBJ2,'mesh')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', NM)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(MESH_NAME(NM)))
++
++   CALL JSON%CREATE_OBJECT(OBJ3,'ijk')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   CALL JSON%ADD(OBJ3, 'i', M%IBAR)
++   CALL JSON%ADD(OBJ3, 'j', M%JBAR)
++   CALL JSON%ADD(OBJ3, 'k', M%KBAR)
++   NULLIFY(OBJ3)
++
++   CALL JSON%CREATE_OBJECT(OBJ3,'dimensions')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   CALL JSON%ADD(OBJ3, 'x1', M%XS)
++   CALL JSON%ADD(OBJ3, 'x2', M%XF)
++   CALL JSON%ADD(OBJ3, 'y1', M%YS)
++   CALL JSON%ADD(OBJ3, 'y2', M%YF)
++   CALL JSON%ADD(OBJ3, 'z1', M%ZS)
++   CALL JSON%ADD(OBJ3, 'z2', M%ZF)
++   NULLIFY(OBJ3)
++
++   CALL JSON%CREATE_OBJECT(OBJ3,'cell_sizes')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   CALL JSON%ADD(OBJ3, 'dx', M%DXMIN)
++   CALL JSON%ADD(OBJ3, 'dy', M%DYMIN)
++   CALL JSON%ADD(OBJ3, 'dz', M%DZMIN)
++   NULLIFY(OBJ3)
++
++   if (M%N_VENT > 0) THEN
++      CALL JSON%CREATE_ARRAY(OBJ3,'vents')
++      CALL JSON%ADD(OBJ2, OBJ3)
++      PRINT_VENT_LOOP: DO N=1,M%N_VENT
++         VT => MESHES(NM)%VENTS(N)
++         CALL JSON%CREATE_OBJECT(OBJ4,'vent')
++         CALL JSON%ADD(OBJ3, OBJ4)
++         CALL JSON%ADD(OBJ4, 'index', N)
++         CALL JSON%ADD(OBJ4, 'id', TRIM(VT%ID))
++         CALL JSON%ADD(OBJ4, 'surface', TRIM(SURFACE(VT%SURF_INDEX)%ID))
++         CALL JSON%ADD(OBJ4, 'devc_id', TRIM(VT%DEVC_ID))
++         CALL JSON%ADD(OBJ4, 'ctrl_id', TRIM(VT%CTRL_ID))
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'dimensions')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'x1', VT%X1)
++         CALL JSON%ADD(OBJ5, 'x2', VT%X2)
++         CALL JSON%ADD(OBJ5, 'y1', VT%Y1)
++         CALL JSON%ADD(OBJ5, 'y2', VT%Y2)
++         CALL JSON%ADD(OBJ5, 'z1', VT%Z1)
++         CALL JSON%ADD(OBJ5, 'z2', VT%Z2)
++         NULLIFY(OBJ5)
++
++         CALL JSON%ADD(OBJ4, 'fds_area', VT%FDS_AREA)
++
++         NULLIFY(OBJ4)
++      ENDDO  PRINT_VENT_LOOP
++      NULLIFY(OBJ3)
++   ENDIF
++
++   if (M%N_OBST > 0) THEN
++      CALL JSON%CREATE_ARRAY(OBJ3,'obsts')
++      CALL JSON%ADD(OBJ2, OBJ3)
++      DO N=1,M%N_OBST
++         OB => MESHES(NM)%OBSTRUCTION(N)
++         CALL JSON%CREATE_OBJECT(OBJ4,'obst')
++         CALL JSON%ADD(OBJ3, OBJ4)
++         CALL JSON%ADD(OBJ4, 'index', N)
++         CALL JSON%ADD(OBJ4, 'id', TRIM(OB%ID))
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'surfaces')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'x_min', TRIM(SURFACE(OB%SURF_INDEX(-3))%ID))
++         CALL JSON%ADD(OBJ5, 'x_max', TRIM(SURFACE(OB%SURF_INDEX(-2))%ID))
++         CALL JSON%ADD(OBJ5, 'y_min', TRIM(SURFACE(OB%SURF_INDEX(-1))%ID))
++         CALL JSON%ADD(OBJ5, 'y_max', TRIM(SURFACE(OB%SURF_INDEX(1))%ID))
++         CALL JSON%ADD(OBJ5, 'z_min', TRIM(SURFACE(OB%SURF_INDEX(2))%ID))
++         CALL JSON%ADD(OBJ5, 'z_max', TRIM(SURFACE(OB%SURF_INDEX(3))%ID))
++         NULLIFY(OBJ5)
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'input_area')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'x', OB%INPUT_AREA(1))
++         CALL JSON%ADD(OBJ5, 'y', OB%INPUT_AREA(2))
++         CALL JSON%ADD(OBJ5, 'z', OB%INPUT_AREA(3))
++         NULLIFY(OBJ5)
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'fds_area')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'x', OB%FDS_AREA(1))
++         CALL JSON%ADD(OBJ5, 'y', OB%FDS_AREA(2))
++         CALL JSON%ADD(OBJ5, 'z', OB%FDS_AREA(3))
++         NULLIFY(OBJ5)
++
++
++         if (TRIM(OB%DEVC_ID) /= 'null') then
++            CALL JSON%ADD(OBJ4, 'devc_id', TRIM(OB%DEVC_ID))
++         endif
++         if (TRIM(OB%CTRL_ID) /= 'null') then
++            CALL JSON%ADD(OBJ4, 'ctrl_id', TRIM(OB%CTRL_ID))
++         endif
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'dimensions')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'x1', OB%X1)
++         CALL JSON%ADD(OBJ5, 'x2', OB%X2)
++         CALL JSON%ADD(OBJ5, 'y1', OB%Y1)
++         CALL JSON%ADD(OBJ5, 'y2', OB%Y2)
++         CALL JSON%ADD(OBJ5, 'z1', OB%Z1)
++         CALL JSON%ADD(OBJ5, 'z2', OB%Z2)
++         NULLIFY(OBJ5)
++
++         CALL JSON%CREATE_OBJECT(OBJ5,'bounds')
++         CALL JSON%ADD(OBJ4, OBJ5)
++         CALL JSON%ADD(OBJ5, 'i_min', OB%I1)
++         CALL JSON%ADD(OBJ5, 'i_max', OB%I2)
++         CALL JSON%ADD(OBJ5, 'j_min', OB%J1)
++         CALL JSON%ADD(OBJ5, 'j_max', OB%J2)
++         CALL JSON%ADD(OBJ5, 'k_min', OB%K1)
++         CALL JSON%ADD(OBJ5, 'k_max', OB%K2)
++         NULLIFY(OBJ5)
++         NULLIFY(OBJ4)
++      ENDDO
++      NULLIFY(OBJ3)
++   ENDIF
++
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++CALL JSON%CREATE_ARRAY(OBJ1,'devices')
++CALL JSON%ADD(ROOT, OBJ1)
++
++DO N=1,N_DEVC
++   DV => DEVICE(N)
++   CALL JSON%CREATE_OBJECT(OBJ2,'device')
++   CALL JSON%ADD(OBJ1, OBJ2)
++   CALL JSON%ADD(OBJ2, 'index', N)
++   CALL JSON%ADD(OBJ2, 'id', TRIM(DV%ID))
++   CALL JSON%ADD(OBJ2, 'label', TRIM(DV%SMOKEVIEW_LABEL))
++   if (TRIM(DV%SPATIAL_STATISTIC) /= 'null') then
++      CALL JSON%ADD(OBJ2, 'spatial_statistic', TRIM(DV%SPATIAL_STATISTIC))
++   endif
++   if (TRIM(DV%SPEC_ID) /= 'null') then
++      CALL JSON%ADD(OBJ2, 'spec_id', TRIM(DV%SPEC_ID))
++   endif
++   if (TRIM(DV%PROP_ID) /= 'null') then
++      CALL JSON%ADD(OBJ2, 'prop_id', TRIM(DV%PROP_ID))
++   endif
++   CALL JSON%ADD(OBJ2, 'mesh',  DV%MESH)
++   CALL JSON%ADD(OBJ2, 'setpoint',  DV%SETPOINT)
++
++   CALL JSON%CREATE_OBJECT(OBJ3,'dimensions')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   CALL JSON%ADD(OBJ3, 'x1', DV%X1)
++   CALL JSON%ADD(OBJ3, 'x2', DV%X2)
++   CALL JSON%ADD(OBJ3, 'y1', DV%Y1)
++   CALL JSON%ADD(OBJ3, 'y2', DV%Y2)
++   CALL JSON%ADD(OBJ3, 'z1', DV%Z1)
++   CALL JSON%ADD(OBJ3, 'z2', DV%Z2)
++   NULLIFY(OBJ3)
++
++   CALL JSON%CREATE_OBJECT(OBJ3,'location')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   CALL JSON%ADD(OBJ3, 'x', DV%X)
++   CALL JSON%ADD(OBJ3, 'y', DV%Y)
++   CALL JSON%ADD(OBJ3, 'z', DV%Z)
++   NULLIFY(OBJ3)
++
++   CALL JSON%CREATE_ARRAY(OBJ3,'quantities')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   DO NQ=1,DV%N_QUANTITY
++      call json%create_string(OBJ4,TRIM(DV%QUANTITY(NQ)),'quantity')
++      CALL JSON%ADD(OBJ3, OBJ4)
++      NULLIFY(OBJ4)
++   ENDDO
++   NULLIFY(OBJ3)
++
++   CALL JSON%CREATE_ARRAY(OBJ3,'points')
++   CALL JSON%ADD(OBJ2, OBJ3)
++   M => MESHES(DV%MESH)
++   DO NQ=1,DV%N_POINTS
++      CALL JSON%CREATE_OBJECT(OBJ4,'point')
++      CALL JSON%ADD(OBJ3, OBJ4)
++      CALL JSON%ADD(OBJ4, 'i', DV%I(NQ))
++      CALL JSON%ADD(OBJ4, 'j', DV%J(NQ))
++      CALL JSON%ADD(OBJ4, 'k', DV%K(NQ))
++      ! Is the cell this point is in solid at the start of the simulation?
++      CALL JSON%ADD(OBJ4, 'init_solid', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)))%SOLID)
++      ! Is the cell above this point solid at the start of the simulation?
++      if (DV%K(NQ) < M%KBAR) THEN
++         CALL JSON%ADD(OBJ4, 'init_solid_zplus', M%CELL(M%CELL_INDEX(DV%I(NQ),DV%J(NQ),DV%K(NQ)+1))%SOLID)
++      ENDIF
++      NULLIFY(OBJ4)
++   ENDDO
++   NULLIFY(OBJ3)
++
++   NULLIFY(OBJ2)
++ENDDO
++NULLIFY(OBJ1)
++
++! write the file:
++IF (JSON_OUTPUT_PATH == '-') THEN
++   IF (MY_RANK==0) WRITE(LU_ERR,'(A)') ' Outputting JSON info to stdout'
++   CALL JSON%PRINT(ROOT)
++ELSE
++   IF (MY_RANK==0) WRITE(LU_ERR,'(A,A)') ' Outputting JSON info to ', JSON_OUTPUT_PATH
++   CALL JSON%PRINT(ROOT,JSON_OUTPUT_PATH)
++ENDIF
++
++!cleanup:
++CALL JSON%DESTROY(ROOT)
++END SUBROUTINE PRINT_JSON
++
++END MODULE JSON_FORMAT
+diff --git a/Source/main.f90 b/Source/main.f90
+index 986e410227..ab8f7585a2 100644
+--- a/Source/main.f90
++++ b/Source/main.f90
+@@ -44,6 +44,10 @@ USE GLOBMAT_SOLVER, ONLY : GLMAT_SOLVER_SETUP, GLMAT_SOLVER, COPY_H_OMESH_TO_MES
+                            FINISH_GLMAT_SOLVER,PRESSURE_SOLVER_CHECK_RESIDUALS_U
+ USE LOCMAT_SOLVER, ONLY : ULMAT_SOLVER,ULMAT_SOLVER_SETUP,FINISH_ULMAT_SOLVER
+ 
++#ifdef DUMP_JSON
++USE JSON_FORMAT, ONLY: PRINT_JSON
++#endif
++
+ IMPLICIT NONE (TYPE,EXTERNAL)
+ 
+ ! Miscellaneous declarations
+@@ -74,6 +78,26 @@ CHARACTER(MPI_MAX_PROCESSOR_NAME) :: PNAME
+ REAL(EB), ALLOCATABLE, DIMENSION(:)       :: REAL_BUFFER_DUCT
+ REAL(EB), ALLOCATABLE, DIMENSION(:,:)     :: REAL_BUFFER_10,REAL_BUFFER_MASS,REAL_BUFFER_HVAC,REAL_BUFFER_QM,REAL_BUFFER_20
+ 
++#ifdef DUMP_JSON
++INTEGER :: NUM_ARGS, IX, JSON_OUT_I
++CHARACTER(LEN=12), DIMENSION(:), ALLOCATABLE :: ARGS
++CHARACTER(250) :: JSON_OUTPUT_PATH=''
++LOGICAL :: OUTPUT_JSON=.FALSE.
++
++NUM_ARGS = COMMAND_ARGUMENT_COUNT()
++ALLOCATE(ARGS(NUM_ARGS))
++
++JSON_OUT_I = -1
++DO IX = 1, NUM_ARGS
++   CALL GET_COMMAND_ARGUMENT(IX,ARGS(IX))
++   IF (ARGS(IX) == "--json") THEN
++      JSON_OUT_I = IX+1
++      OUTPUT_JSON = .TRUE.
++   ENDIF
++END DO
++JSON_OUTPUT_PATH = args(json_out_i)
++#endif
++
+ ! Initialize OpenMP
+ 
+ CALL OPENMP_INIT
+@@ -116,6 +140,17 @@ CALL GET_INFO (REVISION,REVISION_DATE,COMPILE_DATE)
+ CALL READ_DATA(DT)
+ CALL STOP_CHECK(1)
+ 
++#ifdef DUMP_JSON
++! If requested, output input information to JSON, either to a file or stdout
++IF (OUTPUT_JSON) THEN
++   IF (MY_RANK==0) WRITE(LU_ERR,'(A)') ' Outputting JSON info...'
++   IF (MY_RANK==0) CALL PRINT_JSON(JSON_OUTPUT_PATH)
++   STOP_STATUS = SETUP_ONLY_STOP
++   CALL EXIT(0)
++   CALL STOP_CHECK(1)
++ENDIF
++#endif
++
+ IF (MY_RANK==0) THEN
+    CALL WRITE_SUMMARY_INFO(LU_ERR)
+    WRITE(LU_ERR,'(/A,A)')     ' Job TITLE        : ',TRIM(TITLE)
+diff --git a/Tests/.gitignore b/Tests/.gitignore
+new file mode 100644
+index 0000000000..3a1b5507cf
+--- /dev/null
++++ b/Tests/.gitignore
+@@ -0,0 +1 @@
++fig/
+diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
+new file mode 100644
+index 0000000000..d00a147e79
+--- /dev/null
++++ b/Tests/CMakeLists.txt
+@@ -0,0 +1,15 @@
++
++include(CTest)
++include(FetchContent)
++set(FIG_COMMIT "513dc046131f5dfdda47ff485efc2db7243f06b1")
++
++FetchContent_Declare(
++    test_data
++    GIT_REPOSITORY https://github.com/firemodels/fig.git
++    GIT_TAG        ${FIG_COMMIT}
++)
++FetchContent_MakeAvailable(test_data)
++set(FIG_DIR ${test_data_SOURCE_DIR})
++
++add_test(NAME "Execute fds" COMMAND fds )
++add_test(NAME "Execute fds JSON" COMMAND fds --json - ${FIG_DIR}/smv/Tests/test_model_small )
+diff --git a/env.ps1 b/env.ps1
+new file mode 100644
+index 0000000000..c87044c52f
+--- /dev/null
++++ b/env.ps1
+@@ -0,0 +1 @@
++cmd.exe "/K" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && powershell'
+diff --git a/justfile b/justfile
+new file mode 100644
+index 0000000000..b656aae272
+--- /dev/null
++++ b/justfile
+@@ -0,0 +1,45 @@
++# set windows-powershell := true
++set shell := ["cmd.exe", "/c"]
++alias b := build
++alias br := build-release
++
++_default:
++    @just --list
++
++# Run the tests
++test:
++    ctest --test-dir cbuild
++
++# Build the debug binaries
++build:
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug
++    cmake --build cbuild -j6 --verbose --config Debug
++    cmake --install cbuild --prefix dist-debug --config Debug
++
++build-intel:
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON
++    cmake --build cbuild -j6 --verbose --config Debug
++    cmake --install cbuild --prefix dist-debug --config Debug
++
++build-release-intel:
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icx -GNinja -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON
++    cmake --build cbuild -v -j6 --config Release
++    cmake --install cbuild --prefix dist --config Release
++
++# Build the release binaries
++build-release:
++    cmake -B cbuild -DCMAKE_BUILD_TYPE=Release
++    cmake --build cbuild -v -j6 --config Release
++    cmake --install cbuild --prefix dist --config Release
++
++# Build release and create MSI package
++package-windows: build-release-intel
++    wix build .\FdsVerifyInstaller.wxs  -out FdsVerifyInstaller_unsigned.msi
++
++# Build release and create RPM package
++package-rpm:
++    ./buildrpm.sh
++
++# Clean everything
++clean:
++    cmake -E rm -rf cbuild
