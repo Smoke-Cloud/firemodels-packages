@@ -1,4 +1,26 @@
 
+%global version_dir %{this_version}
+%global script_suffix %{version_suffix}
+%undefine arch_suffix
+%{!?build_openmpi:%global build_openmpi 0}
+%{!?build_mpich:%global build_mpich 0}
+%{!?build_intelmpi:%global build_intelmpi 1}
+%{!?build_docs:%global build_docs 0}
+%global gnu_string ompi_gnu_linux
+%global mpich_string mpich_gnu_linux
+%global intel_string impi_intel_linux_openmp
+%global build_dir Build
+%global openmpi_build_command ./make_fds.sh
+%global intelmpi_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make INTEL_IFORT=ifx FCOMPL=mpiifx VPATH="../../Source" -f ../makefile "$target"
+%global mpich_build_command \
+ dir=$(pwd) \
+ target=${dir##*/} \
+ make VPATH="../../Source" -f ../makefile %{gnu_string}
+
+
 %global this_release 7
 
 %undefine _hardened_linker_errors
@@ -26,10 +48,7 @@ Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
-Source1:        fds.sh.zip
-Patch0:         %{version_patch}
-Patch1:         %{backports_patch}
-Patch2:         fds-%{this_version}.patch
+Patch0:         fds-%{this_version}.patch
 Url:            https://pages.nist.gov/fds-smv
 
 Requires: %{name}-common = %{version}-%{release}
@@ -81,7 +100,7 @@ BuildRequires:  intel-oneapi-mpi-devel
 BuildRequires:  intel-oneapi-mkl-devel
 BuildRequires:  intel-oneapi-compiler-fortran
 %{?old_compilers:%old_compilers}
-BuildRequires:  make
+BuildRequires:  cmake
 Requires:       intel-oneapi-runtime-libs
 Requires:       intel-oneapi-mpi
 Requires:       %{name}-common = %{version}-%{release}
@@ -102,23 +121,11 @@ Docs for FDS
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit} -a 1
+%setup -q -n %{repo}-%{commit}
 %patch 0 -p1
-%patch 1 -p1
-%patch 2 -p1
 
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
-
-%build
-
-# Build common files
-{
-    echo "#!/bin/sh"
-    echo "FDS_VERSION=%{version}"
-    echo "VERSION_SUFFIX=%{version_suffix}"
-    cat fds.sh
-} > ./fds-script
 
 # Build OpenMPI version
 %if %{build_openmpi}
@@ -129,7 +136,9 @@ export compiler=.gnu
 export commit=${full_commit:0:9}
 export build_version=%{this_version}
 
+mpifort --version
 %cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HYPRE=OFF -DUSE_SUNDIALS=OFF -DDUMP_JSON=ON -DUSE_SYSTEM_JSON=OFF
+%build
 %cmake_build
 %{_openmpi_unload}
 %endif
@@ -176,9 +185,6 @@ popd
 rm -rf %{buildroot}
 echo %{buildroot}/%{_bindir}
 
-# Install common
-install -D fds-script %{buildroot}/%{_bindir}/fds-verify%{?script_suffix}
-
 # Install OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
@@ -189,9 +195,6 @@ install -D redhat-linux-build/fds %{buildroot}%{_libdir}/openmpi/bin/fds-verify%
 %check
 %ctest
 #ctest -V %{?_smp_mflags}
-
-%files common
-%{_bindir}/fds-verify%{?script_suffix}
 
 %if %{build_openmpi}
 %files openmpi

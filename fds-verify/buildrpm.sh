@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 export QA_RPATHS=7
-latest="6.11.0"
+latest="latest"
 mkdir -p build/"$1"
 zip build/fds.sh.zip fds.sh
 cd build/"$1"
@@ -16,34 +16,24 @@ fi
 export repo="$2"
 export commit="$3"
 export revision_date="$4"
-export version_patch="$5"
-export backports_patch="$6"
-shift 6
+shift 3
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-rm rpmbuild/SOURCES/fds.sh.zip || true
-cp ../fds.sh.zip rpmbuild/SOURCES/fds.sh.zip
-cp ../../"$backports_patch" rpmbuild/SOURCES || true
-cp ../../"$version_patch"  rpmbuild/SOURCES || true
 cp ../../"fds-$version.patch"  rpmbuild/SOURCES
-cat ../../"$specname".spec ../../template.spec > fds.spec
+cat  ../../template.spec > fds.spec
 spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "_topdir $(pwd)/rpmbuild" \
     --define "this_version ${version}" \
     --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
-    --define "version_patch ${version_patch}" \
-    --define "version_suffix ${version_suffix}" \
-    --define "backports_patch ${backports_patch}"
+    --define "version_suffix ${version_suffix}"
 rpmbuild -ba fds.spec \
     --define "_topdir $(pwd)/rpmbuild" \
     --define "this_version ${version}" \
     --define "repo ${repo}" \
     --define "commit ${commit}" \
     --define "revision_date ${revision_date}" \
-    --define "version_patch ${version_patch}" \
     --define "version_suffix ${version_suffix}" \
-    --define "backports_patch ${backports_patch}" \
      "$@"  --noclean
 mkdir -p ../../../dist
 cp rpmbuild/RPMS/"$(rpmbuild --eval '%{_arch}')"/*.rpm ../../../dist/
