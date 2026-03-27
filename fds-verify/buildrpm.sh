@@ -16,7 +16,7 @@ fi
 export repo="$2"
 export commit="$3"
 export revision_date="$4"
-shift 3
+shift 4
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 cp ../../"fds-$version.patch"  rpmbuild/SOURCES
 cat  ../../template.spec > fds.spec
