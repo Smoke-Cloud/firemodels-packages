@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 06173b9274..9b4d5ea35e 100644
+index 06173b9274..d7cc417abc 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
@@ -7,7 +7,7 @@ index 06173b9274..9b4d5ea35e 100644
  project(
      fds
 -    VERSION 6.9.1
-+    VERSION 6.10.0
++    VERSION 6.10.1
      LANGUAGES Fortran
  )
  enable_language(Fortran)
@@ -16,7 +16,40 @@ index 06173b9274..9b4d5ea35e 100644
      # When compiling with Intel and not on Windows apply -no-wrap-margin.
      if (NOT(WIN32))
 -        target_compile_definitions(fds PRIVATE -no-wrap-margin)
-+        target_compile_options(fds PRIVATE -no-wrap-margin)
++        # target_compile_definitions(fds PRIVATE -no-wrap-margin)
      endif()
  endif()
  
+@@ -166,7 +166,8 @@ if(USE_HYPRE)
+     endif()
+ 
+     # Use hypre if found
+-    find_package(HYPRE)
++    # find_package(HYPRE REQUIRED)
++    # message(FATAL_ERROR "${HYPRE_FOUND} ${HYPRE_INCLUDE}")
+     if(HYPRE_FOUND)
+         if(NOT(HYPRE_VERSION))
+             # We aren't using the system version so we'll revert to the git
+@@ -176,6 +177,13 @@ if(USE_HYPRE)
+         target_link_libraries(fds PRIVATE HYPRE)
+         target_compile_definitions(fds PRIVATE WITH_HYPRE)
+         target_compile_definitions(fds PRIVATE HYPRE_PP="${HYPRE_VERSION}")
++    else()
++        # target_link_libraries(fds PRIVATE HYPRE)
++        target_include_directories(fds PRIVATE ${HYPRE_INCLUDE_DIR})
++        target_link_directories(fds PRIVATE ${HYPRE_LIBRARY_DIR})
++        target_link_libraries(fds PRIVATE ${HYPRE_LIBRARY_DIR}/libHYPRE.a)
++        target_compile_definitions(fds PRIVATE WITH_HYPRE)
++        target_compile_definitions(fds PRIVATE HYPRE_PP="${HYPRE_VERSION}")
+     endif()
+ endif()
+ 
+@@ -211,7 +219,7 @@ if(USE_SUNDIALS)
+     endif()
+ 
+     # Use sundials if found
+-    find_package(SUNDIALS)
++    find_package(SUNDIALS REQUIRED)
+     if(SUNDIALS_FOUND)
+         if(NOT(SUNDIALS_VERSION))
+             # We aren't using the system version so we'll revert to the git
