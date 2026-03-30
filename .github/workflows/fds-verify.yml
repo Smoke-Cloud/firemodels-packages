@@ -59,7 +59,7 @@ jobs:
           echo "containerSafe=$test_version" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@v4
         with:
-          name: SMV-RPMs-${{ steps.setContainerSafeName.outputs.containerSafe }}
+          name: FDS-Verify-RPMs-${{ steps.setContainerSafeName.outputs.containerSafe }}-${{ matrix.fds-version }}
           path: |
             dist/*.rpm
   # build_windows_msvc:
@@ -128,5 +128,5 @@ jobs:
       - name: Merge Artifacts
         uses: actions/upload-artifact/merge@v4
         with:
-          name: SMV-RPMs
-          pattern: SMV-RPMs-*
+          name: FDS-Verify-RPMs
+          pattern: FDS-Verify-RPMs-*
