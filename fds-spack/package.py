@@ -181,21 +181,21 @@ class Fdsc(CMakePackage):
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
         # if self.spec.satsifies("@6.10.0:"):
-        args.append("-DUSE_SYSTEM_SUNDIALS=ON")
-        args.append("-DUSE_SYSTEM_HYPRE=ON")
+        # args.append("-DUSE_SYSTEM_SUNDIALS=ON")
+        # args.append("-DUSE_SYSTEM_HYPRE=ON")
         # if self.spec.satsifies("@5.5.3"):
         # args.append("-DCMAKE_BUILD_PARALLEL_LEVEL=1")
         # args.append("-DHYPRE_VERSION=2.32.0")
-        if "+hypre" in self.spec:
-            args.extend(
-                [
-                    self.define("HYPRE_INCLUDE_DIR", self.spec["hypre"].prefix.include),
-                    self.define("HYPRE_LIBRARY_DIR", self.spec["hypre"].prefix.lib),
-                    self.define("HYPRE_VERSION", self.spec["hypre"].version),
-                ]
-            )
-            if not self.spec["hypre"].variants["shared"].value:
-                hypre_libs = self.spec["blas"].libs + self.spec["lapack"].libs
-                args.extend([self.define("HYPRE_LIBRARIES", hypre_libs.joined(";"))])
-                #raise Exception(hypre_libs.joined(";"))
+        # if "+hypre" in self.spec:
+        #     args.extend(
+        #         [
+        #             self.define("HYPRE_INCLUDE_DIR", self.spec["hypre"].prefix.include),
+        #             self.define("HYPRE_LIBRARY_DIR", self.spec["hypre"].prefix.lib),
+        #             self.define("HYPRE_VERSION", self.spec["hypre"].version),
+        #         ]
+        #     )
+        #     if not self.spec["hypre"].variants["shared"].value:
+        #         hypre_libs = self.spec["blas"].libs + self.spec["lapack"].libs
+        #         args.extend([self.define("HYPRE_LIBRARIES", hypre_libs.joined(";"))])
+        #         #raise Exception(hypre_libs.joined(";"))
         return args
