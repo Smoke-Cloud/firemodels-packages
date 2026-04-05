@@ -181,8 +181,8 @@ class Fdsc(CMakePackage):
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
         # if self.spec.satsifies("@6.10.0:"):
-        # args.append("-DUSE_SYSTEM_SUNDIALS=ON")
-        # args.append("-DUSE_SYSTEM_HYPRE=ON")
+        args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
+        args.append("-DUSE_SYSTEM_HYPRE=OFF")
         # if self.spec.satsifies("@5.5.3"):
         # args.append("-DCMAKE_BUILD_PARALLEL_LEVEL=1")
         # args.append("-DHYPRE_VERSION=2.32.0")

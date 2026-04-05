@@ -25,7 +25,7 @@ index 06173b9274..d7cc417abc 100644
  
      # Use hypre if found
 -    find_package(HYPRE)
-+    # find_package(HYPRE REQUIRED)
++    find_package(HYPRE REQUIRED)
 +    # message(FATAL_ERROR "${HYPRE_FOUND} ${HYPRE_INCLUDE}")
      if(HYPRE_FOUND)
          if(NOT(HYPRE_VERSION))
