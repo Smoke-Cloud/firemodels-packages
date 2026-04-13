@@ -55,7 +55,6 @@ A post-processor for FDS (Fire Dynamics Simulator).
 %{_bindir}/wind2fds
 %{_bindir}/flush
 
-%{_libdir}/libglut32.so
 %{_libdir}/libjsonrpc.so
 
 %config(noreplace) /usr/etc/smokeview/smokeview.ini
