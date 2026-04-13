@@ -54,6 +54,7 @@ A post-processor for FDS (Fire Dynamics Simulator).
 %{_bindir}/timep
 %{_bindir}/wind2fds
 %{_bindir}/flush
+%{_bindir}/pnginfo
 
 %{_libdir}/libjsonrpc.so
 
