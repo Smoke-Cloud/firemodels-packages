@@ -52,6 +52,7 @@ jobs:
   build_windows_msvc:
     name: build windows-2022 msvc
     runs-on: windows-2022
+    build: false
     defaults:
       run:
         shell: bash
