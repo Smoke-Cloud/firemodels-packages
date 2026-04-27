@@ -66,7 +66,7 @@ class Fdsc(CMakePackage):
     depends_on("c", type="build", when="+sundials")
     depends_on("c", type="build", when="+hypre")
 
-    depends_on("mpi")
+    depends_on("mpi", type=("build", "link", "run"))
     depends_on("mkl")
 
     # TODO: handle some version conflicts, also when using hypre 2.32.0, it doesn't
@@ -106,6 +106,12 @@ class Fdsc(CMakePackage):
     # )
 
     conflicts(
+        "+openmp",
+        when="@5.5.3",
+        msg="versions 5.5.3 cannot be built correctly with OpenMP enabled",
+    )
+
+    conflicts(
         "~openmp",
         when="@6.7.6:6.7.7",
         msg="versions 6.7.6 and 6.7.7 only builds correctly with OpenMP enabled",
@@ -123,7 +129,7 @@ class Fdsc(CMakePackage):
         msg="OpenMPI can only be used with Intel Fortran on macOS",
     )
 
-    patch("backports3.patch", when="@5.5.3:6.5.2")
+    patch("backports3.patch", when="@5.1.2:6.5.2")
     patch("backports4.patch", when="@6.5.3")
     patch("fds-5.5.3.patch", when="@5.5.3:6.9.1")
     patch("fds-5.5.3.options.patch", when="@5.5.3")
