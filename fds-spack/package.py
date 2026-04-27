@@ -123,6 +123,7 @@ class Fdsc(CMakePackage):
         msg="OpenMPI can only be used with Intel Fortran on macOS",
     )
 
+    patch("backports3.patch", when="@5.5.3:6.5.2")
     patch("fds-5.5.3.patch", when="@5.5.3:6.9.1")
     patch("fds-5.5.3.options.patch", when="@5.5.3")
     patch("fds-6.1.2.patch", when="@6.1.2:6.9.1")
