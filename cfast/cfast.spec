@@ -40,8 +40,8 @@ BuildRequires: gfortran
 %prep
 %setup -qc
 cd %{repo}-%{commit}
-%patch0 -p1
-%patch1 -p1
+%patch 0 -p1
+%patch 1 -p1
 
 %build
 
