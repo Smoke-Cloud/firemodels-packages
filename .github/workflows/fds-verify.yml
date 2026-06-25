@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         container:
-          # - "rockylinux:9"
+          - "rockylinux:9"
           # - "almalinux:10"
           - "fedora:43"
         fds-version:
