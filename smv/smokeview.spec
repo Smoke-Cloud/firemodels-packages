@@ -2,10 +2,10 @@
 
 Name:           smokeview
 Version:        6.10.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Smokeview
 
-%global commit 0ba11f9da4a4f723c363e773b649dc81edcb1e11
+%global commit c620c67fb96507f9b705150527ad574e451971fc
 
 License:        AllRightsReserved
 Source0:        https://github.com/JakeOShannessy/smv/archive/%{commit}.zip
@@ -49,7 +49,6 @@ A post-processor for FDS (Fire Dynamics Simulator).
 %{_bindir}/smokezip
 %{_bindir}/smokediff
 %{_bindir}/smvq
-%{_bindir}/background
 %{_bindir}/get_time
 %{_bindir}/timep
 %{_bindir}/wind2fds
