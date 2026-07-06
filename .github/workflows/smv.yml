@@ -11,7 +11,7 @@ jobs:
         container:
           - "rockylinux:9"
           # - "almalinux:10"
-          # - "fedora:40"
+          - "fedora:44"
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v4
