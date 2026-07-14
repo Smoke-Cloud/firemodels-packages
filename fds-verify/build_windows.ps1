@@ -39,7 +39,7 @@ foreach ($row in $P) {
         popd
         exit
     }
-    cmake --build cbuild -v -j6 --config Release
+    cmd.exe "/C" '"C:\Program Files (x86)\Intel\oneAPI\setvars.bat" && cmake --build cbuild -v -j6 --config Release'
     if ($LastExitCode) {
         popd
         exit
