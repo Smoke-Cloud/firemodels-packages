@@ -274,7 +274,7 @@ new file mode 100644
 index 0000000000..85664a4021
 --- /dev/null
 +++ b/Source/json.f90
-@@ -0,0 +1,449 @@
+@@ -0,0 +1,451 @@
 +
 +MODULE JSON_FORMAT
 +
@@ -480,6 +480,8 @@ index 0000000000..85664a4021
 +   CALL JSON%ADD(OBJ2, 'activation_obscuration', PY%ACTIVATION_OBSCURATION)
 +   CALL JSON%ADD(OBJ2, 'flow_rate', PY%FLOW_RATE)
 +   CALL JSON%ADD(OBJ2, 'particle_velocity', PY%PARTICLE_VELOCITY)
++   CALL JSON%ADD(OBJ2, 'rti', PY%RTI)
++   CALL JSON%ADD(OBJ2, 'c_factor', PY%C_FACTOR)
 +   NULLIFY(OBJ2)
 +ENDDO
 +NULLIFY(OBJ1)
