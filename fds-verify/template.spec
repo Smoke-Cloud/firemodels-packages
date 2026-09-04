@@ -128,6 +128,9 @@ Docs for FDS
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
 
+
+
+
 # Build OpenMPI version
 %if %{build_openmpi}
 %{_openmpi_load}
@@ -148,7 +151,6 @@ mpifort --version
     echo "VERSION_SUFFIX=%{version_suffix}"
     cat fds.sh
 } > ./fds-script
-
 
 %cmake_build
 %{_openmpi_unload}

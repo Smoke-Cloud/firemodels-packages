@@ -1,7 +1,7 @@
-PROGRAM_NAME=fds
+PROGRAM_NAME=fds-verify
 # The default number of MPI processes is 1
 N_PROCESSES=1
-TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mpich,mkl -- "$@")
+TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mpich,mkl,json -- "$@")
 
 if [ $? -ne 0 ]; then
         echo "Error parsing arguments. Try $PROGRAM_NAME --help"
@@ -17,6 +17,7 @@ usage() {
     printf "    --openmpi     Use Open MPI.\n"
     printf "    --mpich       Use MPICH.\n"
     printf "    --mkl         Use MKL.\n"
+    printf "    --json         Use MKL.\n"
     printf "    -n  Set the number of MPI processes.\n"
 }
 
@@ -46,6 +47,9 @@ while true; do
                 --mkl)
                         USE_MKL=true; shift 1; continue
                 ;;
+                --json)
+                        shift 1; continue
+                ;;
                 --)
                         # End of options
                         break
@@ -58,7 +62,6 @@ while true; do
 done
 set "$@"
 FDS_EXEC=$PROGRAM_NAME$VERSION_SUFFIX
-. /etc/profile.d/modules.sh
 if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
@@ -72,7 +75,7 @@ if [ "$USE_OPENMPI" = true ]; then
                 echo "Cannot specify MKL and Open MPI simultaneously."
                 exit 2
         fi
-        module load mpi/openmpi
+        module load mpi/openmpi-x86_64
 elif [ "$USE_MPICH" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and MPICH simultaneously."
@@ -103,9 +106,4 @@ else
                 module load mkl
         fi
 fi
-export I_MPI_COMPATIBILITY
-if [ "$FDS_VERSION" = "5.5.3" ]; then
-        # FDS 5 needs some MPI compatability options
-        I_MPI_COMPATIBILITY=4
-fi
-exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC"$MPI_SUFFIX "$@"
+exec "$FDS_EXEC""$MPI_SUFFIX" "$1" --json "$2"

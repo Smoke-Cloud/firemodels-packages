@@ -21,6 +21,7 @@ mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 rm rpmbuild/SOURCES/fds.sh.zip || true
 zip rpmbuild/SOURCES/fds.sh.zip ../../fds.sh
 cp ../../"fds-$version.patch"  rpmbuild/SOURCES
+cp ../fds.sh.zip  rpmbuild/SOURCES
 cat  ../../template.spec > fds.spec
 spectool -g fds.spec -C rpmbuild/SOURCES --all \
     --define "_topdir $(pwd)/rpmbuild" \
