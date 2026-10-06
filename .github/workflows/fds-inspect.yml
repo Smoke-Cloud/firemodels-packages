@@ -1,0 +1,46 @@
+on: [push, pull_request]
+
+name: FDS Verify
+
+jobs:
+  build-rpm:
+    name: Build RPM Fedora
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - "rockylinux:9"
+          # - "almalinux:10"
+          - "fedora:43"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: General update
+        run: dnf update -y --refresh
+      - name: Install basic build prerequisites
+        run: dnf install -y git gcc g++ rpmdevtools make
+      - name: Install lib prerequisites
+        run: dnf install -y cmake bash openmpi-devel
+      - name: Build RPM
+        run: |
+          cd fds-verify
+          bash ./build_inspect.sh
+          ls ../dist/*.rpm
+      - id: setContainerSafeName
+        run: |
+          export test_version=$(echo ${{ matrix.container }} | sed 's/:/\-/g')
+          echo "containerSafe=$test_version" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FDS-Inspect-RPMs-${{ steps.setContainerSafeName.outputs.containerSafe }}
+          path: |
+            dist/*.rpm
+  merge:
+    runs-on: ubuntu-latest
+    needs: build-rpm
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: FDS-Inspect-RPMs
+          pattern: FDS-Inspect-RPMs-*
