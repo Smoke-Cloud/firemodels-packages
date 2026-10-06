@@ -1,4 +1,5 @@
-use clap::{Arg, Command, value_parser};
+use clap::{value_parser, Arg, Command};
+#[cfg(windows)]
 use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -33,21 +34,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .get_one::<String>("INPUT-PATH")
         .expect("No input path");
 
-    let fds_verify_path: PathBuf = {
-        let t: PathBuf = std::env::var("FDS_VERIFY_PATH")
-            .unwrap()
-            .parse::<PathBuf>()
-            .unwrap();
-        PathBuf::from(t.parent().unwrap())
+    #[cfg(windows)]
+    let p = {
+        let fds_verify_path: PathBuf = {
+            let t: PathBuf = std::env::var("FDS_VERIFY_PATH")
+                .unwrap()
+                .parse::<PathBuf>()
+                .unwrap();
+            PathBuf::from(t.parent().unwrap())
+        };
+        let fds_version = matches
+            .get_one::<semver::Version>("FDS-VERSION")
+            .cloned()
+            .unwrap_or_else(|| "6.10.1".parse().unwrap());
+
+        let mut p = fds_verify_path.join(format!("fds-verify-{}", fds_version));
+        p.add_extension(std::env::consts::EXE_EXTENSION);
+        p
     };
 
-    let fds_version = matches
-        .get_one::<semver::Version>("FDS-VERSION")
-        .cloned()
-        .unwrap_or_else(|| "6.10.1".parse().unwrap());
-
-    let mut p = fds_verify_path.join(format!("fds-verify-{}", fds_version));
-    p.add_extension(std::env::consts::EXE_EXTENSION);
+    // TODO: handle versions
+    #[cfg(unix)]
+    let p = {
+        let p = which::which("fds-verify").unwrap();
+        p
+    };
 
     let def = "-".to_string();
     let out_param = matches.get_one::<String>("OUT-PARAM").unwrap_or(&def);
