@@ -1,4 +1,4 @@
-PROGRAM_NAME=fds
+PROGRAM_NAME=fds-verify
 # The default number of MPI processes is 1
 N_PROCESSES=1
 TEMP=$(getopt --name $PROGRAM_NAME --options hvn: --longoptions help,version,intelmpi,openmpi,mpich,mkl -- "$@")
@@ -58,7 +58,7 @@ while true; do
 done
 set "$@"
 FDS_EXEC=$PROGRAM_NAME$VERSION_SUFFIX
-. /etc/profile.d/modules.sh
+# . /etc/profile.d/modules.sh
 if [ "$USE_OPENMPI" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and Open MPI simultaneously."
@@ -72,7 +72,8 @@ if [ "$USE_OPENMPI" = true ]; then
                 echo "Cannot specify MKL and Open MPI simultaneously."
                 exit 2
         fi
-        module load mpi/openmpi
+        module load mpi/openmpi-x86_64
+        MPI_SUFFIX=_openmpi
 elif [ "$USE_MPICH" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and MPICH simultaneously."
@@ -108,4 +109,6 @@ if [ "$FDS_VERSION" = "5.5.3" ]; then
         # FDS 5 needs some MPI compatability options
         I_MPI_COMPATIBILITY=4
 fi
-exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC"$MPI_SUFFIX "$@"
+# TODO: decide whether we actually need MPI here
+# exec mpiexec -np "$N_PROCESSES" "$FDS_EXEC""$MPI_SUFFIX" "$@" --json -
+exec "$FDS_EXEC""$MPI_SUFFIX" "$@" --json -

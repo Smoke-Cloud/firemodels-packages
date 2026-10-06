@@ -48,6 +48,7 @@ Summary:        Fire Dynamics Simulator
 
 License:        Public Domain
 Source0:        https://github.com/firemodels/%{repo}/archive/%{commit}.zip
+Source1:        fds.sh.zip
 Patch0:         fds-%{this_version}.patch
 Url:            https://pages.nist.gov/fds-smv
 
@@ -121,7 +122,7 @@ Docs for FDS
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{commit} -a 1
 %patch 0 -p1
 
 %global __brp_check_rpaths %{nil}
@@ -145,7 +146,7 @@ mpifort --version
     echo "#!/bin/sh"
     echo "FDS_VERSION=%{version}"
     echo "VERSION_SUFFIX=%{version_suffix}"
-    #cat fds.sh
+    cat fds.sh
 } > ./fds-script
 
 
@@ -196,7 +197,7 @@ rm -rf %{buildroot}
 echo %{buildroot}/%{_bindir}
 
 # Install common
-install -D fds-script %{buildroot}/%{_bindir}/fds%{?script_suffix}
+install -D fds-script %{buildroot}/%{_bindir}/fds-verify%{?script_suffix}
 
 # Install OpenMPI version
 %if %{build_openmpi}
@@ -211,7 +212,7 @@ install -D redhat-linux-build/fds %{buildroot}%{_libdir}/openmpi/bin/fds-verify%
 
 
 %files common
-%{_bindir}/fds%{?script_suffix}
+%{_bindir}/fds-verify%{?script_suffix}
 
 %if %{build_openmpi}
 %files openmpi
@@ -220,12 +221,12 @@ install -D redhat-linux-build/fds %{buildroot}%{_libdir}/openmpi/bin/fds-verify%
 
 %if %{build_mpich}
 %files mpich
-%{_libdir}/mpich/bin/fds%{version_suffix}_mpich
+%{_libdir}/mpich/bin/fds-verify%{?script_suffix}_mpich
 %endif
 
 %if %{build_intelmpi}
 %files intelmpi
-%{_libdir}/intelmpi/bin/fds%{version_suffix}_intelmpi
+%{_libdir}/intelmpi/bin/fds-verify%{?script_suffix}_intelmpi
 %endif
 
 %changelog

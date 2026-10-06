@@ -34,6 +34,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .get_one::<String>("INPUT-PATH")
         .expect("No input path");
 
+    let fds_version = matches
+        .get_one::<semver::Version>("FDS-VERSION")
+        .cloned()
+        .unwrap_or_else(|| "6.10.1".parse().unwrap());
     #[cfg(windows)]
     let p = {
         let fds_verify_path: PathBuf = {
@@ -43,33 +47,45 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .unwrap();
             PathBuf::from(t.parent().unwrap())
         };
-        let fds_version = matches
-            .get_one::<semver::Version>("FDS-VERSION")
-            .cloned()
-            .unwrap_or_else(|| "6.10.1".parse().unwrap());
 
         let mut p = fds_verify_path.join(format!("fds-verify-{}", fds_version));
         p.add_extension(std::env::consts::EXE_EXTENSION);
         p
     };
 
-    // TODO: handle versions
+    #[cfg(windows)]
+    {
+        let def = "-".to_string();
+        let out_param = matches.get_one::<String>("OUT-PARAM").unwrap_or(&def);
+        std::process::Command::new(p)
+            .arg(fds_input_path)
+            .arg("--json")
+            .arg(out_param)
+            .spawn()
+            .expect("failed to start")
+            .wait()
+            .unwrap();
+    }
+
     #[cfg(unix)]
     let p = {
-        let p = which::which("fds-verify").unwrap();
+        let p = which::which(format!("fds-verify{}", fds_version)).unwrap();
         p
     };
 
-    let def = "-".to_string();
-    let out_param = matches.get_one::<String>("OUT-PARAM").unwrap_or(&def);
-    std::process::Command::new(p)
-        .arg(fds_input_path)
-        .arg("--json")
-        .arg(out_param)
-        .spawn()
-        .expect("failed to start")
-        .wait()
-        .unwrap();
+    #[cfg(unix)]
+    {
+        let def = "-".to_string();
+        let out_param = matches.get_one::<String>("OUT-PARAM").unwrap_or(&def);
+        std::process::Command::new(p)
+            .arg(fds_input_path)
+            // .arg("--json")
+            // .arg(out_param)
+            .spawn()
+            .expect("failed to start")
+            .wait()
+            .unwrap();
+    }
 
     Ok(())
 }

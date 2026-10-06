@@ -18,6 +18,8 @@ export commit="$3"
 export revision_date="$4"
 shift 4
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+rm rpmbuild/SOURCES/fds.sh.zip || true
+zip rpmbuild/SOURCES/fds.sh.zip ../../fds.sh
 cp ../../"fds-$version.patch"  rpmbuild/SOURCES
 cat  ../../template.spec > fds.spec
 spectool -g fds.spec -C rpmbuild/SOURCES --all \
