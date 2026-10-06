@@ -16,19 +16,17 @@ Requires:       bash
 FDS Inpsect run server binaries
 
 %prep
-%setup -n fds-inspect-%{version}
+%setup -c
 
 %global debug_package %{nil}
 %build
-pushd fds-inspect
 cargo build --release \
     --bin fds-inspect
-popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-install fds-inspect/target/release/fds-inspect $RPM_BUILD_ROOT/%{_bindir}
+install target/release/fds-inspect $RPM_BUILD_ROOT/%{_bindir}
 
 %files
 %{_bindir}/fds-inspect

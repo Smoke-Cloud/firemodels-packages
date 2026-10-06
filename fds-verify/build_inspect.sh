@@ -5,6 +5,9 @@ version=0.16.0
 mkdir -p build/inspect/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 # git config --global --add safe.directory /__w/smoke-cloud-server/smoke-cloud-server
 # git archive --output=build/inspect/rpmbuild/SOURCES/"${src_name}"-"${version}".tar.gz --prefix="${src_name}"-"${version}"/ HEAD
+pushd fds-inspect
+tar --exclude "target" -czvf ../build/inspect/rpmbuild/SOURCES/"${src_name}"-"${version}".tar.gz .
+popd
 export QA_RPATHS=7
 cd build/inspect
 spec_path=../../fds-inspect.spec
