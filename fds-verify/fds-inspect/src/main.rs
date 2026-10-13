@@ -68,16 +68,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     #[cfg(unix)]
-    let p = {
-        let p = which::which(format!("fds-verify{}", fds_version)).unwrap();
-        p
-    };
-
-    #[cfg(unix)]
     {
         let def = "-".to_string();
         let out_param = matches.get_one::<String>("OUT-PARAM").unwrap_or(&def);
-        std::process::Command::new(p)
+        std::process::Command::new("sh")
+            .arg(format!("fds-verify{}", fds_version))
             .arg(fds_input_path)
             // .arg("--json")
             // .arg(out_param)

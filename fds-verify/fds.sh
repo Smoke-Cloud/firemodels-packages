@@ -59,21 +59,22 @@ done
 set "$@"
 FDS_EXEC=$PROGRAM_NAME$VERSION_SUFFIX
 # . /etc/profile.d/modules.sh
-if [ "$USE_OPENMPI" = true ]; then
-        if [ "$USE_INTELMPI" = true ]; then
-                echo "Cannot specify Intel MPI and Open MPI simultaneously."
-                exit 2
-        fi
-        if [ "$USE_MPICH" = true ]; then
-                echo "Cannot specify MPICH and Open MPI simultaneously."
-                exit 2
-        fi
+if [ "$USE_INTELMPI" = true ]; then
+        # First we have to load the module files from
+        # the OneAPI installations as they aren't loaded by default.
+        module use ~/modulefiles
+        # Load mpi, this will now load intel mpi first
+        module load mpi
+        # Unlike openmpi, the intel modules don't set MPI_SUFFIX so we need to
+        # do it here.
+        MPI_SUFFIX=_intelmpi
+        # The intel modules also don't account for the install location of
+        # binaries so we add that to the path here.
+        PATH="$PATH":/usr/lib64/intelmpi/bin
         if [ "$USE_MKL" = true ]; then
-                echo "Cannot specify MKL and Open MPI simultaneously."
-                exit 2
+                module load mkl
         fi
-        module load mpi/openmpi-x86_64
-        MPI_SUFFIX=_openmpi
+
 elif [ "$USE_MPICH" = true ]; then
         if [ "$USE_INTELMPI" = true ]; then
                 echo "Cannot specify Intel MPI and MPICH simultaneously."
@@ -89,20 +90,21 @@ elif [ "$USE_MPICH" = true ]; then
         fi
         module load mpi/mpich
 else
-        # Use Intel MPI by default. First we have to load the module files from
-        # the OneAPI installations as they aren't loaded by default.
-        module use ~/modulefiles
-        # Load mpi, this will now load intel mpi first
-        module load mpi
-        # Unlike openmpi, the intel modules don't set MPI_SUFFIX so we need to
-        # do it here.
-        MPI_SUFFIX=_intelmpi
-        # The intel modules also don't account for the install location of
-        # binaries so we add that to the path here.
-        PATH="$PATH":/usr/lib64/intelmpi/bin
-        if [ "$USE_MKL" = true ]; then
-                module load mkl
+        # Use openmpi by default
+        if [ "$USE_INTELMPI" = true ]; then
+                echo "Cannot specify Intel MPI and Open MPI simultaneously."
+                exit 2
         fi
+        if [ "$USE_MPICH" = true ]; then
+                echo "Cannot specify MPICH and Open MPI simultaneously."
+                exit 2
+        fi
+        if [ "$USE_MKL" = true ]; then
+                echo "Cannot specify MKL and Open MPI simultaneously."
+                exit 2
+        fi
+        module load mpi/openmpi-x86_64
+        MPI_SUFFIX=_openmpi
 fi
 export I_MPI_COMPATIBILITY
 if [ "$FDS_VERSION" = "5.5.3" ]; then
