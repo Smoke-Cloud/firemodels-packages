@@ -11,8 +11,8 @@ jobs:
       matrix:
         container:
           # - "fedora:40"
-          - "fedora:42"
-          # - "rockylinux:9"
+          # - "fedora:42"
+          - "rockylinux:9"
           # - "almalinux:10"
         compiler:
           - "oneapi"
