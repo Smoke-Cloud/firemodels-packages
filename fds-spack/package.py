@@ -25,7 +25,9 @@ class Fdsc(CMakePackage):
     git = "https://github.com/firemodels/fds.git"
     old_git = "https://github.com/firemodels/fds-smv_deprecated.git"
 
-    # version("7.0.0",  commit="df174f2a9cf2fafecaba809b913c571895941486", git=git)
+    version("6.11.2", commit="8e4c2c4a479a37f42f6e1142ea6580f0eb64ac1b", git=git)
+    version("6.11.1", commit="ff928dbf68a2623ced3a007be75391c6dc6c9f90", git=git)
+    version("6.11.0", commit="369a20b38a670b269b08bdd680394eb01bd0199f", git=git)
     version("6.10.1", commit="12efa168d7c96257065a0a4dab3f68b3af8aa072", git=git)
     version("6.10.0", commit="618ac072817cb4f287ea5b3d8360dda78339e3a1", git=git)
     version("6.9.1",  commit="889da6ae08d08dae680f7c0d8de66a3ad1c65375", git=git)
@@ -58,9 +60,6 @@ class Fdsc(CMakePackage):
             description="Enable SUNDIALS")
     variant("hypre", default=False, when="@6.10:", description="Enable HYPRE")
 
-    # conflicts("%gcc", when="+openmp",
-    #           msg="GCC already provides OpenMP support")
-
     depends_on("fortran", type="build")
     depends_on("c", type="build", when="@5.5.3")
     depends_on("c", type="build", when="+sundials")
@@ -68,16 +67,6 @@ class Fdsc(CMakePackage):
 
     depends_on("mpi", type=("build", "link", "run"))
     depends_on("mkl")
-
-    # TODO: handle some version conflicts, also when using hypre 2.32.0, it doesn't
-    # use cmake so there's still some work to do there.
-    # with when("+sundials"):
-    #     depends_on("umpire+c+cuda", when="@3:")
-    #     requires("+umpire", when="@3:")
-
-    # 6.10.*
-    # HYPRE_VERSION=v2.32.0
-    # SUNDIALS_VERSION=v6.7.0
 
     depends_on("sundials+mpi+f2003+hypre", when="+sundials")
     depends_on("hypre+mpi", when="+hypre")
@@ -98,12 +87,6 @@ class Fdsc(CMakePackage):
         when="platform=linux %gcc",
         msg="OpenMPI can only be used with GNU Fortran on Linux platform",
     )
-
-    # requires(
-    #     "^openmp",
-    #     when="%oneapi",
-    #     msg="OpenMP can only be used with GNU Fortran on Linux platform",
-    # )
 
     conflicts(
         "+openmp",
@@ -148,7 +131,9 @@ class Fdsc(CMakePackage):
     sanity_check_is_dir = ["bin"]
 
     revision_dates = {
-        # "7.0.0": 1773265234,
+        "6.11.2": 1794651902,
+        "6.11.1": 1783632247,
+        "6.11.0": 1778880412,
         "6.10.1": 1743629938,
         "6.10.0": 1741367545,
         "6.9.1": 1712523906,
@@ -178,6 +163,8 @@ class Fdsc(CMakePackage):
     }
 
     def cmake_args(self):
+        # The build uses a lot of information normally derived from git that
+        # we need to override here (due to a lack of git).
         args = [
             "-DGIT_DATE={0}".format(time.strftime("%a, %d %b %Y %H:%M:%S +0000",
                                     time.gmtime(self.revision_dates[self.spec.version.dotted_numeric_string]))),
@@ -185,10 +172,14 @@ class Fdsc(CMakePackage):
             "-DGIT_HASH={0}".format(self.spec.version),
             "-DGIT_DIRTY=spack",
         ]
+        # Turn on each of the optional libraries
         args.append(self.define_from_variant("USE_HYPRE","hypre"))
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
         # if self.spec.satsifies("@6.10.0:"):
+        # Generally we're using the versions of SUNDIALS and HYPRE from
+        # downloaded and built here, not the ones provided by the system or
+        # spack due to compatibility issues.
         args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
         args.append("-DUSE_SYSTEM_HYPRE=OFF")
         # if self.spec.satsifies("@5.5.3"):
