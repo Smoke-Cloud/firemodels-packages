@@ -43,6 +43,41 @@ jobs:
           # - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           # - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           # - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+
+          - "fdsc@6.11.2%gcc"
+          - "fdsc@6.11.1%gcc"
+          - "fdsc@6.11.0%gcc"
+          - "fdsc@6.10.1%gcc"
+          - "fdsc@6.10.0%gcc"
+          # - "fdsc@6.9.1%gcc"
+          # - "fdsc@6.9.0%gcc"
+          # - "fdsc@6.8.0%gcc"
+          # - "fdsc@6.7.9%gcc"
+          # - "fdsc@6.7.8%gcc"
+          # - "fdsc@6.7.7%gcc"
+          # - "fdsc@6.7.6%gcc"
+          # - "fdsc@6.7.5%gcc"
+          # - "fdsc@6.7.4%gcc"
+          # - "fdsc@6.7.3%gcc"
+          # - "fdsc@6.7.1%gcc"
+          # - "fdsc@6.7.0%gcc"
+          # - "fdsc@6.6.0%gcc"
+          # - "fdsc@6.5.3%gcc"
+          # - "fdsc@6.5.2%gcc"
+          # - "fdsc@6.5.1%gcc"
+          # - "fdsc@6.5.0%gcc"
+          # - "fdsc@6.4.0%gcc"
+          # - "fdsc@6.3.2%gcc"
+          # - "fdsc@6.3.1%gcc"
+          # - "fdsc@6.3.0%gcc"
+          # - "fdsc@6.2.0%gcc"
+          # - "fdsc@6.1.2%gcc"
+          # - "fdsc@5.5.3%gcc"
+
+
+
+
+
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
