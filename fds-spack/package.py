@@ -55,7 +55,8 @@ class Fdsc(CMakePackage):
     version("6.1.2",  commit="689afcd4c59504cc031b860fd081d935a2a3351f", git=old_git)
     version("5.5.3",  commit="bf0a6a88f318803adb96edef5c547746fc77e4a5", git=git)
 
-    variant("openmp", default=False, description="Enable OpenMP support")
+    variant("openmp", default=False, when="@:6.7.5,6.7.8:", description="Enable OpenMP support")
+    variant("openmp", default=True, when="@6.7.6,6.7.7", description="Enable OpenMP support")
     variant("sundials", default=True, when="@6.10:",
             description="Enable SUNDIALS")
     variant("hypre", default=True, when="@6.10:", description="Enable HYPRE")
