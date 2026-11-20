@@ -94,6 +94,7 @@ jobs:
         - run: spack create --name fdsc --skip-editor
         - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
         - run: spack spec -I fdsc@${{matrix.version}}
+        - run: spack fetch --dependencies fdsc@${{matrix.version}}
         - run: spack -v install --show-log-on-error fdsc@${{matrix.version}}
 
   build-cfast:
@@ -151,4 +152,5 @@ jobs:
       - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
       - run: spack create --name cfastc --skip-editor
       - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
+      - run: spack fetch --dependencies cfastc@${{matrix.version}}%${{matrix.compiler}}
       - run: spack -v install --show-log-on-error cfastc@${{matrix.version}}%${{matrix.compiler}}
