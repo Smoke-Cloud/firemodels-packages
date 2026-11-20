@@ -41,7 +41,7 @@ jobs:
           # - "7.0.1"
     container: ${{ matrix.container }}
     steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v7
         - name: Install prerequisites
           run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
         - name: Set up Spack

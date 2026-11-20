@@ -41,7 +41,7 @@ jobs:
           # - "5.5.3"
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: General update
         run: dnf update -y --refresh
       - name: Install basic build prerequisites
@@ -70,15 +70,15 @@ jobs:
   #       shell: bash
   #   steps:
   #     - name: Checkout code
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v7
   #     - name: Clone smv repo
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v7
   #       with:
   #         repository: firemodels/smv
   #         path: smv/build
   #         ref: 24bb184dacf75626399537772460477597d2443a
   #     - name: Clone bot repo
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@v7
   #       with:
   #         repository: firemodels/bot
   #         path: smv/bot
