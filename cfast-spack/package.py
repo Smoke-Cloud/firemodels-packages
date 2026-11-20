@@ -22,6 +22,10 @@ class Cfastc(MakefilePackage):
 
     build_directory = "Build/CFAST"
 
+    version("7.7.7", commit="b43e74e0f43c704582c5782f5446597ce729a07f")
+    version("7.7.6", commit="dc56e5c669e3c5817f9efc680070a4198f326605")
+    version("7.7.5", commit="6feca929959cd160d5749f7970f4fbe4200854ad")
+
     version("7.7.4", commit="6b52d0c33bd3760782782ad156e992f0196ca2d9")
     version("7.7.3", commit="80af8c65a8a9d54ec1823cc043f8e278f9804269")
     version("7.7.2", commit="8f924606a394685787630d93e21f86d574c79692")
@@ -59,6 +63,10 @@ class Cfastc(MakefilePackage):
     parallel = False
 
     revision_dates = {
+        "7.7.7": 1779714701,
+        "7.7.6": 1777580962,
+        "7.7.5": 1746401267,
+
         "7.7.4": 1673642530,
         "7.7.3": 1652293105,
         "7.7.2": 1635874076,
