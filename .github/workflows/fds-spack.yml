@@ -5,7 +5,7 @@ name: FDS-Spack
 
 jobs:
   build-rpm:
-    name: Build RPM
+    name: Build FDS
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -57,10 +57,10 @@ jobs:
           - "fdsc@6.7.7%gcc"
           - "fdsc@6.7.6%gcc"
           - "fdsc@6.7.5%gcc"
-          - "fdsc@6.7.4%gcc"
-          - "fdsc@6.7.3%gcc"
-          - "fdsc@6.7.1%gcc"
-          - "fdsc@6.7.0%gcc"
+          # - "fdsc@6.7.4%gcc"
+          # - "fdsc@6.7.3%gcc"
+          # - "fdsc@6.7.1%gcc"
+          # - "fdsc@6.7.0%gcc"
           # - "fdsc@6.6.0%gcc"
           # - "fdsc@6.5.3%gcc"
           # - "fdsc@6.5.2%gcc"
@@ -82,7 +82,7 @@ jobs:
     steps:
         - uses: actions/checkout@v4
         - name: Install prerequisites
-          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc perl libevent-devel numactl perl pmix prrte zlib-ng
+          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc perl libtool libevent-devel numactl perl pmix prrte zlib-ng
         - name: Set up Spack
           uses: spack/setup-spack@v3
           with:
@@ -91,7 +91,7 @@ jobs:
             color: true       # Force color output (SPACK_COLOR=always)
         - run: spack install intel-oneapi-compilers
         - run: spack compiler find
-        - run: spack external find
+        - run: spack external find --all
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
         - run: spack create --name fdsc --skip-editor
