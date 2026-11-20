@@ -1,7 +1,10 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
+spack install cfastc@7.7.7%oneapi
+spack install cfastc@7.7.6%oneapi
+spack install cfastc@7.7.5%oneapi
 spack install cfastc@7.7.4%oneapi
 spack install cfastc@7.7.4%oneapi
 spack install cfastc@7.7.3%oneapi
@@ -22,5 +25,31 @@ spack install cfastc@7.2.1%oneapi
 spack install cfastc@7.2.0%oneapi
 spack install cfastc@7.1.2%oneapi
 spack install cfastc@7.1.1%oneapi
-# spack install cfastc@7.1.0%oneapi
-# spack install cfastc@7.0.1%oneapi
+spack install cfastc@7.1.0%oneapi
+spack install cfastc@7.0.1%oneapi
+
+spack install cfastc@7.7.7%gcc
+spack install cfastc@7.7.6%gcc
+spack install cfastc@7.7.5%gcc
+spack install cfastc@7.7.4%gcc
+spack install cfastc@7.7.4%gcc
+spack install cfastc@7.7.3%gcc
+spack install cfastc@7.7.2%gcc
+spack install cfastc@7.7.1%gcc
+spack install cfastc@7.7.0%gcc
+spack install cfastc@7.5.2%gcc
+spack install cfastc@7.5.1%gcc
+spack install cfastc@7.4.3%gcc
+spack install cfastc@7.4.2%gcc
+spack install cfastc@7.4.0%gcc
+spack install cfastc@7.3.1%gcc
+spack install cfastc@7.3.0%gcc
+spack install cfastc@7.2.4%gcc
+spack install cfastc@7.2.3%gcc
+spack install cfastc@7.2.2%gcc
+spack install cfastc@7.2.1%gcc
+spack install cfastc@7.2.0%gcc
+spack install cfastc@7.1.2%gcc
+spack install cfastc@7.1.1%gcc
+spack install cfastc@7.1.0%gcc
+spack install cfastc@7.0.1%gcc
