@@ -13,48 +13,41 @@ jobs:
           - "fedora:42"
           # - "rockylinux:9"
           # - "almalinux:10"
-        # fds-version:
-        #   - "5.5.3%intel"
-        #   - "6.1.2%oneapi"
-        #   - "6.2.0%oneapi"
-        #   - "6.3.0%oneapi"
-        #   - "6.3.1%oneapi"
-        #   - "6.3.2%oneapi"
-        #   - "6.4.0%oneapi"
-        #   - "6.5.0%oneapi"
-        #   - "6.5.1%oneapi"
-        #   - "6.5.2%oneapi"
-        #   - "6.5.3%oneapi"
-        #   - "6.6.0%oneapi"
-        #   - "6.7.0%oneapi"
-        #   - "6.7.1%oneapi"
-        #   - "6.7.3%oneapi"
-        #   - "6.7.4%oneapi"
-        #   - "6.7.5%oneapi"
-        #   - "6.7.6+openmp%oneapi"
-        #   - "6.7.7+openmp%oneapi"
-        #   - "6.7.8%oneapi"
-        #   - "6.7.9%oneapi"
-        #   - "6.8.0%oneapi"
-        #   - "6.9.0%oneapi"
-        #   - "6.9.1%oneapi"
-        #   - "6.10.0%oneapi"
-        #   - "6.10.1%oneapi"
-
-        #   - "6.7.6+openmp%gcc"
-        #   - "6.7.7+openmp%gcc"
-        #   - "6.7.8%gcc"
-        #   - "6.7.9%gcc"
-        #   - "6.8.0%gcc"
-        #   - "6.9.0%gcc"
-        #   - "6.9.1%gcc"
-        #   - "6.10.0%gcc"
-        #   - "6.10.1%gcc"
+        fds-version:
+          - "fdsc@5.5.3%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.1.2%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.2.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.3.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.3.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.3.2%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.4.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.5.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.5.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.5.2%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.5.3%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.6.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.3%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.4%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.5%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.6+openmp%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.7+openmp%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.8%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.7.9%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.8.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.9.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.9.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.10.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.10.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
         - name: Install prerequisites
-          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
+          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
         - name: Set up Spack
           uses: spack/setup-spack@v3
           with:
@@ -63,9 +56,10 @@ jobs:
             color: true       # Force color output (SPACK_COLOR=always)
         - run: spack install intel-oneapi-compilers
         - run: spack compiler find
+        - run: spack external find
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
         - run: spack create --name fdsc --skip-editor
         - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
-        # - run: spack install fdsc@${{matrix.fds-version}}
-        - run: ./install_all_fds.sh
+        - run: spack install ${{matrix.fds-version}}
+        # - run: ./install_all_fds.sh

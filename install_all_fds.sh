@@ -28,6 +28,9 @@ spack install fdsc@6.9.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
 spack install fdsc@6.9.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
 spack install fdsc@6.10.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
 spack install fdsc@6.10.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
+spack install fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
+spack install fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
+spack install fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi
 # spack install fdsc@7.0.0+hypre+sundials%oneapi^hypre@3.0.0+int64^sundials@7.5.0+int64
 
 # spack install fdsc@6.7.6+openmp%gcc
