@@ -176,12 +176,17 @@ class Fdsc(CMakePackage):
         args.append(self.define_from_variant("USE_HYPRE","hypre"))
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
-        # if self.spec.satsifies("@6.10.0:"):
-        # Generally we're using the versions of SUNDIALS and HYPRE from
-        # downloaded and built here, not the ones provided by the system or
-        # spack due to compatibility issues.
-        args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
-        args.append("-DUSE_SYSTEM_HYPRE=OFF")
+        # Version 6.10.0 and 6.10.1 use versions of sundials and hypre that are
+        # less well supported using Spack+CMake. For these versions we don't
+        # use the version provided by Spack but get the CMake file in the FDS
+        # repository to build them by turning USE_SYSTEM_*=OFF. Otherwise we
+        # turn it on and use the system provided by Spack.
+        if self.spec.satisfies("@6.10.0:6.10.1"):
+            args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
+            args.append("-DUSE_SYSTEM_HYPRE=OFF")
+        else:
+            args.append("-DUSE_SYSTEM_SUNDIALS=ON")
+            args.append("-DUSE_SYSTEM_HYPRE=ON")
         # if self.spec.satsifies("@5.5.3"):
         # args.append("-DCMAKE_BUILD_PARALLEL_LEVEL=1")
         # args.append("-DHYPRE_VERSION=2.32.0")

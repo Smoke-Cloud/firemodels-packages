@@ -40,9 +40,9 @@ jobs:
           # - "fdsc@6.9.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           # - "fdsc@6.10.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           # - "fdsc@6.10.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          # - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          # - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          # - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0+int64%hypre@3.0.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0+int64%hypre@3.0.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0+int64%hypre@3.0.0%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
 
           - "fdsc@6.11.2%gcc"
           - "fdsc@6.11.1%gcc"
@@ -56,7 +56,7 @@ jobs:
           - "fdsc@6.7.8%gcc"
           - "fdsc@6.7.7%gcc"
           - "fdsc@6.7.6%gcc"
-          - "fdsc@6.7.5%gcc"
+          # - "fdsc@6.7.5%gcc"
           # - "fdsc@6.7.4%gcc"
           # - "fdsc@6.7.3%gcc"
           # - "fdsc@6.7.1%gcc"
@@ -91,7 +91,7 @@ jobs:
             color: true       # Force color output (SPACK_COLOR=always)
         - run: spack install intel-oneapi-compilers
         - run: spack compiler find
-        - run: spack external find --all
+        - run: spack external find --all --exclude python --not-buildable
         - run: spack repo create $HOME/my_pkgs my_repo
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
         - run: spack create --name fdsc --skip-editor
