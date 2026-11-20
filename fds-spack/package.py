@@ -126,7 +126,7 @@ class Fdsc(CMakePackage):
     patch("fds-6.7.8.patch", when="@6.7.8:6.9.1")
     patch("fds-6.8.0.patch", when="@6.8.0:6.9.1")
     patch("fds-6.10.0.patch", when="@6.10.0")
-    patch("fds-6.10.1.patch", when="@6.10.1:6.11.2")
+    patch("fds-6.10.1.patch", when="@6.10.1")
 
     sanity_check_is_dir = ["bin"]
 
