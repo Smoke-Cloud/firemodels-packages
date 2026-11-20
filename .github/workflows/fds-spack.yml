@@ -96,5 +96,5 @@ jobs:
         - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
         - run: spack create --name fdsc --skip-editor
         - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
+        - run: spack spec -I ${{matrix.fds-version}}
         - run: spack install ${{matrix.fds-version}}
-        # - run: ./install_all_fds.sh
