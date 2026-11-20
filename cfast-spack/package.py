@@ -20,8 +20,6 @@ class Cfastc(MakefilePackage):
     url = "https://github.com/firemodels/cfast/archive/refs/tags/CFAST-7.7.5.tar.gz"
     git = "https://github.com/firemodels/cfast.git"
 
-    build_directory = "Build/CFAST"
-
     version("7.7.7", commit="b43e74e0f43c704582c5782f5446597ce729a07f")
     version("7.7.6", commit="dc56e5c669e3c5817f9efc680070a4198f326605")
     version("7.7.5", commit="6feca929959cd160d5749f7970f4fbe4200854ad")
@@ -102,8 +100,18 @@ class Cfastc(MakefilePackage):
         env.set("GIT_HASH", self.spec.version.dotted_numeric_string)
         env.set("GIT_DIRTY", "spack")
 
+    @property
+    def build_directory(self):
+        if self.spec.satisfies("@7.0.1"):
+            return "CFAST"
+        else:
+            return "Build/CFAST"
+
+
     def edit(self, spec, prefix):
         makefile = FileFilter("Build/CFAST/makefile")
+        if self.spec.satisfies("@7.0.1"):
+            makefile = FileFilter("CFAST/makefile")
         makefile.filter(r"\.\./Source", "./Source")
         makefile.filter("ifort", "ifx")
 
