@@ -108,7 +108,7 @@ jobs:
           # - "almalinux:10"
         compiler:
           - "oneapi"
-          # - "gcc"
+          - "gcc"
         version:
           - "7.7.7"
           - "7.7.6"
