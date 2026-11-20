@@ -109,15 +109,19 @@ class Cfastc(MakefilePackage):
 
     @property
     def build_targets(self):
-        arch_suffix = "64"
+        arch_suffix = "_64"
+        if self.spec.satisfies("@7.7.6:"):
+            arch_suffix = ""
         compiler_suffix = self.compiler_mapping[self.spec.compiler.name]
         platform_suffix = self.platform_mapping[self.spec.architecture.platform]
-        return [f"{compiler_suffix}_{platform_suffix}_{arch_suffix}"]
+        return [f"{compiler_suffix}_{platform_suffix}{arch_suffix}"]
 
     def install(self, spec, prefix):
-        arch_suffix = "64"
+        arch_suffix = "_64"
+        if self.spec.satisfies("@7.7.6:"):
+            arch_suffix = ""
         platform_suffix = self.platform_mapping[self.spec.architecture.platform]
         mkdirp(prefix.bin)
         with working_dir(self.build_directory):
-            install(f"cfast7_{platform_suffix}_{arch_suffix}",
+            install(f"cfast7_{platform_suffix}{arch_suffix}",
                     join_path(prefix.bin, "cfast"))
