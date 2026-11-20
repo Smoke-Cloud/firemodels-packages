@@ -49,18 +49,18 @@ jobs:
           - "fdsc@6.11.0%gcc"
           - "fdsc@6.10.1%gcc"
           - "fdsc@6.10.0%gcc"
-          # - "fdsc@6.9.1%gcc"
-          # - "fdsc@6.9.0%gcc"
-          # - "fdsc@6.8.0%gcc"
-          # - "fdsc@6.7.9%gcc"
-          # - "fdsc@6.7.8%gcc"
-          # - "fdsc@6.7.7%gcc"
-          # - "fdsc@6.7.6%gcc"
-          # - "fdsc@6.7.5%gcc"
-          # - "fdsc@6.7.4%gcc"
-          # - "fdsc@6.7.3%gcc"
-          # - "fdsc@6.7.1%gcc"
-          # - "fdsc@6.7.0%gcc"
+          - "fdsc@6.9.1%gcc"
+          - "fdsc@6.9.0%gcc"
+          - "fdsc@6.8.0%gcc"
+          - "fdsc@6.7.9%gcc"
+          - "fdsc@6.7.8%gcc"
+          - "fdsc@6.7.7%gcc"
+          - "fdsc@6.7.6%gcc"
+          - "fdsc@6.7.5%gcc"
+          - "fdsc@6.7.4%gcc"
+          - "fdsc@6.7.3%gcc"
+          - "fdsc@6.7.1%gcc"
+          - "fdsc@6.7.0%gcc"
           # - "fdsc@6.6.0%gcc"
           # - "fdsc@6.5.3%gcc"
           # - "fdsc@6.5.2%gcc"
@@ -82,7 +82,7 @@ jobs:
     steps:
         - uses: actions/checkout@v4
         - name: Install prerequisites
-          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
+          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc perl libevent-devel numactl perl pmix prrte zlib-ng
         - name: Set up Spack
           uses: spack/setup-spack@v3
           with:
