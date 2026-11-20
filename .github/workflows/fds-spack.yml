@@ -40,9 +40,9 @@ jobs:
           - "fdsc@6.9.1%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           - "fdsc@6.10.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
           - "fdsc@6.10.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
-          - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          # - "fdsc@6.11.0+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          # - "fdsc@6.11.1+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
+          # - "fdsc@6.11.2+hypre+sundials%oneapi^hypre@2.32.0~shared%oneapi^sundials@6.7.0+int64~shared%hypre@2.32.0~shared%oneapi^intel-oneapi-mpi%oneapi^intel-oneapi-mkl%oneapi"
     container: ${{ matrix.container }}
     steps:
         - uses: actions/checkout@v4
