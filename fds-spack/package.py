@@ -56,9 +56,9 @@ class Fdsc(CMakePackage):
     version("5.5.3",  commit="bf0a6a88f318803adb96edef5c547746fc77e4a5", git=git)
 
     variant("openmp", default=False, description="Enable OpenMP support")
-    variant("sundials", default=False, when="@6.10:",
+    variant("sundials", default=True, when="@6.10:",
             description="Enable SUNDIALS")
-    variant("hypre", default=False, when="@6.10:", description="Enable HYPRE")
+    variant("hypre", default=True, when="@6.10:", description="Enable HYPRE")
 
     depends_on("fortran", type="build")
     depends_on("c", type="build", when="@5.5.3")
@@ -172,7 +172,7 @@ class Fdsc(CMakePackage):
             "-DGIT_HASH={0}".format(self.spec.version),
             "-DGIT_DIRTY=spack",
         ]
-        # Turn on each of the optional libraries
+        # Turn on each of the optional libraries if that feature has been selected
         args.append(self.define_from_variant("USE_HYPRE","hypre"))
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
@@ -180,7 +180,8 @@ class Fdsc(CMakePackage):
         # less well supported using Spack+CMake. For these versions we don't
         # use the version provided by Spack but get the CMake file in the FDS
         # repository to build them by turning USE_SYSTEM_*=OFF. Otherwise we
-        # turn it on and use the system provided by Spack.
+        # turn it on and use the system provided by Spack. TODO: see if we can
+        # avoid this and use the spack versions fo 6.10.* as well
         if self.spec.satisfies("@6.10.0:6.10.1"):
             args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
             args.append("-DUSE_SYSTEM_HYPRE=OFF")

@@ -1,11 +1,10 @@
-
 on: [push, pull_request]
 
 name: CFAST-Spack
 
 jobs:
   build-rpm:
-    name: Build RPM
+    name: Build CFAST
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,98 +16,46 @@ jobs:
         compiler:
           - "oneapi"
           # - "gcc"
-        # fds-version:
-        #   - "7.7.4"
-        #   - "7.7.3"
-        #   - "7.7.2"
-        #   - "7.7.1"
-        #   - "7.7.0"
-        #   - "7.5.2"
-        #   - "7.5.1"
-        #   - "7.4.3"
-        #   - "7.4.2"
-        #   - "7.4.0"
-        #   - "7.3.1"
-        #   - "7.3.0"
-        #   - "7.2.4"
-        #   - "7.2.3"
-        #   - "7.2.2"
-        #   - "7.2.1"
-        #   - "7.2.0"
-        #   - "7.1.2"
-        #   - "7.1.1"
-        #   - "7.1.0"
+        fds-version:
+          # - "7.7.7"
+          # - "7.7.6"
+          - "7.7.5"
+          - "7.7.4"
+          - "7.7.3"
+          - "7.7.2"
+          - "7.7.1"
+          - "7.7.0"
+          - "7.5.2"
+          - "7.5.1"
+          - "7.4.3"
+          - "7.4.2"
+          - "7.4.0"
+          - "7.3.1"
+          - "7.3.0"
+          - "7.2.4"
+          - "7.2.3"
+          - "7.2.2"
+          - "7.2.1"
+          - "7.2.0"
+          - "7.1.2"
+          - "7.1.1"
+          - "7.1.0"
           # - "7.0.1"
     container: ${{ matrix.container }}
     steps:
-        - uses: actions/checkout@v7
-        - name: Install prerequisites
-          run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
-        - name: Set up Spack
-          uses: spack/setup-spack@v3
-          with:
-            spack_ref: releases/v1.1
-            buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
-            color: true       # Force color output (SPACK_COLOR=always)
-        - run: spack install intel-oneapi-compilers
-        - run: spack compiler find
-        - run: spack repo create $HOME/my_pkgs my_repo
-        - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
-        - run: spack create --name cfastc --skip-editor
-        - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
-        # - run: spack install cfastc@${{matrix.fds-version}}%${{matrix.compiler}}
-        - run: ./install_all_cfast.sh
-
-
-
-
-    #   - name: General update
-    #     run: dnf update -y --refresh
-    #   - name: Install environment-modules
-    #     run: dnf install -y environment-modules
-    #   - name: Install prerequisites
-    #     run: dnf install -y git gcc kmod openssl-devel rpmdevtools make
-    #   - name: Install fedora libxcrypt-compat
-    #     run: dnf install -y libxcrypt-compat || true
-    #   - name: Install fedora procps
-    #     run: dnf install -y procps || true
-    #   - name: Install Intel OneAPI packages
-    #     run: dnf install -y
-    #       intel-oneapi-compiler-fortran-2025.1.0-973
-    #       intel-oneapi-mkl-devel-2025.1.0-801
-    #       intel-oneapi-mpi-devel-2021.15.0-493
-    #       intel-oneapi-compiler-dpcpp-cpp-2025.1.0-973
-    #       openmpi-devel
-    #       mpich-devel
-    #   - run: /opt/intel/oneapi/modulefiles-setup.sh
-    #   - name: Build RPM
-    #     run: |
-    #       cd fds
-    #       export version=${{ matrix.fds-version }}
-    #       export repo=$(awk -F, -v version="$version" '$1 == version { print $2; exit }' versions.csv)
-    #       export commit=$(awk -F, -v version="$version" '$1 == version { print $3; exit }' versions.csv)
-    #       export date=$(awk -F, -v version="$version" '$1 == version { print $4; exit }' versions.csv)
-    #       export version_patch=$(awk -F, -v version="$version" '$1 == version { print $5; exit }' versions.csv)
-    #       export backports_patch=$(awk -F, -v version="$version" '$1 == version { print $6; exit }' versions.csv)
-    #       bash ./buildrpm.sh $version $repo $commit $date $version_patch $backports_patch
-    #   - name: String Transform container name
-    #     id: transform
-    #     uses: relab-services/string-transform@v1
-    #     with:
-    #         source: ${{ matrix.container }}
-    #         transform: replace(":", "_")
-    #   - uses: actions/upload-artifact@v4
-    #     with:
-    #       name: FDS-RPM-${{ steps.transform.outputs.var }}-${{ matrix.fds-version }}
-    #       path: |
-    #         dist/*.rpm
-#   merge:
-#     runs-on: ubuntu-latest
-#     needs: build-rpm
-#     steps:
-#       - name: Merge Artifacts
-#         uses: actions/upload-artifact/merge@v4
-#         with:
-#           name: FDS-RPMs
-#           pattern: FDS-RPM-*
-#           delete-merged: true
+      - uses: actions/checkout@v7
+      - name: Install prerequisites
+        run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
+      - name: Set up Spack
+        uses: spack/setup-spack@v3
+        with:
+          spack_ref: releases/v1.1
+          buildcache: true # Configure oci://ghcr.io/spack/github-actions-buildcache
+          color: true # Force color output (SPACK_COLOR=always)
+      - run: spack install intel-oneapi-compilers
+      - run: spack compiler find
+      - run: spack repo create $HOME/my_pkgs my_repo
+      - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
+      - run: spack create --name cfastc --skip-editor
+      - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
+      - run: spack install cfastc@${{matrix.fds-version}}%${{matrix.compiler}}
