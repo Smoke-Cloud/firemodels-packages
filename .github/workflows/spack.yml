@@ -104,7 +104,17 @@ jobs:
       - run: spack create --name fdsc --skip-editor
       - run: cp fds-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/fdsc
       - run: spack spec -I --fresh fdsc@${{matrix.version}}
-      - run: spack fetch --fresh --dependencies fdsc@${{matrix.version}}
+      - name: Fetch sources
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if spack fetch --fresh --dependencies fdsc@${{matrix.version}}; then
+              exit 0
+            fi
+            echo "Fetch failed (attempt $attempt of 5), retrying in $((attempt * 20))s..." >&2
+            sleep $((attempt * 20))
+          done
+          echo "Fetch failed after 5 attempts" >&2
+          exit 1
       - run: spack -v install --show-log-on-error fdsc@${{matrix.version}}
 
   build-cfast:
@@ -170,5 +180,15 @@ jobs:
       - run: spack create --name cfastc --skip-editor
       - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
       - run: spack spec -I --fresh cfastc@${{matrix.version}}%${{matrix.compiler}}
-      - run: spack fetch --fresh --dependencies cfastc@${{matrix.version}}%${{matrix.compiler}}
+      - name: Fetch sources
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if spack fetch --fresh --dependencies cfastc@${{matrix.version}}%${{matrix.compiler}}; then
+              exit 0
+            fi
+            echo "Fetch failed (attempt $attempt of 5), retrying in $((attempt * 20))s..." >&2
+            sleep $((attempt * 20))
+          done
+          echo "Fetch failed after 5 attempts" >&2
+          exit 1
       - run: spack -v install --show-log-on-error cfastc@${{matrix.version}}%${{matrix.compiler}}
