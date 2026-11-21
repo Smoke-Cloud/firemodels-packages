@@ -30,44 +30,49 @@ class Fdsc(CMakePackage):
     version("6.11.0", commit="369a20b38a670b269b08bdd680394eb01bd0199f", git=git)
     version("6.10.1", commit="12efa168d7c96257065a0a4dab3f68b3af8aa072", git=git)
     version("6.10.0", commit="618ac072817cb4f287ea5b3d8360dda78339e3a1", git=git)
-    version("6.9.1",  commit="889da6ae08d08dae680f7c0d8de66a3ad1c65375", git=git)
-    version("6.9.0",  commit="63395692607884566fdedb5db4b5b4d98d3bcafb", git=git)
-    version("6.8.0",  commit="886e0096535519b7358a3c4393c91da3caee5072", git=git)
-    version("6.7.9",  commit="ec52dee4274fcf994d358c8b0f883eec8f67e041", git=git)
-    version("6.7.8",  commit="fbf3e11eee06c89b85fcc936e592bcf27bb9827f", git=git)
-    version("6.7.7",  commit="fe0d4ef38f955b2a298ac9124ea3d8f085704edd", git=git)
-    version("6.7.6",  commit="5064c500c065b7abc5a34e0ae569a7ad7ec61ec8", git=git)
-    version("6.7.5",  commit="71f02560677bb87dace8c81f2e5b817d24e70c46", git=git)
-    version("6.7.4",  commit="bfaa110f1c29c157bf5f00143925c6501dd9c79a", git=git)
-    version("6.7.3",  commit="9a07c366b6439f7c5b6d89a7b3d97f117b6eeaf2", git=git)
-    version("6.7.1",  commit="14cc738f98632e4e7945d7e325f193180b021b8e", git=git)
-    version("6.7.0",  commit="5ccea76d225537ef523709c97027cbf081f60108", git=git)
-    version("6.6.0",  commit="88ae75a14dbfeef8d77bfcca1997878a14de5c8a", git=git)
-    version("6.5.3",  commit="eb56ed1a8a2205333c5b98d636226159ba063d20", git=git)
-    version("6.5.2",  commit="4e9103f2e61e60eb23eed8ad3397e8ac66e16216", git=old_git)
-    version("6.5.1",  commit="9ea0a920d7816dba678888d69ff6b4393f2a850a", git=old_git)
-    version("6.5.0",  commit="ec73757ffabc1ff0f219c1642ef522ca184ff06b", git=old_git)
-    version("6.4.0",  commit="59962898c0dbd5926605eed69ed2690c720ca001", git=old_git)
-    version("6.3.2",  commit="f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc", git=old_git)
-    version("6.3.1",  commit="352eda994c0639660ccc86bbc230b51d00592e8c", git=old_git)
-    version("6.3.0",  commit="f7f414800cb6e0829433ad150b0da71d4074ed9d", git=old_git)
-    version("6.2.0",  commit="a16945293f61e4de274c9bd714ceca40bb0a2028", git=git)
-    version("6.1.2",  commit="689afcd4c59504cc031b860fd081d935a2a3351f", git=old_git)
-    version("5.5.3",  commit="bf0a6a88f318803adb96edef5c547746fc77e4a5", git=git)
-
+    version("6.9.1", commit="889da6ae08d08dae680f7c0d8de66a3ad1c65375", git=git)
+    version("6.9.0", commit="63395692607884566fdedb5db4b5b4d98d3bcafb", git=git)
+    version("6.8.0", commit="886e0096535519b7358a3c4393c91da3caee5072", git=git)
+    version("6.7.9", commit="ec52dee4274fcf994d358c8b0f883eec8f67e041", git=git)
+    version("6.7.8", commit="fbf3e11eee06c89b85fcc936e592bcf27bb9827f", git=git)
+    version("6.7.7", commit="fe0d4ef38f955b2a298ac9124ea3d8f085704edd", git=git)
+    version("6.7.6", commit="5064c500c065b7abc5a34e0ae569a7ad7ec61ec8", git=git)
+    version("6.7.5", commit="71f02560677bb87dace8c81f2e5b817d24e70c46", git=git)
+    version("6.7.4", commit="bfaa110f1c29c157bf5f00143925c6501dd9c79a", git=git)
+    version("6.7.3", commit="9a07c366b6439f7c5b6d89a7b3d97f117b6eeaf2", git=git)
+    version("6.7.1", commit="14cc738f98632e4e7945d7e325f193180b021b8e", git=git)
+    version("6.7.0", commit="5ccea76d225537ef523709c97027cbf081f60108", git=git)
+    version("6.6.0", commit="88ae75a14dbfeef8d77bfcca1997878a14de5c8a", git=git)
+    version("6.5.3", commit="eb56ed1a8a2205333c5b98d636226159ba063d20", git=git)
+    version("6.5.2", commit="4e9103f2e61e60eb23eed8ad3397e8ac66e16216", git=old_git)
+    version("6.5.1", commit="9ea0a920d7816dba678888d69ff6b4393f2a850a", git=old_git)
+    version("6.5.0", commit="ec73757ffabc1ff0f219c1642ef522ca184ff06b", git=old_git)
+    version("6.4.0", commit="59962898c0dbd5926605eed69ed2690c720ca001", git=old_git)
+    version("6.3.2", commit="f5004c4e1e9dc3a9ccc8644b221ca14664dea5dc", git=old_git)
+    version("6.3.1", commit="352eda994c0639660ccc86bbc230b51d00592e8c", git=old_git)
+    version("6.3.0", commit="f7f414800cb6e0829433ad150b0da71d4074ed9d", git=old_git)
+    version("6.2.0", commit="a16945293f61e4de274c9bd714ceca40bb0a2028", git=git)
+    version("6.1.2", commit="689afcd4c59504cc031b860fd081d935a2a3351f", git=old_git)
+    version("5.5.3", commit="bf0a6a88f318803adb96edef5c547746fc77e4a5", git=git)
 
     # OpenMP is usually optional, but versions 6.7.6 and 6.7.7 only build
     # correctly when it is enabled.
-    variant("openmp", default=False, when="@:6.7.5,6.7.8:", description="Enable OpenMP support")
-    variant("openmp", default=True, when="@6.7.6,6.7.7", description="Enable OpenMP support")
+    variant(
+        "openmp",
+        default=False,
+        when="@:6.7.5,6.7.8:",
+        description="Enable OpenMP support",
+    )
+    variant(
+        "openmp", default=True, when="@6.7.6,6.7.7", description="Enable OpenMP support"
+    )
     conflicts(
         "~openmp",
         when="@6.7.6:6.7.7",
         msg="versions 6.7.6 and 6.7.7 only builds correctly with OpenMP enabled",
     )
 
-    variant("sundials", default=True, when="@6.10:",
-            description="Enable SUNDIALS")
+    variant("sundials", default=True, when="@6.10:", description="Enable SUNDIALS")
     variant("hypre", default=True, when="@6.10:", description="Enable HYPRE")
 
     depends_on("fortran", type="build")
@@ -80,23 +85,36 @@ class Fdsc(CMakePackage):
     # FDS is always built with MPI and doesn't support being built with a serial
     # option.
     depends_on("mpi", type=("build", "link", "run"))
+
+    # Math Kernel Library
     depends_on("mkl")
+    # TODO: not sure this is actually mandatory
+    requires(
+        "^intel-oneapi-mkl",
+        policy="one_of",
+        msg="FDS builds require Intel oneAPI MKL library",
+    )
 
     # When SUNDIALS is selected we need to specify a number of variants to build
     # the SUNDIALS library with:
     #   - mpi: FDS is always built with MPI so SUNDIALS needs MPI support.
-    #   - f2003: FDS is built with modern Fortran so SUNDIALS needs to be built
-    #       to support that (this mainly affects naming schemes and linking).
-    #   - hypre: SUNDIALS should always be built with HYPRE support (TODO: can we have SUNDIALS without HYPRE?)
+    #   - f2003: FDS is built with Fortran so SUNDIALS needs to be built with
+    #            Fortran support (of the more modern variety).
     #   - int64: FDS is always built with double precision and therefore
-    #       SUNDIALS needs to be built to support this.
-    depends_on("sundials+mpi+f2003+hypre+int64", when="+sundials")
+    #            SUNDIALS needs to be built to support this.
+    depends_on("sundials+mpi+f2003+int64", when="+sundials")
+    # When both SUNDIALS and HYPRE are enables, SUNDIALS should be built with
+    # HYPRE support.
+    depends_on("sundials+hypre", when="+sundials+hypre")
     # Due to an API change FDS 6.10.0 and 6.10.1 can't use SUNDIALS v7+.
-    depends_on("sundials@:6", when="@:6+sundials")
+    depends_on("sundials@:6", when="@6.10.0:6.10.1+sundials")
+    # Conversely, FDS 6.11.0 and later need SUNDIALS v7+
+    depends_on("sundials@7:", when="@6.11.0:+sundials")
     conflicts(
         "^sundials@7.0.0:",
         when="@:6.10.1",
-        msg="FDS 6.10.1 and earlier cannot be built with SUNDIALS 7.0.0 or later due to an API change"
+        msg="FDS 6.10.1 and earlier cannot be built with SUNDIALS 7.0.0 "
+        "or later due to an API change",
     )
 
     # When HYPRE is selected the only variant we need to add is that it's built
@@ -108,10 +126,6 @@ class Fdsc(CMakePackage):
         "%oneapi",
         policy="one_of",
         msg="FDS builds only with GNU Fortran or Intel Fortran",
-    )
-
-    requires(
-        "^intel-oneapi-mkl", policy="one_of", msg="FDS builds require Intel oneAPI MKL library"
     )
 
     requires(
@@ -195,21 +209,26 @@ class Fdsc(CMakePackage):
         # The build uses a lot of information normally derived from git that
         # we need to override here (due to a lack of git).
         args = [
-            "-DGIT_DATE={0}".format(time.strftime("%a, %d %b %Y %H:%M:%S +0000",
-                                    time.gmtime(self.revision_dates[self.spec.version.dotted_numeric_string]))),
+            "-DGIT_DATE={0}".format(
+                time.strftime(
+                    "%a, %d %b %Y %H:%M:%S +0000",
+                    time.gmtime(
+                        self.revision_dates[self.spec.version.dotted_numeric_string]
+                    ),
+                )
+            ),
             "-DGIT_BRANCH=release",
             "-DGIT_HASH={0}".format(self.spec.version),
             "-DGIT_DIRTY=spack",
         ]
         # Turn on each of the optional libraries if that feature has been selected
-        args.append(self.define_from_variant("USE_OPENMP","openmp"))
+        args.append(self.define_from_variant("USE_OPENMP", "openmp"))
 
-        args.append(self.define_from_variant("USE_HYPRE","hypre"))
-        args.append(self.define_from_variant("USE_SYSTEM_HYPRE","hypre"))
+        args.append(self.define_from_variant("USE_HYPRE", "hypre"))
+        args.append(self.define_from_variant("USE_SYSTEM_HYPRE", "hypre"))
 
-        args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
-        args.append(self.define_from_variant("DUSE_SYSTEM_SUNDIALS","sundials"))
-
+        args.append(self.define_from_variant("USE_SUNDIALS", "sundials"))
+        args.append(self.define_from_variant("USE_SYSTEM_SUNDIALS", "sundials"))
 
         # TODO: explain the additiona of this flag
         if self.spec.satisfies("%gcc"):
