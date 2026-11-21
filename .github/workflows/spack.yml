@@ -84,8 +84,13 @@ jobs:
       - uses: actions/checkout@v7
       - name: Install prerequisites
         run: |
-          command -v dnf && dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
-          command -v apt && apt update && apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
+          if command -v dnf; then
+            dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
+          fi
+          if command -v apt; then
+            apt update
+            apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
+          fi
       - name: Set up Spack
         uses: spack/setup-spack@v3
         with:
@@ -146,8 +151,13 @@ jobs:
       - uses: actions/checkout@v7
       - name: Install prerequisites
         run: |
-          command -v dnf && dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
-          command -v apt && apt update && apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
+          if command -v dnf; then
+            dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake
+          fi
+          if command -v apt; then
+            apt update
+            apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
+          fi
       - name: Set up Spack
         uses: spack/setup-spack@v3
         with:
