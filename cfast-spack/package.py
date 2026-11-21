@@ -100,6 +100,11 @@ class Cfastc(MakefilePackage):
         env.set("GIT_HASH", self.spec.version.dotted_numeric_string)
         env.set("GIT_DIRTY", "spack")
 
+    def flag_handler(self, name, flags):
+        if name == "fflags" and self.spec.satisfies("%gcc"):
+            flags.append("-ffree-line-length-none")
+        return (flags, None, None)
+
     @property
     def build_directory(self):
         if self.spec.satisfies("@7.0.1"):
