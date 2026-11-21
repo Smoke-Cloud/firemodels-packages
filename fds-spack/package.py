@@ -62,14 +62,28 @@ class Fdsc(CMakePackage):
     variant("hypre", default=True, when="@6.10:", description="Enable HYPRE")
 
     depends_on("fortran", type="build")
+    # Version 5.5.3 includes some C code.
     depends_on("c", type="build", when="@5.5.3")
+    # SUNDIALS and HYPRE each need C build systems when they are present.
     depends_on("c", type="build", when="+sundials")
     depends_on("c", type="build", when="+hypre")
 
+    # FDS is always built with MPI and doesn't support being built with a serial
+    # option.
     depends_on("mpi", type=("build", "link", "run"))
     depends_on("mkl")
 
-    depends_on("sundials+mpi+f2003+hypre", when="+sundials")
+    # When SUNDIALS is selected we need to specify a number of variants to build
+    # the SUNDIALS library with:
+    #   - mpi: FDS is always built with MPI so SUNDIALS needs MPI support.
+    #   - f2003: FDS is built with modern Fortran so SUNDIALS needs to be built
+    #       to support that (this mainly affects naming schemes and linking).
+    #   - hypre: SUNDIALS should always be built with HYPRE support (TODO: can we have SUNDIALS without HYPRE?)
+    #   - int64: FDS is always built with double precision and therefore
+    #       SUNDIALS needs to be built to support this.
+    depends_on("sundials+mpi+f2003+hypre+int64", when="+sundials")
+    # When HYPRE is selected the only variant we need to add is that it's built
+    # with MPI.
     depends_on("hypre+mpi", when="+hypre")
     requires(
         "%gcc",
@@ -131,6 +145,9 @@ class Fdsc(CMakePackage):
 
     sanity_check_is_dir = ["bin"]
 
+    # FDS includes a timestamp into its build. For reproducability this is set
+    # to the timestamp of the relevant git commit. The timestamps of each
+    # version is listed here.
     revision_dates = {
         "6.11.2": 1794651902,
         "6.11.1": 1783632247,
