@@ -14,46 +14,46 @@ jobs:
           # - "rockylinux:9"
           # - "almalinux:10"
         version:
-          # - "5.5.3%%oneapi"
-          # - "6.1.2%%oneapi"
-          # - "6.2.0%%oneapi"
-          # - "6.3.0%%oneapi"
-          # - "6.3.1%%oneapi"
-          # - "6.3.2%%oneapi"
-          # - "6.4.0%%oneapi"
-          # - "6.5.0%%oneapi"
-          # - "6.5.1%%oneapi"
-          # - "6.5.2%%oneapi"
-          # - "6.5.3%%oneapi"
-          # - "6.6.0%%oneapi"
-          # - "6.7.0%%oneapi"
-          # - "6.7.1%%oneapi"
-          # - "6.7.3%%oneapi"
-          # - "6.7.4%%oneapi"
-          # - "6.7.5%%oneapi"
-          # - "6.7.6%%oneapi"
-          # - "6.7.7%%oneapi"
-          # - "6.7.8%%oneapi"
-          # - "6.7.9%%oneapi"
-          # - "6.8.0%%oneapi"
-          # - "6.9.0%%oneapi"
-          # - "6.9.1%%oneapi"
-          # # TODO: on 6.10.* we build sundials and hypre with spack but then build them again within the FDS CMake build anyway.
-          # # TODO: nist builds sundials and hypre statically. We've stuck with shared due to some build issue but we should at least make sure we have static as an option
-          # - "6.10.0+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0+int64"
-          # - "6.10.1+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0+int64"
-          # - "6.11.0+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
-          # - "6.11.1+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
-          # - "6.11.2+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "5.5.3%%oneapi"
+          - "6.1.2%%oneapi"
+          - "6.2.0%%oneapi"
+          - "6.3.0%%oneapi"
+          - "6.3.1%%oneapi"
+          - "6.3.2%%oneapi"
+          - "6.4.0%%oneapi"
+          - "6.5.0%%oneapi"
+          - "6.5.1%%oneapi"
+          - "6.5.2%%oneapi"
+          - "6.5.3%%oneapi"
+          - "6.6.0%%oneapi"
+          - "6.7.0%%oneapi"
+          - "6.7.1%%oneapi"
+          - "6.7.3%%oneapi"
+          - "6.7.4%%oneapi"
+          - "6.7.5%%oneapi"
+          - "6.7.6%%oneapi"
+          - "6.7.7%%oneapi"
+          - "6.7.8%%oneapi"
+          - "6.7.9%%oneapi"
+          - "6.8.0%%oneapi"
+          - "6.9.0%%oneapi"
+          - "6.9.1%%oneapi"
+          # TODO: on 6.10.* we build sundials and hypre with spack but then build them again within the FDS CMake build anyway.
+          # TODO: nist builds sundials and hypre statically. We've stuck with shared due to some build issue but we should at least make sure we have static as an option
+          - "6.10.0+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0+int64"
+          - "6.10.1+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0+int64"
+          - "6.11.0+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.1+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.2+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
 
-          # - "6.11.2%gcc"
-          # - "6.11.1%gcc"
-          # - "6.11.0%gcc"
-          # - "6.10.1%gcc"
-          # - "6.10.0%gcc"
-          # - "6.9.1%gcc"
-          # - "6.9.0%gcc"
-          # - "6.8.0%gcc"
+          - "6.11.2%gcc"
+          - "6.11.1%gcc"
+          - "6.11.0%gcc"
+          - "6.10.1%gcc"
+          - "6.10.0%gcc"
+          - "6.9.1%gcc"
+          - "6.9.0%gcc"
+          - "6.8.0%gcc"
           - "6.7.9%gcc"
           # - "6.7.8%gcc"
           # - "6.7.7%gcc"
@@ -97,60 +97,61 @@ jobs:
         - run: spack fetch --fresh --dependencies fdsc@${{matrix.version}}
         - run: spack -v install --show-log-on-error fdsc@${{matrix.version}}
 
-  # build-cfast:
-  #   name: Build CFAST
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       container:
-  #         # - "fedora:40"
-  #         - "fedora:42"
-  #         # - "rockylinux:9"
-  #         # - "almalinux:10"
-  #       compiler:
-  #         - "oneapi"
-  #         - "gcc"
-  #       version:
-  #         - "7.7.7"
-  #         - "7.7.6"
-  #         - "7.7.5"
-  #         - "7.7.4"
-  #         - "7.7.3"
-  #         - "7.7.2"
-  #         - "7.7.1"
-  #         - "7.7.0"
-  #         - "7.5.2"
-  #         - "7.5.1"
-  #         - "7.4.3"
-  #         - "7.4.2"
-  #         - "7.4.0"
-  #         - "7.3.1"
-  #         - "7.3.0"
-  #         - "7.2.4"
-  #         - "7.2.3"
-  #         - "7.2.2"
-  #         - "7.2.1"
-  #         - "7.2.0"
-  #         - "7.1.2"
-  #         - "7.1.1"
-  #         - "7.1.0"
-  #         - "7.0.1"
-  #   container: ${{ matrix.container }}
-  #   steps:
-  #     - uses: actions/checkout@v7
-  #     - name: Install prerequisites
-  #       run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
-  #     - name: Set up Spack
-  #       uses: spack/setup-spack@v3
-  #       with:
-  #         spack_ref: releases/v1.1
-  #         buildcache: true # Configure oci://ghcr.io/spack/github-actions-buildcache
-  #         color: true # Force color output (SPACK_COLOR=always)
-  #     - run: spack install intel-oneapi-compilers
-  #     - run: spack compiler find
-  #     - run: spack repo create $HOME/my_pkgs my_repo
-  #     - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
-  #     - run: spack create --name cfastc --skip-editor
-  #     - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
-  #     - run: spack fetch --dependencies cfastc@${{matrix.version}}%${{matrix.compiler}}
-  #     - run: spack -v install --show-log-on-error cfastc@${{matrix.version}}%${{matrix.compiler}}
+  build-cfast:
+    name: Build CFAST
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          # - "fedora:40"
+          - "fedora:42"
+          # - "rockylinux:9"
+          # - "almalinux:10"
+        compiler:
+          - "oneapi"
+          - "gcc"
+        version:
+          - "7.7.7"
+          - "7.7.6"
+          - "7.7.5"
+          - "7.7.4"
+          - "7.7.3"
+          - "7.7.2"
+          - "7.7.1"
+          - "7.7.0"
+          - "7.5.2"
+          - "7.5.1"
+          - "7.4.3"
+          - "7.4.2"
+          - "7.4.0"
+          - "7.3.1"
+          - "7.3.0"
+          - "7.2.4"
+          - "7.2.3"
+          - "7.2.2"
+          - "7.2.1"
+          - "7.2.0"
+          - "7.1.2"
+          - "7.1.1"
+          - "7.1.0"
+          - "7.0.1"
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install prerequisites
+        run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
+      - name: Set up Spack
+        uses: spack/setup-spack@v3
+        with:
+          spack_ref: releases/v1.1
+          buildcache: true # Configure oci://ghcr.io/spack/github-actions-buildcache
+          color: true # Force color output (SPACK_COLOR=always)
+      - run: spack install intel-oneapi-compilers
+      - run: spack compiler find
+      - run: spack repo create $HOME/my_pkgs my_repo
+      - run: spack repo add $HOME/my_pkgs/spack_repo/my_repo
+      - run: spack create --name cfastc --skip-editor
+      - run: cp cfast-spack/* $HOME/my_pkgs/spack_repo/my_repo/packages/cfastc
+      - run: spack spec -I --fresh cfastc@${{matrix.version}}%${{matrix.compiler}}
+      - run: spack fetch --fresh --dependencies cfastc@${{matrix.version}}%${{matrix.compiler}}
+      - run: spack -v install --show-log-on-error cfastc@${{matrix.version}}%${{matrix.compiler}}
