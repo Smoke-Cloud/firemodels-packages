@@ -40,13 +40,11 @@ jobs:
           - "6.8.0%%oneapi"
           - "6.9.0%%oneapi"
           - "6.9.1%%oneapi"
-          # TODO: on 6.10.* we build sundials and hypre with spack but then build them again within the FDS CMake build anyway.
-          # TODO: nist builds sundials and hypre statically. We've stuck with shared due to some build issue but we should at least make sure we have static as an option
-          - "6.10.0+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0"
-          - "6.10.1+hypre+sundials%%oneapi^hypre@2.32.0^sundials@6.7.0"
-          - "6.11.0+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
-          - "6.11.1+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
-          - "6.11.2+hypre+sundials%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.10.0%%oneapi"
+          - "6.10.1%%oneapi"
+          - "6.11.0%%oneapi"
+          - "6.11.1%%oneapi"
+          - "6.11.2%%oneapi"
 
           - "6.11.2%gcc"
           - "6.11.1%gcc"
@@ -79,6 +77,22 @@ jobs:
           # - "6.2.0%gcc"
           # - "6.1.2%gcc"
           # - "5.5.3%gcc"
+
+          ## NIST Configs
+          # The cases below are ones where we specify the precise library
+          # combination that NIST uses
+          # TODO: nist builds sundials and hypre statically. We've stuck with shared due to some build issue but we should at least make sure we have static as an option
+          - "6.10.0%%oneapi^hypre@2.32.0^sundials@6.7.0"
+          - "6.10.1%%oneapi^hypre@2.32.0^sundials@6.7.0"
+          - "6.11.0%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.1%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.2%%oneapi^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.2%gcc    ^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.1%gcc    ^hypre@3.0.0 ^sundials@7.5.0"
+          - "6.11.0%gcc    ^hypre@3.0.0 ^sundials@7.5.0"
+          # These two require special care due to hypre 2.32.0 and gcc compat
+          - "6.10.1%gcc    ^hypre@2.32.0^sundials@6.7.0 ^hypre cflags=\"-std=gnu17\""
+          - "6.10.0%gcc    ^hypre@2.32.0^sundials@6.7.0 ^hypre cflags=\"-std=gnu17\""
     container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v7

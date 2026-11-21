@@ -55,8 +55,17 @@ class Fdsc(CMakePackage):
     version("6.1.2",  commit="689afcd4c59504cc031b860fd081d935a2a3351f", git=old_git)
     version("5.5.3",  commit="bf0a6a88f318803adb96edef5c547746fc77e4a5", git=git)
 
+
+    # OpenMP is usually optional, but versions 6.7.6 and 6.7.7 only build
+    # correctly when it is enabled.
     variant("openmp", default=False, when="@:6.7.5,6.7.8:", description="Enable OpenMP support")
     variant("openmp", default=True, when="@6.7.6,6.7.7", description="Enable OpenMP support")
+    conflicts(
+        "~openmp",
+        when="@6.7.6:6.7.7",
+        msg="versions 6.7.6 and 6.7.7 only builds correctly with OpenMP enabled",
+    )
+
     variant("sundials", default=True, when="@6.10:",
             description="Enable SUNDIALS")
     variant("hypre", default=True, when="@6.10:", description="Enable HYPRE")
@@ -82,6 +91,14 @@ class Fdsc(CMakePackage):
     #   - int64: FDS is always built with double precision and therefore
     #       SUNDIALS needs to be built to support this.
     depends_on("sundials+mpi+f2003+hypre+int64", when="+sundials")
+    # Due to an API change FDS 6.10.0 and 6.10.1 can't use SUNDIALS v7+.
+    depends_on("sundials@:6", when="@:6+sundials")
+    conflicts(
+        "^sundials@7.0.0:",
+        when="@:6.10.1",
+        msg="FDS 6.10.1 and earlier cannot be built with SUNDIALS 7.0.0 or later due to an API change"
+    )
+
     # When HYPRE is selected the only variant we need to add is that it's built
     # with MPI.
     depends_on("hypre+mpi", when="+hypre")
@@ -107,12 +124,6 @@ class Fdsc(CMakePackage):
         "+openmp",
         when="@5.5.3",
         msg="versions 5.5.3 cannot be built correctly with OpenMP enabled",
-    )
-
-    conflicts(
-        "~openmp",
-        when="@6.7.6:6.7.7",
-        msg="versions 6.7.6 and 6.7.7 only builds correctly with OpenMP enabled",
     )
 
     requires(
@@ -191,36 +202,14 @@ class Fdsc(CMakePackage):
             "-DGIT_DIRTY=spack",
         ]
         # Turn on each of the optional libraries if that feature has been selected
-        args.append(self.define_from_variant("USE_HYPRE","hypre"))
         args.append(self.define_from_variant("USE_OPENMP","openmp"))
+
+        args.append(self.define_from_variant("USE_HYPRE","hypre"))
+        args.append(self.define_from_variant("USE_SYSTEM_HYPRE","hypre"))
+
         args.append(self.define_from_variant("USE_SUNDIALS","sundials"))
-        # Version 6.10.0 and 6.10.1 use versions of sundials and hypre that are
-        # less well supported using Spack+CMake. For these versions we don't
-        # use the version provided by Spack but get the CMake file in the FDS
-        # repository to build them by turning USE_SYSTEM_*=OFF. Otherwise we
-        # turn it on and use the system provided by Spack. TODO: see if we can
-        # avoid this and use the spack versions fo 6.10.* as well
-        if self.spec.satisfies("@6.10.0:6.10.1"):
-            args.append("-DUSE_SYSTEM_SUNDIALS=OFF")
-            args.append("-DUSE_SYSTEM_HYPRE=OFF")
-        else:
-            args.append("-DUSE_SYSTEM_SUNDIALS=ON")
-            args.append("-DUSE_SYSTEM_HYPRE=ON")
-        # if self.spec.satsifies("@5.5.3"):
-        # args.append("-DCMAKE_BUILD_PARALLEL_LEVEL=1")
-        # args.append("-DHYPRE_VERSION=2.32.0")
-        # if "+hypre" in self.spec:
-        #     args.extend(
-        #         [
-        #             self.define("HYPRE_INCLUDE_DIR", self.spec["hypre"].prefix.include),
-        #             self.define("HYPRE_LIBRARY_DIR", self.spec["hypre"].prefix.lib),
-        #             self.define("HYPRE_VERSION", self.spec["hypre"].version),
-        #         ]
-        #     )
-        #     if not self.spec["hypre"].variants["shared"].value:
-        #         hypre_libs = self.spec["blas"].libs + self.spec["lapack"].libs
-        #         args.extend([self.define("HYPRE_LIBRARIES", hypre_libs.joined(";"))])
-        #         #raise Exception(hypre_libs.joined(";"))
+        args.append(self.define_from_variant("DUSE_SYSTEM_SUNDIALS","sundials"))
+
 
         # TODO: explain the additiona of this flag
         if self.spec.satisfies("%gcc"):
