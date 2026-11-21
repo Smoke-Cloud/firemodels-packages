@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         container:
-          # - "ubuntu:22.04"
+          - "ubuntu:22.04"
           - "fedora:42"
           # - "rockylinux:9"
           # - "almalinux:9"
@@ -83,7 +83,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install prerequisites
-        run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc libtool libevent-devel numactl perl pmix prrte zlib-ng
+        run: |
+          command -v dnf && dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc libtool libevent-devel numactl perl pmix prrte zlib-ng
+          command -v apt && apt update && apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
       - name: Set up Spack
         uses: spack/setup-spack@v3
         with:
@@ -107,7 +109,7 @@ jobs:
     strategy:
       matrix:
         container:
-          # - "fedora:40"
+          - "ubuntu:22.04"
           - "fedora:42"
           # - "rockylinux:9"
           # - "almalinux:10"
@@ -143,7 +145,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install prerequisites
-        run: dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make
+        run: |
+          command -v dnf && dnf install -y file bzip2 ca-certificates git gzip patch python3 tar unzip xz zstd gcc gcc-c++ gcc-gfortran clang make cmake hwloc libtool libevent-devel numactl perl pmix prrte zlib-ng
+          command -v apt && apt update && apt install -y file bzip2 ca-certificates git gzip patch python3 tar unzip zstd gcc g++ gfortran clang make cmake
       - name: Set up Spack
         uses: spack/setup-spack@v3
         with:

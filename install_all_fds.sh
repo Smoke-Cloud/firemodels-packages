@@ -35,8 +35,8 @@ spack install fdsc@6.7.6%gcc
 spack install fdsc@6.11.2+hypre+sundials%%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0%hypre@3.0.0
 spack install fdsc@6.11.1+hypre+sundials%%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0%hypre@3.0.0
 spack install fdsc@6.11.0+hypre+sundials%%oneapi^hypre@3.0.0%oneapi^sundials@7.5.0%hypre@3.0.0
-spack install fdsc@6.10.1+hypre+sundials%%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0+int64%hypre@2.32.0
-spack install fdsc@6.10.0+hypre+sundials%%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0+int64%hypre@2.32.0
+spack install fdsc@6.10.1+hypre+sundials%%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0%hypre@2.32.0
+spack install fdsc@6.10.0+hypre+sundials%%oneapi^hypre@2.32.0%oneapi^sundials@6.7.0%hypre@2.32.0
 spack install fdsc@6.9.1%%oneapi
 spack install fdsc@6.9.0%%oneapi
 spack install fdsc@6.8.0%%oneapi
