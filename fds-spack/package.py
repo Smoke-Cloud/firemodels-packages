@@ -221,4 +221,8 @@ class Fdsc(CMakePackage):
         #         hypre_libs = self.spec["blas"].libs + self.spec["lapack"].libs
         #         args.extend([self.define("HYPRE_LIBRARIES", hypre_libs.joined(";"))])
         #         #raise Exception(hypre_libs.joined(";"))
+
+        # TODO: explain the additiona of this flag
+        if self.spec.satisfies("%gcc"):
+            args.append(self.define("CMAKE_Fortran_FLAGS", "-fno-range-check"))
         return args
